@@ -39,7 +39,8 @@ android:
 
   
 script:
-  - chmod +x gradlew                        # make executable 
+  - chmod +x gradlew
+  - yes | sdkmanager --licenses                         # make executable 
   - ./gradlew test jacocoTestReport
 ## uncomment test exec if android integration tests are needed
 #  - ./gradlew connectedAndroidTest
