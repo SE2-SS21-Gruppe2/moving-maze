@@ -19,12 +19,9 @@ cache:
   
 android:
   components:
-    - tools
-    - tools
-    - platform-tools
     - android-30
     - build-tools-30.0.3
-    - extra
+
 #    - sys-img-armeabi-v7a-android-22
 
 ## uncomment android emulator if android integration tests are needed
@@ -35,15 +32,12 @@ android:
 #  - adb shell input keyevent 82 &
   
 script:
-  - yes | sdkmanager "platforms;android-30" # accept licenses
-  - yes | sdkmanager "build-tools;30.0.3"   # accept licenses
   - chmod +x gradlew                        # make executable 
   - ./gradlew test jacocoTestReport
 ## uncomment test exec if android integration tests are needed
 #  - ./gradlew connectedAndroidTest
   - ./gradlew lint
   - ./gradlew sonarqube
-  - export JAVA_HOME=$HOME/openjdk11        # use java 11 which is needed for sonar
 
 addons:
   sonarcloud:
