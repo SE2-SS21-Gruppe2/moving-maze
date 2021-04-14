@@ -40,8 +40,10 @@ android:
   
 script:
   - chmod +x gradlew
-  - echo yes | sdkmanager "platforms;android-30" # accept licenses
-  - echo yes | sdkmanager "build-tools;30.0.3"   # accept licenses                       # make executable 
+  - jdk_switcher use oraclejdk8             # use java 8 which is the last that is supported by android
+  - yes | sdkmanager "platforms;android-30" # accept licenses
+  - yes | sdkmanager "build-tools;30.0.3"   # accept licenses                       # make executable 
+  - export JAVA_HOME=$HOME/openjdk11        # use java 11 which is needed for sonar
   - ./gradlew test jacocoTestReport
 ## uncomment test exec if android integration tests are needed
 #  - ./gradlew connectedAndroidTest
