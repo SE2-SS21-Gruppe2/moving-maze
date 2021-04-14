@@ -1,6 +1,23 @@
+plugins {
+    id 'jacoco'
+    id 'java'
+}
+
 sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-eclipse.project.name = appName + "-core"
+dependencies {
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
+    implementation 'com.esotericsoftware:kryonet:2.22.0-RC1'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+java.targetCompatibility = JavaVersion.VERSION_1_7
