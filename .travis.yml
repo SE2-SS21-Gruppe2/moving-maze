@@ -43,6 +43,7 @@ script:
 ## uncomment test exec if android integration tests are needed
 #  - ./gradlew connectedAndroidTest
   - ./gradlew lint
+  - ./gradlew sonarqube
 
   - export JAVA_HOME=$HOME/openjdk11        # use java 11 which is needed for sonar
   - sonar-scanner

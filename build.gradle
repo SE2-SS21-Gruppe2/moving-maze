@@ -15,8 +15,14 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "3.1.1"
+}
+
 allprojects {
     apply plugin: "eclipse"
+
+
 
     version = '1.0'
     ext {
@@ -83,5 +89,13 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "SE2-SS21-Gruppe2_crazy-labyrinth-android"
+        property "sonar.organization", "se2-ss21-gruppe2"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
