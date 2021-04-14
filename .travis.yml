@@ -40,8 +40,8 @@ android:
   
 script:
   - chmod +x gradlew
-  - yes | sdkmanager "platforms;android-30" # accept licenses
-  - yes | sdkmanager "build-tools;30.0.3"   # accept licenses                       # make executable 
+  - echo yes | sdkmanager "platforms;android-30" # accept licenses
+  - echo yes | sdkmanager "build-tools;30.0.3"   # accept licenses                       # make executable 
   - ./gradlew test jacocoTestReport
 ## uncomment test exec if android integration tests are needed
 #  - ./gradlew connectedAndroidTest
