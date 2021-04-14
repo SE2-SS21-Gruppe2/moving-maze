@@ -3,7 +3,7 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = 1.7
+sourceCompatibility = 11
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
@@ -20,4 +20,4 @@ jacocoTestReport {
     }
 }
 
-java.targetCompatibility = JavaVersion.VERSION_1_7
+java.targetCompatibility = JavaVersion.VERSION_11

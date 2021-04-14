@@ -10,8 +10,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.4'
-        
-
     }
 }
 
@@ -33,7 +31,7 @@ allprojects {
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.1.0'
-        junitVersion = '5.5.2'
+        junitVersion = '5.7.1'
     }
 
     repositories {
