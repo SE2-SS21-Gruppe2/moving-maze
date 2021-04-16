@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class LabyrinthGameClass extends ApplicationAdapter {
+public class MovingMazeGameClass extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	
