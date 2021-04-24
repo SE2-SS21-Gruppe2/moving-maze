@@ -8,7 +8,7 @@ Entwickelt wird ein Klon des Spiels "Das verrückte Labyrinth".
 - [Florian Lanz](https://github.com/florianlan)
 - [Nicola Dirr](https://github.com/nidirr)
 - [Nico Ott](https://github.com/NicoOtt1998)
-- [Alexandra Baciu](https://github.com/SE2-SS21-Gruppe2/moving-maze)
+- [Alexandra Baciu](https://github.com/baciiu)
 
 ## Build
 
