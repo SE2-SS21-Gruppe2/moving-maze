@@ -1,4 +1,4 @@
-package se2.gruppe2.labyrinth;
+package se2.gruppe2.moving_maze;
 
 import android.os.Bundle;
 

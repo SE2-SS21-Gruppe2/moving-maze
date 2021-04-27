@@ -1,4 +1,4 @@
-package se2.gruppe2.labyrinth;
+package se2.gruppe2.moving_maze;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
