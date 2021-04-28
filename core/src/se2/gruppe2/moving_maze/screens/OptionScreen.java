@@ -1,15 +1,16 @@
-package se2.gruppe2.moving_maze;
+package se2.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import se2.gruppe2.moving_maze.MovingMazeGame;
 
-public class RuleScreen implements Screen {
+public class OptionScreen implements Screen {
 
     final MovingMazeGame game;
     OrthographicCamera camera;
 
-    public RuleScreen(final MovingMazeGame game) {
+    public OptionScreen(final MovingMazeGame game) {
         this.game = game;
         camera = MovingMazeGame.getStandardizedCamera();
     }
@@ -25,7 +26,7 @@ public class RuleScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Rule screen", 100, 100);
+        game.font.draw(game.batch, "Option screen", 100, 100);
         game.batch.end();
     }
 

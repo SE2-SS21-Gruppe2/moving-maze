@@ -1,8 +1,9 @@
-package se2.gruppe2.moving_maze;
+package se2.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import se2.gruppe2.moving_maze.MovingMazeGame;
 
 public class JoinSessionScreen implements Screen {
 

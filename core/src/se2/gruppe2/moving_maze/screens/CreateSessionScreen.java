@@ -1,22 +1,23 @@
-package se2.gruppe2.moving_maze;
+package se2.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import se2.gruppe2.moving_maze.MovingMazeGame;
 
-public class GameScreen implements Screen {
+public class CreateSessionScreen implements Screen {
 
     final MovingMazeGame game;
     OrthographicCamera camera;
 
-    public GameScreen(final MovingMazeGame game) {
+    public CreateSessionScreen(final MovingMazeGame game) {
         this.game = game;
         camera = MovingMazeGame.getStandardizedCamera();
     }
 
     @Override
     public void show() {
-        System.out.println("Gamescreen has been shown!");
+
     }
 
     @Override
@@ -25,7 +26,7 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Game screen", 100, 100);
+        game.font.draw(game.batch, "Create session ('Lobby')", 100, 100);
         game.batch.end();
     }
 

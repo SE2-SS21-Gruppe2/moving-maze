@@ -1,4 +1,4 @@
-package se2.gruppe2.moving_maze;
+package se2.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import se2.gruppe2.moving_maze.MovingMazeGame;
 
 public class MainMenuScreen implements Screen {
 
