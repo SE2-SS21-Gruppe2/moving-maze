@@ -4,19 +4,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class GameScreen implements Screen {
+public class JoinSessionScreen implements Screen {
 
     final MovingMazeGame game;
     OrthographicCamera camera;
 
-    public GameScreen(final MovingMazeGame game) {
+    public JoinSessionScreen(final MovingMazeGame game) {
         this.game = game;
         camera = MovingMazeGame.getStandardizedCamera();
     }
 
     @Override
     public void show() {
-        System.out.println("Gamescreen has been shown!");
+
     }
 
     @Override
@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Game screen", 100, 100);
+        game.font.draw(game.batch, "Join session", 100, 100);
         game.batch.end();
     }
 

@@ -1,5 +1,6 @@
 package se2.gruppe2.moving_maze;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -7,13 +8,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenuScreen implements Screen {
@@ -52,19 +51,9 @@ public class MainMenuScreen implements Screen {
         rules = new TextButton("Rules", skin);
         devMode = new TextButton("Developer Mode", skin);
 
-        createSession.setPosition(camera.viewportWidth/2 - createSession.getWidth()/2, camera.viewportHeight-headerLogoScaled.getHeight()-100);
-        joinSession.setPosition(camera.viewportWidth/2 - joinSession.getWidth()/2, createSession.getY()-createSession.getHeight()-20);
-        options.setPosition(camera.viewportWidth/2 - options.getWidth()/2, joinSession.getY()-joinSession.getHeight()-20);
-        rules.setPosition(camera.viewportWidth/2 - rules.getWidth()/2, options.getY()-options.getHeight()-20);
-        devMode.setPosition(camera.viewportWidth/2 - devMode.getWidth()/2, rules.getY()-rules.getHeight()-20);
+        initButtonPositions();
 
-        // set eventlisteners
-        //attachScreenChangeEvent(createSession, );
-        //attachScreenChangeEvent(joinSession, );
-        attachScreenChangeEvent(options, game.optionScreen);
-        attachScreenChangeEvent(rules, game.ruleScreen);
-        attachScreenChangeEvent(devMode, game.gameScreen);
-
+        setUpButtonListeners();
 
         buttonGroup.addActor(createSession);
         buttonGroup.addActor(joinSession);
@@ -161,17 +150,56 @@ public class MainMenuScreen implements Screen {
     }
 
     /**
-     * Makes sure a button btn changes the visible Screen to s when it is clicked.
-     * @param btn Button to bind the event on.
-     * @param s Screen to change to when the button is clicked.
+     * Bind ClickListeners to TextButtons so they load the correct screens.
+     * NOTE: attempts to generalize this with "Screen" failed ...
      */
-    private void attachScreenChangeEvent(TextButton btn, Screen s) {
-        btn.addListener(new EventListener() {
+    private void setUpButtonListeners() {
+
+        joinSession.addListener(new ClickListener() {
             @Override
-            public boolean handle(Event event) {
-                game.setScreen(s);
-                return true;
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(game.joinSessionScreen);
             }
         });
+
+        createSession.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(game.createSessionScreen);
+            }
+        });
+
+        options.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(game.optionScreen);
+            }
+        });
+
+
+        rules.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(game.ruleScreen);
+            }
+        });
+
+        devMode.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(game.gameScreen);
+            }
+        });
+    }
+
+    /**
+     * Initializes the positions of all buttons.
+     */
+    private void initButtonPositions() {
+        createSession.setPosition(camera.viewportWidth/2 - createSession.getWidth()/2, camera.viewportHeight-headerLogoScaled.getHeight()-100);
+        joinSession.setPosition(camera.viewportWidth/2 - joinSession.getWidth()/2, createSession.getY()-createSession.getHeight()-20);
+        options.setPosition(camera.viewportWidth/2 - options.getWidth()/2, joinSession.getY()-joinSession.getHeight()-20);
+        rules.setPosition(camera.viewportWidth/2 - rules.getWidth()/2, options.getY()-options.getHeight()-20);
+        devMode.setPosition(camera.viewportWidth/2 - devMode.getWidth()/2, rules.getY()-rules.getHeight()-20);
     }
 }

@@ -23,6 +23,8 @@ public class MovingMazeGame extends Game {
 	public BitmapFont font;
 
 	// Pre-instantiate screens to re-use
+	public JoinSessionScreen joinSessionScreen;
+	public CreateSessionScreen createSessionScreen;
 	public MainMenuScreen mainMenuScreen;
 	public GameScreen gameScreen;
 	public OptionScreen optionScreen;
@@ -44,6 +46,8 @@ public class MovingMazeGame extends Game {
 		font.getData().setScale(3);
 
 		// Instantiate all screens
+		joinSessionScreen = new JoinSessionScreen(this);
+		createSessionScreen = new CreateSessionScreen(this);
 		mainMenuScreen = new MainMenuScreen(this);
 		gameScreen = new GameScreen(this);
 		optionScreen = new OptionScreen(this);
@@ -92,7 +96,4 @@ public class MovingMazeGame extends Game {
 		return camera;
 	}
 
-	public void changeScreen(Screen s) {
-		setScreen(s);
-	}
 }
