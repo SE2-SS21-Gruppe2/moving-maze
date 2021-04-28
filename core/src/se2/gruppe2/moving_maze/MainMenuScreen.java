@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -36,10 +38,10 @@ public class MainMenuScreen implements Screen {
         camera = MovingMazeGame.getStandardizedCamera();
 
         // ui
-        /*
+        headerLogoScaled = getScaledImage("ui/logo.png", 0.5f);
+
         stage = new Stage();
-        // TODO: add path
-        skin = new Skin(Gdx.files.internal(""));
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
         buttonGroup = new Group();
         buttonGroup.setBounds(0,0,MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
@@ -50,6 +52,20 @@ public class MainMenuScreen implements Screen {
         rules = new TextButton("Rules", skin);
         devMode = new TextButton("Developer Mode", skin);
 
+        createSession.setPosition(camera.viewportWidth/2 - createSession.getWidth()/2, camera.viewportHeight-headerLogoScaled.getHeight()-100);
+        joinSession.setPosition(camera.viewportWidth/2 - joinSession.getWidth()/2, createSession.getY()-createSession.getHeight()-20);
+        options.setPosition(camera.viewportWidth/2 - options.getWidth()/2, joinSession.getY()-joinSession.getHeight()-20);
+        rules.setPosition(camera.viewportWidth/2 - rules.getWidth()/2, options.getY()-options.getHeight()-20);
+        devMode.setPosition(camera.viewportWidth/2 - devMode.getWidth()/2, rules.getY()-rules.getHeight()-20);
+
+        // set eventlisteners
+        //attachScreenChangeEvent(createSession, );
+        //attachScreenChangeEvent(joinSession, );
+        attachScreenChangeEvent(options, game.optionScreen);
+        attachScreenChangeEvent(rules, game.ruleScreen);
+        attachScreenChangeEvent(devMode, game.gameScreen);
+
+
         buttonGroup.addActor(createSession);
         buttonGroup.addActor(joinSession);
         buttonGroup.addActor(options);
@@ -58,9 +74,7 @@ public class MainMenuScreen implements Screen {
 
         stage.addActor(buttonGroup);
         stage.getCamera().position.set(MovingMazeGame.WIDTH/2.0f, MovingMazeGame.HEIGHT/2.0f, 0);
-         */
 
-        headerLogoScaled = getScaledImage("ui/logo.png", 0.7f);
 
 
         // instantiate textures
@@ -80,9 +94,15 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
+
             game.batch.draw(bgTextureRegion, 0, 0);
-            game.batch.draw(headerLogoScaled, 100, 100);
-            game.font.draw(game.batch, "Main menu screen", 100, 100);
+
+            game.batch.draw(headerLogoScaled,
+                    camera.viewportWidth/2 - headerLogoScaled.getWidth()/2.0f,
+                    camera.viewportHeight-headerLogoScaled.getHeight()-30);
+
+            stage.draw();
+
         game.batch.end();
     }
 
@@ -138,5 +158,20 @@ public class MainMenuScreen implements Screen {
         scaledBg.dispose();
 
         return scaledBgTexture;
+    }
+
+    /**
+     * Makes sure a button btn changes the visible Screen to s when it is clicked.
+     * @param btn Button to bind the event on.
+     * @param s Screen to change to when the button is clicked.
+     */
+    private void attachScreenChangeEvent(TextButton btn, Screen s) {
+        btn.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                game.setScreen(s);
+                return true;
+            }
+        });
     }
 }

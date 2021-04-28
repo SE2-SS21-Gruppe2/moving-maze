@@ -91,4 +91,8 @@ public class MovingMazeGame extends Game {
 		camera.setToOrtho(false, MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
 		return camera;
 	}
+
+	public void changeScreen(Screen s) {
+		setScreen(s);
+	}
 }
