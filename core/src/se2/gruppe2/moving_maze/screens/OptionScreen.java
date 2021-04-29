@@ -32,8 +32,11 @@ public class OptionScreen implements Screen {
     public Stage stage;
 
     public OptionScreen(final MovingMazeGame game) {
-
         this.game = game;
+    }
+
+    @Override
+    public void show() {
         camera = MovingMazeGame.getStandardizedCamera();
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -74,11 +77,6 @@ public class OptionScreen implements Screen {
 
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg")); // background image
         bgTextureRegion = new TextureRegion(bgImageTexture);
-    }
-
-    @Override
-    public void show() {
-
     }
 
     @Override

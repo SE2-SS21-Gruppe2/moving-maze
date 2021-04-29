@@ -35,6 +35,10 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(final MovingMazeGame game) {
         this.game = game;
+    }
+
+    @Override
+    public void show() {
         camera = MovingMazeGame.getStandardizedCamera();
 
         // ui
@@ -70,12 +74,6 @@ public class MainMenuScreen implements Screen {
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
-
-    }
-
-    @Override
-    public void show() {
-
     }
 
     @Override
