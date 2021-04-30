@@ -9,8 +9,8 @@ import se2.gruppe2.moving_maze.screens.*;
 public class MovingMazeGame extends Game {
 
 	// Constants
-	public static final int HEIGHT = 480;
-	public static final int WIDTH = 800;
+	public static final int HEIGHT = 600;
+	public static final int WIDTH = 1100;
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
