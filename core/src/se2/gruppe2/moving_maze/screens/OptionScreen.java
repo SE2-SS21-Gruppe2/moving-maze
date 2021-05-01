@@ -26,18 +26,26 @@ public class OptionScreen implements Screen {
 
     public Label title;
 
-    public Label soundLabel, difficultyLabel, modeLabel; // dummy labels
-    public Button soundButton,difficultyButton,modeButton; // dummy buttons
+    public Label soundLabel, vibrationLabel, rotateScreenLabel; // dummy labels
+    public Button soundButton,vibrationButton,rotateScreenButton; // dummy buttons
 
     public Skin skin;
     public Stage stage;
 
     private Table table1;
 
-    private int music = 1 ;
+    private boolean music = true ;
+    private boolean vibration = true ;
+    private boolean rotation = true ;
 
-    Drawable sound_on_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/sound_on.png"))));
-    Drawable sound_off_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/sound_off.png"))));
+    Drawable sound_on_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));
+    Drawable sound_off_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_off.png"))));
+    Drawable vibrate_on_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_on.png"))));
+    Drawable vibrate_off_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_off.png"))));
+    Drawable rotate_on_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
+    Drawable rotate_off_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
+
+
 
     public OptionScreen(final MovingMazeGame game) {
 
@@ -60,12 +68,12 @@ public class OptionScreen implements Screen {
         table1 = new Table();
 
         soundLabel = new Label("Sound",skin);
-        difficultyLabel = new Label("Difficulty",skin);
-        modeLabel = new Label("Mode", skin);
+        vibrationLabel = new Label("Vibration",skin);
+        rotateScreenLabel = new Label("Rotate the Screen", skin);
 
-        soundButton = new ImageButton(sound_on_drawable);
-        difficultyButton = new TextButton("easy",skin);
-        modeButton = new TextButton("single",skin);
+        soundButton = new ImageButton(sound_on_drawable,sound_off_drawable,sound_off_drawable);
+        vibrationButton = new ImageButton(vibrate_on_drawable,vibrate_off_drawable,vibrate_off_drawable);
+        rotateScreenButton = new ImageButton(rotate_on_drawable,rotate_off_drawable,rotate_off_drawable);
 
         initTable1();
         setTable1();
@@ -139,12 +147,12 @@ public class OptionScreen implements Screen {
         table1.add(soundButton).size(60,60).center();
 
         table1.row();
-        table1.add(difficultyLabel).size(170,70).center();
-        table1.add(difficultyButton).size(50,30).center();
+        table1.add(vibrationLabel).size(170,70).center();
+        table1.add(vibrationButton).size(60,60).center();
 
         table1.row();
-        table1.add(modeLabel).size(170,70).center();
-        table1.add(modeButton).size(60,30).center();
+        table1.add(rotateScreenLabel).size(170,70).center();
+        table1.add(rotateScreenButton).size(50,50).center();
 
         table1.padTop(180);
         table1.padLeft(130);
@@ -159,15 +167,53 @@ public class OptionScreen implements Screen {
 
                 if (soundButton.isPressed()){
 
-                    if (music == 1 ){
-                        music = 0 ;
+                    if (music ){
+                        music = false ;
+                        System.out.println("Music is " + music );
+                        soundButton.setChecked(false);
                     }else {
-                        music = 1;
+                        music = true;
+                        soundButton.setChecked(true);
+                        System.out.println("Music is " + music );
                     }
-                    System.out.println("Music is " + music );
                 }
+            }
+        });
 
+        vibrationButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
 
+                if (vibrationButton.isPressed()){
+
+                    if (vibration ){
+                        vibration = false ;
+                        vibrationButton.setChecked(false);
+                    }else {
+                        vibration = true;
+                        vibrationButton.setChecked(true);
+                        System.out.println("Vibration is " + vibration );
+                    }
+                }
+            }
+        });
+
+        rotateScreenButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                if (rotateScreenButton.isPressed()){
+
+                    if (rotation ){
+                        rotation = false;
+                        rotateScreenButton.setChecked(false);
+                        System.out.println("Rotation is " + rotation );
+                    }else {
+                        rotation = true;
+                        rotateScreenButton.setChecked(true);
+                        System.out.println("Music is " + rotation );
+                    }
+                }
             }
         });
     }
