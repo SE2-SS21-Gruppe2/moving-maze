@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
+import se2.gruppe2.moving_maze.audio.AudioManager;
 
 public class OptionScreen implements Screen {
 
@@ -26,15 +27,18 @@ public class OptionScreen implements Screen {
 
     public Label title;
 
-    public Label soundLabel, vibrationLabel, rotateScreenLabel; // dummy labels
-    public Button soundButton,vibrationButton,rotateScreenButton; // dummy buttons
+    public Label soundLabel, vibrationLabel, rotateScreenLabel;
+    public Button soundButton,vibrationButton,rotateScreenButton;
 
-    public Skin skin;
+    public Button backButton;
+
+    public Skin skin = new Skin();
     public Stage stage;
 
     private Table table1;
 
-    private boolean music = true ;
+    private int musicInc = 0;
+
     private boolean vibration = true ;
     private boolean rotation = true ;
 
@@ -45,7 +49,7 @@ public class OptionScreen implements Screen {
     Drawable rotate_on_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
     Drawable rotate_off_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
 
-
+    AudioManager audioManager = AudioManager.getInstance();
 
     public OptionScreen(final MovingMazeGame game) {
 
@@ -71,6 +75,9 @@ public class OptionScreen implements Screen {
         vibrationLabel = new Label("Vibration",skin);
         rotateScreenLabel = new Label("Rotate the Screen", skin);
 
+        backButton = new TextButton("BACK",skin);
+        backButton.setPosition( MovingMazeGame.WIDTH /9, MovingMazeGame.HEIGHT - 20 , Align.left);
+
         soundButton = new ImageButton(sound_on_drawable,sound_off_drawable,sound_off_drawable);
         vibrationButton = new ImageButton(vibrate_on_drawable,vibrate_off_drawable,vibrate_off_drawable);
         rotateScreenButton = new ImageButton(rotate_on_drawable,rotate_off_drawable,rotate_off_drawable);
@@ -82,10 +89,15 @@ public class OptionScreen implements Screen {
         stage.addActor(title);
         stage.addActor(table1);
 
+        stage.addActor(backButton);
         stage.getCamera().position.set(MovingMazeGame.WIDTH/2.0f, MovingMazeGame.HEIGHT/2.0f, 0);
 
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg")); // background image
-        bgTextureRegion = new TextureRegion(bgImageTexture);}
+        bgTextureRegion = new TextureRegion(bgImageTexture);
+    }
+
+
+
 
     @Override
     public void render(float delta) {
@@ -165,18 +177,20 @@ public class OptionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                if (soundButton.isPressed()){
+                musicInc++;
 
-                    if (music ){
-                        music = false ;
-                        System.out.println("Music is " + music );
-                        soundButton.setChecked(false);
-                    }else {
-                        music = true;
-                        soundButton.setChecked(true);
-                        System.out.println("Music is " + music );
-                    }
+                if (musicInc % 2 == 0){
+
+                    audioManager.getBackgroundMusic().play(0.4f);
+                    audioManager.getBackgroundMusic().loop();
+
+
+                }else {
+
+                    audioManager.getBackgroundMusic().stop();
+
                 }
+
             }
         });
 
@@ -189,6 +203,7 @@ public class OptionScreen implements Screen {
                     if (vibration ){
                         vibration = false ;
                         vibrationButton.setChecked(false);
+                        System.out.println("Vibration is " + vibration );
                     }else {
                         vibration = true;
                         vibrationButton.setChecked(true);
@@ -214,6 +229,14 @@ public class OptionScreen implements Screen {
                         System.out.println("Music is " + rotation );
                     }
                 }
+            }
+        });
+
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                game.setScreen(game.mainMenuScreen);
             }
         });
     }
