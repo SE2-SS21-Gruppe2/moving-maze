@@ -3,7 +3,9 @@ package se2.gruppe2.moving_maze.tile;
 public class TileFactory {
 
     public Tile getLTile(){
-        return new Tile();
+        Tile lTile = new Tile(true, true, false, false, TileType.L_TILE);
+
+        return lTile;
     }
 
     public Tile getITile(){
