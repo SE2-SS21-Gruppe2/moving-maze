@@ -26,7 +26,13 @@ public class GameBoard {
         this.y = y;
     }
 
-    // public float getX() {}
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
 
     public void setBoard(Tile[][] board) {
         this.board = board;

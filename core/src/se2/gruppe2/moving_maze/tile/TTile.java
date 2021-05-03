@@ -6,6 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 public class TTile extends Tile {
 
     public TTile() {
-        super(true, true, true, false, "gameboard/ttile.jpeg");
+        super(true, true, true, false, "gameboard/ttile.png");
     }
 }
