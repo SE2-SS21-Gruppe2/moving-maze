@@ -32,7 +32,7 @@ public class OptionScreen implements Screen {
 
     public Button backButton;
 
-    public Skin skin = new Skin();
+    public Skin skin ;
     public Stage stage;
 
     private Table table1;
@@ -76,7 +76,7 @@ public class OptionScreen implements Screen {
         rotateScreenLabel = new Label("Rotate the Screen", skin);
 
         backButton = new TextButton("BACK",skin);
-        backButton.setPosition( MovingMazeGame.WIDTH /9, MovingMazeGame.HEIGHT - 20 , Align.left);
+        backButton.setPosition( MovingMazeGame.WIDTH /9f, MovingMazeGame.HEIGHT - 20f , Align.left);
 
         soundButton = new ImageButton(sound_on_drawable,sound_off_drawable,sound_off_drawable);
         vibrationButton = new ImageButton(vibrate_on_drawable,vibrate_off_drawable,vibrate_off_drawable);
@@ -94,6 +94,8 @@ public class OptionScreen implements Screen {
 
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg")); // background image
         bgTextureRegion = new TextureRegion(bgImageTexture);
+
+
     }
 
 
@@ -139,8 +141,8 @@ public class OptionScreen implements Screen {
 
         title.setAlignment(Align.center);
         title.setSize(20f,10f);
-        title.setX( camera.viewportWidth/2 - title.getWidth()/2.0f );
-        title.setY(camera.viewportHeight - title.getHeight()-30);
+        title.setX( camera.viewportWidth/2f - title.getWidth()/2.0f );
+        title.setY(camera.viewportHeight - title.getHeight()-30f);
     }
 
     private void setTable1(){

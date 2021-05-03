@@ -9,36 +9,17 @@ public class AudioManager {
 
     private static AudioManager audioManager = new AudioManager() ;
 
-    private static Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/ambient.mp3"));
-    private static Music pressButton;
-    private static Music rotateTile;
-    private static Music placeTile;
-    private static Music winSound;
+    private  Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/ambient.mp3"));
+    private  Music pressButton;
+    private  Music rotateTile;
+    private  Music placeTile;
+    private  Music winSound;
 
 
-    private AudioManager(){
-
-    }
+    private AudioManager(){ }
 
     public static AudioManager getInstance(){
         return audioManager;
-    }
-
-
-    public void playBackgroundMusic(){
-        backgroundMusic.play(0.2f);
-    }
-
-    public void stopBackgroundMusic(){
-        backgroundMusic.stop();
-    }
-
-    public AudioManager getAudioManager() {
-        return audioManager;
-    }
-
-    public void setAudioManager(AudioManager audioManager) {
-        AudioManager.audioManager = audioManager;
     }
 
     public Sound getBackgroundMusic() {
@@ -46,7 +27,7 @@ public class AudioManager {
     }
 
     public void setBackgroundMusic(Sound backgroundMusic) {
-        AudioManager.backgroundMusic = backgroundMusic;
+        this.backgroundMusic = backgroundMusic;
     }
 
     public Music getPressButton() {
@@ -54,7 +35,7 @@ public class AudioManager {
     }
 
     public void setPressButton(Music pressButton) {
-        AudioManager.pressButton = pressButton;
+        this.pressButton = pressButton;
     }
 
     public  Music getRotateTile() {
@@ -62,7 +43,7 @@ public class AudioManager {
     }
 
     public void setRotateTile(Music rotateTile) {
-        AudioManager.rotateTile = rotateTile;
+        this.rotateTile = rotateTile;
     }
 
     public Music getPlaceTile() {
@@ -70,7 +51,7 @@ public class AudioManager {
     }
 
     public void setPlaceTile(Music placeTile) {
-        AudioManager.placeTile = placeTile;
+        this.placeTile = placeTile;
     }
 
     public Music getWinSound() {
@@ -78,7 +59,7 @@ public class AudioManager {
     }
 
     public void setWinSound(Music winSound) {
-        AudioManager.winSound = winSound;
+        this.winSound = winSound;
     }
 
 
