@@ -1,36 +1,36 @@
 package se2.gruppe2.moving_maze.tile;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import org.w3c.dom.Text;
 import se2.gruppe2.moving_maze.gameBoard.GameBoard;
 import se2.gruppe2.moving_maze.item.Item;
 
-public class Tile {
+public abstract class Tile {
 
     public static final float tilePadding = 5.0f;
-    public static final float tileEdgeSize = (float) Gdx.graphics.getHeight()*0.8f / GameBoard.tilesPerEdge + tilePadding*2.0f;
-    public Texture[] tileTextures = new Texture[3];
+    public static final float tileEdgeSize = (float) Gdx.graphics.getHeight() / GameBoard.tilesPerEdge + tilePadding*2.0f;
+    public static final float tileEdgeSizeNoPadding = tileEdgeSize - 2.0f*tilePadding;
 
     private boolean openTop;
     private boolean openRight;
     private boolean openBottom;
     private boolean openLeft;
     private Item item;
-    private TileType tileType;
     private int rotationDegrees;
     private Texture texture;
+    // TODO: Probably remove if done with subclasses only ..
+    private TileType tileType;
 
     public Tile(){}
 
-    public Tile(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, TileType tileType) {
+    public Tile(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath) {
         this.openTop = openTop;
         this.openRight = openRight;
         this.openBottom = openBottom;
         this.openLeft = openLeft;
-
-        this.tileType = tileType;
-
+        this.texture = scaleTextureOnLoad(texturePath);
     }
 
     public void rotateClockwise(){}
@@ -67,5 +67,26 @@ public class Tile {
 
     public boolean isOpenLeft() {
         return openLeft;
+    }
+
+    public Texture getTexture() {
+        return this.texture;
+    }
+
+    private Texture scaleTextureOnLoad(String texturePath) {
+        Pixmap originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+
+        Pixmap scaledPicture = new Pixmap((int) tileEdgeSizeNoPadding, (int) tileEdgeSizeNoPadding, originalPicture.getFormat());
+
+        scaledPicture.drawPixmap(originalPicture,
+                0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
+                0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
+
+        Texture scaledTileTexture = new Texture(scaledPicture);
+
+        originalPicture.dispose();
+        scaledPicture.dispose();
+
+        return scaledTileTexture;
     }
 }

@@ -2,22 +2,32 @@ package se2.gruppe2.moving_maze.tile;
 
 public class TileFactory {
 
-    public Tile getLTile(){
-        Tile lTile = new Tile(true, true, false, false, TileType.L_TILE);
-
-        return lTile;
+    public static Tile getLTile(){
+        return new LTile();
     }
 
-    public Tile getITile(){
-        return new Tile();
+    public static Tile getITile(){
+        return new ITile();
     }
 
-    public Tile getTTile(){
-        return new Tile();
+    public static Tile getTTile(){
+        return new TTile();
     }
 
     public Tile getTileByType(TileType tileType){
-        return new Tile();
+        switch (tileType) {
+            case T_TILE:
+                return getTTile();
+
+            case I_TILE:
+                return getITile();
+
+            case L_TILE:
+                return getLTile();
+
+            default:
+                return null;
+        }
     }
 
 }

@@ -7,6 +7,9 @@ public class GameBoard {
     public static final float gameBoardSize = tilesPerEdge * Tile.tileEdgeSize;
     Tile[][] board;
 
+    // initial position of the first tile
+    private float x, y;
+
     public GameBoard() {
         board = new Tile[tilesPerEdge][tilesPerEdge];
     }
@@ -17,6 +20,13 @@ public class GameBoard {
 
         board[x][y] = tile;
     }
+
+    public void setStartCoordinates(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    // public float getX() {}
 
     public void setBoard(Tile[][] board) {
         this.board = board;
