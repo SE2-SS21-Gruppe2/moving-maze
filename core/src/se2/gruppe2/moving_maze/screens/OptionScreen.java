@@ -36,24 +36,22 @@ public class OptionScreen implements Screen {
 
     private Button backButton;
 
-    public Skin skin ;
-    public Stage stage;
+    private Skin skin ;
+    private Stage stage;
 
     private Table table1;
 
     private int musicInc = 1;
 
-    private boolean vibration = true ;
-    private boolean rotation = true ;
 
-    private Drawable soundOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));
-    private Drawable soundOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_off.png"))));
-    private Drawable vibrateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_on.png"))));
-    private Drawable vibrateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_off.png"))));
-    private Drawable rotateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
-    private Drawable rotateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
+    private final Drawable soundOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));
+    private final Drawable soundOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_off.png"))));
+    private final Drawable vibrateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_on.png"))));
+    private final Drawable vibrateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_off.png"))));
+    private final Drawable rotateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
+    private final Drawable rotateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
 
-    AudioManager audioManager = AudioManager.getInstance();
+    private AudioManager audioManager = AudioManager.getInstance();
 
     public OptionScreen(final MovingMazeGame game) {
 
