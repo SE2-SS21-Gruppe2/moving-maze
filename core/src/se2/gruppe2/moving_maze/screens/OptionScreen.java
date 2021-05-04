@@ -19,35 +19,39 @@ import se2.gruppe2.moving_maze.audio.AudioManager;
 
 public class OptionScreen implements Screen {
 
-    final MovingMazeGame game;
-    public OrthographicCamera camera;
+    private final MovingMazeGame game;
+    private OrthographicCamera camera;
 
-    public Texture bgImageTexture;
-    public TextureRegion bgTextureRegion;
+    private Texture bgImageTexture;
+    private TextureRegion bgTextureRegion;
 
-    public Label title;
+    private Label title;
 
-    public Label soundLabel, vibrationLabel, rotateScreenLabel;
-    public Button soundButton,vibrationButton,rotateScreenButton;
+    private Label soundLabel;
+    private Label vibrationLabel;
+    private Label rotateScreenLabel;
+    private Button soundButton;
+    private Button vibrationButton;
+    private Button rotateScreenButton;
 
-    public Button backButton;
+    private Button backButton;
 
     public Skin skin ;
     public Stage stage;
 
     private Table table1;
 
-    private int musicInc = 0;
+    private int musicInc = 1;
 
     private boolean vibration = true ;
     private boolean rotation = true ;
 
-    Drawable sound_on_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));
-    Drawable sound_off_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_off.png"))));
-    Drawable vibrate_on_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_on.png"))));
-    Drawable vibrate_off_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_off.png"))));
-    Drawable rotate_on_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
-    Drawable rotate_off_drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
+    private Drawable soundOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));
+    private Drawable soundOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_off.png"))));
+    private Drawable vibrateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_on.png"))));
+    private Drawable vibrateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_off.png"))));
+    private Drawable rotateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
+    private Drawable rotateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
 
     AudioManager audioManager = AudioManager.getInstance();
 
@@ -78,9 +82,11 @@ public class OptionScreen implements Screen {
         backButton = new TextButton("BACK",skin);
         backButton.setPosition( MovingMazeGame.WIDTH /9f, MovingMazeGame.HEIGHT - 20f , Align.left);
 
-        soundButton = new ImageButton(sound_on_drawable,sound_off_drawable,sound_off_drawable);
-        vibrationButton = new ImageButton(vibrate_on_drawable,vibrate_off_drawable,vibrate_off_drawable);
-        rotateScreenButton = new ImageButton(rotate_on_drawable,rotate_off_drawable,rotate_off_drawable);
+        soundButton = new ImageButton(soundOnDrawable,soundOffDrawable,soundOffDrawable);
+        vibrationButton = new ImageButton(vibrateOnDrawable,vibrateOffDrawable,vibrateOffDrawable);
+        rotateScreenButton = new ImageButton(rotateOnDrawable,rotateOffDrawable,rotateOffDrawable);
+
+        soundButton.setChecked(true);
 
         initTable1();
         setTable1();
@@ -179,6 +185,7 @@ public class OptionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
+
                 musicInc++;
 
                 if (musicInc % 2 == 0){
@@ -186,62 +193,26 @@ public class OptionScreen implements Screen {
                     audioManager.getBackgroundMusic().play(0.4f);
                     audioManager.getBackgroundMusic().loop();
 
-
                 }else {
 
                     audioManager.getBackgroundMusic().stop();
 
                 }
-
             }
         });
 
-        vibrationButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-
-                if (vibrationButton.isPressed()){
-
-                    if (vibration ){
-                        vibration = false ;
-                        vibrationButton.setChecked(false);
-                        System.out.println("Vibration is " + vibration );
-                    }else {
-                        vibration = true;
-                        vibrationButton.setChecked(true);
-                        System.out.println("Vibration is " + vibration );
-                    }
-                }
-            }
-        });
-
-        rotateScreenButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-
-                if (rotateScreenButton.isPressed()){
-
-                    if (rotation ){
-                        rotation = false;
-                        rotateScreenButton.setChecked(false);
-                        System.out.println("Rotation is " + rotation );
-                    }else {
-                        rotation = true;
-                        rotateScreenButton.setChecked(true);
-                        System.out.println("Music is " + rotation );
-                    }
-                }
-            }
-        });
 
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
                 game.setScreen(game.mainMenuScreen);
+
             }
         });
     }
+
+
 
 
 
