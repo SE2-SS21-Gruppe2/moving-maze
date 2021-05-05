@@ -41,4 +41,8 @@ public class GameBoard {
     public Tile[][] getBoard() {
         return this.board;
     }
+
+    private void calcStartCoordinates(){
+
+    }
 }

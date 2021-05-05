@@ -17,8 +17,8 @@ public class GameScreen implements Screen {
 
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
-        this.gameBoard = GameBoardFactory.getLOnlyBoard();
-        getStartCordinats();
+        this.gameBoard = GameBoardFactory.getStandardGameBoard();
+        setStartCordinats();
         camera = MovingMazeGame.gameboardCamera();
     }
 
@@ -82,7 +82,7 @@ public class GameScreen implements Screen {
 
 
 
-    private void getStartCordinats(){
+    private void setStartCordinats(){
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
         if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
             this.gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 *45, Gdx.graphics.getHeight()/100);
