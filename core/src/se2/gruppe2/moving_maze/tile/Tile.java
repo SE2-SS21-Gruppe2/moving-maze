@@ -10,7 +10,7 @@ import se2.gruppe2.moving_maze.item.Item;
 public abstract class Tile {
 
     public static final float tilePadding = 5.0f;
-    public static final float tileEdgeSize = (float) Gdx.graphics.getHeight() / GameBoard.tilesPerEdge + tilePadding*2.0f;
+    public static final float tileEdgeSize = (float) Gdx.graphics.getHeight() / GameBoard.tilesPerEdge - tilePadding*2.0f;
     public static final float tileEdgeSizeNoPadding = tileEdgeSize - 2.0f*tilePadding;
 
     private boolean openTop;

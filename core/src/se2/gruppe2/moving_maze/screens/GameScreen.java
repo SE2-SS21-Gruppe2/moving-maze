@@ -1,5 +1,6 @@
 package se2.gruppe2.moving_maze.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -17,8 +18,8 @@ public class GameScreen implements Screen {
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
         this.gameBoard = GameBoardFactory.getLOnlyBoard();
-        this.gameBoard.setStartCoordinates(200f, 200f);
-        camera = MovingMazeGame.getStandardizedCamera();
+        getStartCordinats();
+        camera = MovingMazeGame.gameboardCamera();
     }
 
     @Override
@@ -77,4 +78,22 @@ public class GameScreen implements Screen {
             current_x = gb.getX();
         }
     }
+
+
+
+
+    private void getStartCordinats(){
+        float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
+        if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
+            this.gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 *45, Gdx.graphics.getHeight()/100);
+        }
+        else if(aspectRatio==4f/3f){
+            this.gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 * 35, Gdx.graphics.getHeight()/100*10);
+        }
+        else if(aspectRatio==1f){
+            this.gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100, Gdx.graphics.getHeight()/100);
+        }
+
+    }
+
 }
