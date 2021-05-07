@@ -78,7 +78,7 @@ public class OptionScreen implements Screen {
         rotateScreenLabel = new Label("Rotate the Screen", skin);
 
         backButton = new TextButton("BACK",skin);
-        backButton.setPosition( MovingMazeGame.WIDTH /9f, MovingMazeGame.HEIGHT - 20f , Align.left);
+        backButton.setPosition( camera.viewportWidth/4f, camera.viewportHeight - title.getHeight()-80f, Align.left);
 
         soundButton = new ImageButton(soundOnDrawable,soundOffDrawable,soundOffDrawable);
         vibrationButton = new ImageButton(vibrateOnDrawable,vibrateOffDrawable,vibrateOffDrawable);
@@ -145,8 +145,8 @@ public class OptionScreen implements Screen {
 
         title.setAlignment(Align.center);
         title.setSize(20f,10f);
-        title.setX( camera.viewportWidth/2f - title.getWidth()/2.0f );
-        title.setY(camera.viewportHeight - title.getHeight()-30f);
+        title.setX( camera.viewportWidth/2f - title.getWidth()/2f );
+        title.setY(camera.viewportHeight - title.getHeight()-80f);
     }
 
     private void setTable1(){
