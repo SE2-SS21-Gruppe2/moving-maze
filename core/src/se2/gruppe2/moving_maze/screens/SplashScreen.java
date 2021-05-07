@@ -31,7 +31,7 @@ public class SplashScreen implements Screen {
 
             Runnable transitionRunnable = () -> game.setScreen(game.mainMenuScreen);
 
-            Texture splashTex = game.assets.get("ui/loadingbar/splash.png", Texture.class);
+            Texture splashTex = game.assets.get("ui/splash.png", Texture.class);
             splashImg = new Image(splashTex);
             splashImg.setOrigin(splashImg.getWidth() / 2, splashImg.getHeight() / 2);
             splashImg.setPosition(stage.getWidth() , stage.getHeight() );
