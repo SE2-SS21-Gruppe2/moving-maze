@@ -1,6 +1,7 @@
 package se2.gruppe2.moving_maze;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -89,6 +90,12 @@ public class MovingMazeGame extends Game {
 	public static OrthographicCamera getStandardizedCamera() {
 		OrthographicCamera camera = new OrthographicCamera();
 		camera.setToOrtho(false, MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
+		return camera;
+	}
+
+	public static OrthographicCamera gameboardCamera(){
+		OrthographicCamera camera= new OrthographicCamera();
+		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		return camera;
 	}
 
