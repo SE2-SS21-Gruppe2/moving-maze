@@ -3,6 +3,7 @@ package se2.gruppe2.moving_maze.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.gameBoard.GameBoard;
@@ -18,7 +19,7 @@ public class GameScreen implements Screen {
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
         this.gameBoard = GameBoardFactory.getStandardGameBoard();
-        setStartCordinats();
+        setStartCoordinates();
         camera = MovingMazeGame.gameboardCamera();
     }
 
@@ -33,7 +34,7 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        renderGameBoard(this.gameBoard);
+        renderGameBoard(this.gameBoard, game.batch);
         game.font.draw(game.batch, "Game screen", 100, 100);
         game.batch.end();
     }
@@ -63,7 +64,7 @@ public class GameScreen implements Screen {
 
     }
 
-    private void renderGameBoard(GameBoard gb) {
+    private void renderGameBoard(GameBoard gb, SpriteBatch batch) {
         float current_x = gb.getX();
         float current_y = gb.getY();
 
@@ -71,7 +72,9 @@ public class GameScreen implements Screen {
 
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[i].length; j++) {
-                game.batch.draw(board[i][j].getTexture(), current_x, current_y);
+                board[i][j].getSprite().setPosition(current_x, current_y);
+                board[i][j].getSprite().draw(batch);
+
                 current_x += Tile.tileEdgeSize;
             }
             current_y += Tile.tileEdgeSize;
@@ -82,7 +85,7 @@ public class GameScreen implements Screen {
 
 
 
-    private void setStartCordinats(){
+    private void setStartCoordinates(){
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
         if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
             this.gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 *45, Gdx.graphics.getHeight()/100);
