@@ -41,6 +41,8 @@ public class GameBoardFactory {
         return new GameBoard();
     }
 
+
+    //TODO: Set different items Images.
     private static void buildBoard(int L, int T, int I, Tile[][] board){
         boolean tile =false;
         for(int i = 0; i < board.length; i++) {

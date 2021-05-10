@@ -64,6 +64,8 @@ public class GameScreen implements Screen {
 
     }
 
+
+    // TODO: minor Posigining changes.
     private void renderGameBoard(GameBoard gb, SpriteBatch batch) {
         float current_x = gb.getX();
         float current_y = gb.getY();
