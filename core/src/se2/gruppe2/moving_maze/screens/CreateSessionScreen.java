@@ -82,7 +82,7 @@ public class CreateSessionScreen implements Screen {
         myScreenHeight = Gdx.graphics.getHeight();
         myScreenWidth = Gdx.graphics.getWidth();
         yHeight = Gdx.graphics.getHeight() / 15f;
-        xWidth = Gdx.graphics.getWidth() / 25;
+        xWidth = Gdx.graphics.getWidth() / 25f;
 
 
 
