@@ -88,6 +88,11 @@ public abstract class Tile {
         return this.rotationDegrees;
     }
 
+    public boolean hasItem(){
+        boolean b = this.item == null ? false : true;
+        return b;
+    }
+
     public void setRotationDegrees(float rotationDegrees) {
         this.rotationDegrees = rotationDegrees;
     }

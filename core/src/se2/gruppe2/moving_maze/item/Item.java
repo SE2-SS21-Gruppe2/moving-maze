@@ -3,6 +3,7 @@ package se2.gruppe2.moving_maze.item;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import se2.gruppe2.moving_maze.gameBoard.GameBoard;
 
@@ -13,25 +14,28 @@ public class Item {
     private String name;
     private Position position;
     private Texture texture;
+    private Sprite sprite;
 
     public Item(String texturePath, Position position, boolean onCard){
         this.texture=scaleTextureOnLoad(texturePath, onCard);
         this.position=position;
+        this.sprite= new Sprite(this.texture);
     }
 
-
-
+    public Sprite getSprite() {
+        return sprite;
+    }
 
     private Texture scaleTextureOnLoad(String texturePath, boolean onCard) {
         Pixmap originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+        Pixmap scaledPicture;
+
         if(onCard){
-            Pixmap scaledPicture = new Pixmap((int) itemEdgeSize,(int) itemEdgeSize,originalPicture.getFormat());
+            scaledPicture = new Pixmap((int) itemEdgeSize,(int) itemEdgeSize,originalPicture.getFormat());
         }
         else {
-            Pixmap scaledPicture = new Pixmap((int) itemEdgeSize/2,(int) itemEdgeSize/2,originalPicture.getFormat());
+            scaledPicture = new Pixmap((int) itemEdgeSize/2,(int) itemEdgeSize/2,originalPicture.getFormat());
         }
-
-        Pixmap scaledPicture = new Pixmap((int) itemEdgeSize,(int) itemEdgeSize,originalPicture.getFormat());
 
         scaledPicture.drawPixmap(originalPicture,
                 0, 0, originalPicture.getWidth(), originalPicture.getHeight(),

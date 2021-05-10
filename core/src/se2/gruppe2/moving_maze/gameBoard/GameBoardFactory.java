@@ -2,6 +2,7 @@ package se2.gruppe2.moving_maze.gameBoard;
 
 import com.badlogic.gdx.math.MathUtils;
 
+import se2.gruppe2.moving_maze.item.Item;
 import se2.gruppe2.moving_maze.item.Position;
 import se2.gruppe2.moving_maze.tile.Tile;
 import se2.gruppe2.moving_maze.tile.TileFactory;
@@ -28,17 +29,24 @@ public class GameBoardFactory {
 
     public static GameBoard getStandardGameBoard(){
         GameBoard gb = new GameBoard();
-
         Tile[][] board = gb.getBoard();
-        int L=20;
+        int L=16;
         int T=17;
         int I=12;
+        buildBoard(L,T,I,board);
+        return gb;
+    }
 
+    public static GameBoard getEasyGameBoard(){
+        return new GameBoard();
+    }
+
+    private static void buildBoard(int L, int T, int I, Tile[][] board){
+        boolean tile =false;
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[i].length; j++) {
                 if (isCorner(i,j)){
                     board[i][j] = TileFactory.getLTile();
-                    L--;
                 }
                 else {
                     int randomTile= MathUtils.random.nextInt(3);
@@ -55,14 +63,18 @@ public class GameBoardFactory {
                         I--;
                     }
                 }
+                if(tile){
+                    Position position= new Position();
+                    position.setPosition(i,j);
+                    Item item= new Item("items/NicosTestItem.jpg", position,false);
+                    board[i][j].setItem(item);
+                    tile=false;
+                }
+                else tile=true;
             }
         }
-        return gb;
     }
 
-    public static GameBoard getEasyGameBoard(){
-        return new GameBoard();
-    }
 
     private static boolean isCorner(int x , int y){
         if (x==0 || x==6){
@@ -77,4 +89,8 @@ public class GameBoardFactory {
         Random random = new Random();
         return possibleRotationAngles[random.nextInt(possibleRotationAngles.length)];
     }
+
+
+
+
 }
