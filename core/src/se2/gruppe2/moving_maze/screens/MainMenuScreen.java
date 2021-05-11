@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 
+import java.util.ArrayList;
+
 public class MainMenuScreen implements Screen {
 
     final MovingMazeGame game;
@@ -24,10 +26,9 @@ public class MainMenuScreen implements Screen {
     // UI stuff
     Stage stage;
     Skin skin;
-    Group buttonGroup;
-    TextButton createSession, joinSession, options, rules, devMode;
+    Table tableLayout = new Table();
     Texture headerLogoScaled;
-
+    ArrayList<Actor> buttons;
 
     // textures and views
     Texture bgImageTexture;
@@ -39,37 +40,26 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        camera = MovingMazeGame.getStandardizedCamera();
+        camera = MovingMazeGame.gameboardCamera();
+        buttons = new ArrayList<>();
 
-        // ui
+        // global ui-stuff
         headerLogoScaled = getScaledImage("ui/logo.png", 0.5f);
-
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
-        buttonGroup = new Group();
-        buttonGroup.setBounds(0,0,MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
 
-        createSession = new TextButton("Create Session", skin);
-        joinSession = new TextButton("Join Session", skin);
-        options = new TextButton("Options", skin);
-        rules = new TextButton("Rules", skin);
-        devMode = new TextButton("Developer Mode", skin);
+        // generate and add buttons
+        buttons.add(generateStandardButton("New Game", game.createSessionScreen));
+        buttons.add(generateStandardButton("Join Game", game.joinSessionScreen));
+        buttons.add(generateStandardButton("Options", game.optionScreen));
+        buttons.add(generateStandardButton("Rules", game.ruleScreen));
+        buttons.add(generateStandardButton("Dev Mode", game.gameScreen));
 
-        initButtonPositions();
+        tableLayout = get2ColLayout(buttons, headerLogoScaled.getHeight()/2f);
 
-        setUpButtonListeners();
-
-        buttonGroup.addActor(createSession);
-        buttonGroup.addActor(joinSession);
-        buttonGroup.addActor(options);
-        buttonGroup.addActor(rules);
-        buttonGroup.addActor(devMode);
-
-        stage.addActor(buttonGroup);
-        stage.getCamera().position.set(MovingMazeGame.WIDTH/2.0f, MovingMazeGame.HEIGHT/2.0f, 0);
-
-
+        stage.addActor(tableLayout);
+        stage.getCamera().position.set(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f, 0);
 
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
@@ -149,56 +139,54 @@ public class MainMenuScreen implements Screen {
     }
 
     /**
-     * Bind ClickListeners to TextButtons so they load the correct screens.
-     * NOTE: attempts to generalize this with "Screen" failed ...
+     * Generates a TextButton that is ready to be displayed in the main-menu
+     * @param label Label to display on the button
+     * @param target -screen to redirect to when being clicked
+     * @return A textbutton with appropriate properties
      */
-    private void setUpButtonListeners() {
+    private TextButton generateStandardButton(String label, Screen target) {
+        TextButton btn = new TextButton(label, skin);
 
-        joinSession.addListener(new ClickListener() {
+        // Note: does not have any effect when being added as a table-cell
+        btn.setSize(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/6f);
+
+        // Button-label font size should be approximately half the size of the button itself
+        btn.getLabel().setFontScale(Gdx.graphics.getHeight() / btn.getHeight() / 2.2f);
+
+        btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.joinSessionScreen);
+                game.setScreen(target);
             }
         });
 
-        createSession.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.createSessionScreen);
-            }
-        });
-
-        options.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.optionScreen);
-            }
-        });
-
-
-        rules.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.ruleScreen);
-            }
-        });
-
-        devMode.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.gameScreen);
-            }
-        });
+        return btn;
     }
 
     /**
-     * Initializes the positions of all buttons.
+     * Get a 2-column Table-Layout for a list of actors (e.g. buttons)
+     * @param uiElements The ui Elements to add to the table
+     * @return the table containing the ui-elements
      */
-    private void initButtonPositions() {
-        createSession.setPosition(camera.viewportWidth/2 - createSession.getWidth()/2, camera.viewportHeight-headerLogoScaled.getHeight()-100);
-        joinSession.setPosition(camera.viewportWidth/2 - joinSession.getWidth()/2, createSession.getY()-createSession.getHeight()-20);
-        options.setPosition(camera.viewportWidth/2 - options.getWidth()/2, joinSession.getY()-joinSession.getHeight()-20);
-        rules.setPosition(camera.viewportWidth/2 - rules.getWidth()/2, options.getY()-options.getHeight()-20);
-        devMode.setPosition(camera.viewportWidth/2 - devMode.getWidth()/2, rules.getY()-rules.getHeight()-20);
+    private Table get2ColLayout(ArrayList<Actor> uiElements, float offsetTop) {
+        Table tbl = new Table();
+
+        tbl.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f - offsetTop);
+
+        int addCounter = 0;
+
+        for(Actor act : uiElements) {
+
+            if(addCounter >= 2) {
+                tbl.row();
+                addCounter = 0;
+            }
+
+            tbl.add(act).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f).pad(20);
+            addCounter++;
+        }
+
+        return tbl;
     }
+
 }
