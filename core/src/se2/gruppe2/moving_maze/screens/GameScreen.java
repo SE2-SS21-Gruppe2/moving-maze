@@ -3,7 +3,9 @@ package se2.gruppe2.moving_maze.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.gameBoard.GameBoard;
@@ -16,11 +18,19 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     final GameBoard gameBoard;
 
+    // background
+    Texture bgImageTexture;
+    TextureRegion bgTextureRegion;
+
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
         this.gameBoard = GameBoardFactory.getStandardGameBoard();
         setStartCoordinates();
         camera = MovingMazeGame.gameboardCamera();
+
+        // instantiate textures
+        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
+        bgTextureRegion = new TextureRegion(bgImageTexture);
     }
 
     @Override
@@ -34,8 +44,9 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        renderGameBoard(this.gameBoard, game.batch);
-        game.font.draw(game.batch, "Game screen", 100, 100);
+            game.batch.draw(bgTextureRegion, 0, 0);
+            renderGameBoard(this.gameBoard, game.batch);
+            game.font.draw(game.batch, "Game screen (DEV MODE)", 100, 100);
         game.batch.end();
     }
 
@@ -83,7 +94,6 @@ public class GameScreen implements Screen {
                     board[i][j].getItem().getSprite().setPosition(current_Ix,current_Iy);
                     board[i][j].getItem().getSprite().draw(batch);
                 }
-
 
                 current_x += Tile.tileEdgeSize;
             }
