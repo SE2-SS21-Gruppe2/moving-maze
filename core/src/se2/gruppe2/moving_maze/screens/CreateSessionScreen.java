@@ -26,7 +26,6 @@ public class CreateSessionScreen implements Screen {
     final MovingMazeGame game;
     private OrthographicCamera camera;
 
-    private ShapeRenderer shapeRenderer;
     private MyShapeRenderer myShapeRenderer;
     private Stage stage;
     private Skin skin;
@@ -52,26 +51,31 @@ public class CreateSessionScreen implements Screen {
     private Table table;
     private Table leftTable;
     private Table rightTable;
-    private Label lblCreateLobbyHeading;
-    private Label nameLabel;
     private Label settingsLabel;
-    private Label difficultyLabel;
-    private Label cheatingAllowedLabel;
-    private Label numberOfCardsLabel;
     private Slider difficultySlider;
+    private Label difficultyValueLabel;
     private Slider numberOfCardsSlider;
+    private Label numOfCardsValueLabel;
     private TextButton cheatingAllowedButton;
+    private TextButton themeButton;
     private Label connectedPlayersLabel;
     private Label player1Label;
     private Label player2Label;
     private Label player3Label;
     private Label gameCode;
     private Image startIcon;
-    private Label difficultyValueLabel;
-    private Label numOfCardsValueLabel;
 
+    // game state variables
     private Boolean gameReady;
     private Boolean cheatingAllowed;
+    private String player1;
+    private String player2;
+    private String player3;
+    private String player;
+    private int difficulty;
+    private int numOfCards;
+    private String theme;
+
 
     public CreateSessionScreen(final MovingMazeGame game) {
         this.game = game;
@@ -84,10 +88,8 @@ public class CreateSessionScreen implements Screen {
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_nomoss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
-
         startImageTexture = new Texture(Gdx.files.internal("ui/start.png"));
-
-        shapeRenderer = new ShapeRenderer();
+        
         myShapeRenderer = new MyShapeRenderer();
 
         myScreenHeight = Gdx.graphics.getHeight();
@@ -95,15 +97,17 @@ public class CreateSessionScreen implements Screen {
         yHeight = Gdx.graphics.getHeight() / 15f;
         xWidth = Gdx.graphics.getWidth() / 25f;
 
+        // game state variables
         gameReady = true;
         cheatingAllowed = true;
-
+        difficulty = 2;
+        numOfCards = 3;
+        theme = "Original";
 
         heading = new Texture(Gdx.files.internal("ui/nunito.png"));
         heading.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         headingFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(heading), false);
         headingFont.getData().setScale(2f);
-        headingText = "Create Lobby";
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -128,13 +132,13 @@ public class CreateSessionScreen implements Screen {
         leftTable.columnDefaults(0).width(200);
 
         // --- LT - 1st Row (Name) ---
-        nameLabel = new Label("Name:", skin);
+        var nameLabel = new Label("Name:", skin);
         nameLabel.setAlignment(Align.left);
         nameLabel.setFontScale(2.5f);
         leftTable.add(nameLabel).pad(0.5f* xWidth, 0.2f* xWidth, 0, 0).align(Align.left);
 
         txfName = new TextField("Martin", skin);
-        TextField.TextFieldStyle textFieldStyle = skin.get(TextField.TextFieldStyle.class);
+        var textFieldStyle = skin.get(TextField.TextFieldStyle.class);
         textFieldStyle.font.getData().scale(1.5f);
         txfName.setStyle(textFieldStyle);
         leftTable.add(txfName).padTop(0.5f* xWidth).maxHeight(100).height(80).expandX().fillX();
@@ -149,14 +153,14 @@ public class CreateSessionScreen implements Screen {
 
         // --- LT - 3rd Row (Difficulty) ---
         leftTable.row();
-        difficultyLabel = new Label("Difficulty", skin);
+        var difficultyLabel = new Label("Difficulty", skin);
         difficultyLabel.setAlignment(Align.left);
         difficultyLabel.setFontScale(2.0f);
         leftTable.add(difficultyLabel).padLeft(0.2f* xWidth).align(Align.left);
 
         difficultySlider = new Slider(1, 3, 1, false, skin);
         difficultySlider.setValue(2);
-        Container<Slider> difficultySliderContainer = new Container<Slider>(difficultySlider);
+        Container<Slider> difficultySliderContainer = new Container<>(difficultySlider);
         difficultySliderContainer.setTransform(true);
         difficultySliderContainer.size(100, 50);
         difficultySliderContainer.setOrigin((difficultySliderContainer.getWidth()+ 100)/2,
@@ -171,14 +175,14 @@ public class CreateSessionScreen implements Screen {
 
         // --- LT - 4th Row (# of cards) ---
         leftTable.row();
-        numberOfCardsLabel = new Label("# of Cards", skin);
+        var numberOfCardsLabel = new Label("# of Cards", skin);
         numberOfCardsLabel.setAlignment(Align.left);
         numberOfCardsLabel.setFontScale(2.0f);
         leftTable.add(numberOfCardsLabel).padLeft(0.2f* xWidth).align(Align.left);
 
         numberOfCardsSlider = new Slider(1, 6, 1, false, skin);
         numberOfCardsSlider.setValue(3);
-        Container<Slider> numberOfCardsSliderContainer = new Container<Slider>(numberOfCardsSlider);
+        Container<Slider> numberOfCardsSliderContainer = new Container<>(numberOfCardsSlider);
         numberOfCardsSliderContainer.setTransform(true);
         numberOfCardsSliderContainer.size(100, 50);
         numberOfCardsSliderContainer.setOrigin((numberOfCardsSliderContainer.getWidth()+ 100)/2,
@@ -194,14 +198,14 @@ public class CreateSessionScreen implements Screen {
 
         // --- LT - 5th Row (Cheating) ---
         leftTable.row();
-        cheatingAllowedLabel = new Label("Cheating", skin);
+        var cheatingAllowedLabel = new Label("Cheating", skin);
         cheatingAllowedLabel.setAlignment(Align.left);
         cheatingAllowedLabel.setFontScale(2.0f);
         leftTable.add(cheatingAllowedLabel).padLeft(0.2f* xWidth).align(Align.left);
 
         cheatingAllowedButton = new TextButton("Allowed", skin);
         cheatingAllowedButton.getLabel().setFontScale(2.0f);
-        Container<TextButton> cheatingAllowedButtonContainer = new Container<TextButton>(cheatingAllowedButton);
+        Container<TextButton> cheatingAllowedButtonContainer = new Container<>(cheatingAllowedButton);
         cheatingAllowedButtonContainer.setTransform(true);
         cheatingAllowedButtonContainer.size(225
                 ,cheatingAllowedButton.getHeight()*0.8f);
@@ -210,12 +214,12 @@ public class CreateSessionScreen implements Screen {
 
         // --- LT - 6th Row (Theme) ---
         leftTable.row();
-        Label themeLabel = new Label("Theme", skin);
+        var themeLabel = new Label("Theme", skin);
         themeLabel.setAlignment(Align.left);
         themeLabel.setFontScale(2.0f);
         leftTable.add(themeLabel).padLeft(0.2f*xWidth).align(Align.left);
 
-        TextButton themeButton = new TextButton("Original", skin);
+        themeButton = new TextButton("Original", skin);
         themeButton.getLabel().setFontScale(2.0f);
         themeButton.setDisabled(true);
         themeButton.setTouchable(Touchable.disabled);
@@ -240,7 +244,7 @@ public class CreateSessionScreen implements Screen {
 
         // --- RT - 2nd Row (Player 1) ---
         rightTable.row();
-        player1Label = new Label("Florian", skin);
+        player1Label = new Label("Flo", skin);
         player1Label.setAlignment(Align.left);
         player1Label.setFontScale(2.0f);
         rightTable.add(player1Label).padLeft(0.8f* xWidth).align(Align.left);
@@ -267,7 +271,7 @@ public class CreateSessionScreen implements Screen {
         gameCode.setFontScale(3.0f);
         rightTable.add(gameCode).padTop(50F).padLeft(10F).expandY().center();
 
-        Sprite startIconSprite = new Sprite(startImageTexture);
+        var startIconSprite = new Sprite(startImageTexture);
         startIcon = new Image(new SpriteDrawable(startIconSprite));
         startIcon.setOrigin(startIcon.getOriginX()+startIcon.getWidth()/2, startIcon.getOriginY()+startIcon.getHeight()/2);
         startIcon.setScale(1.5f);
@@ -282,7 +286,7 @@ public class CreateSessionScreen implements Screen {
         table.setFillParent(true);
 
         // --- Table - 1st Row ---
-        lblCreateLobbyHeading = new Label("CREATE LOBBY", new Label.LabelStyle(headingFont, Color.WHITE));
+        var lblCreateLobbyHeading = new Label("CREATE LOBBY", new Label.LabelStyle(headingFont, Color.WHITE));
         lblCreateLobbyHeading.setFontScale(2.0f);
         lblCreateLobbyHeading.setAlignment(Align.center);
         table.add(lblCreateLobbyHeading).colspan(2).fillX();
@@ -294,7 +298,7 @@ public class CreateSessionScreen implements Screen {
 
         // --- Table - Last Row ---
         table.row().height(30);
-        Label emptyLabel = new Label("", skin);
+        var emptyLabel = new Label("", skin);
         table.add(emptyLabel).colspan(2);
 
 
@@ -305,13 +309,15 @@ public class CreateSessionScreen implements Screen {
 
         difficultySlider.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
-                difficultyValueLabel.setText((int) difficultySlider.getValue());
+                difficulty = (int) difficultySlider.getValue();
+                difficultyValueLabel.setText(difficulty);
             }
         });
 
         numberOfCardsSlider.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
-                numOfCardsValueLabel.setText((int) numberOfCardsSlider.getValue());
+                numOfCards = (int) numberOfCardsSlider.getValue();
+                numOfCardsValueLabel.setText(numOfCards);
             }
         });
 
@@ -320,7 +326,9 @@ public class CreateSessionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (gameReady){
-                System.out.println("START GAME");
+                System.out.println("GAME STARTED");
+                String[] players = {player, player1Label.getText().toString(), player2Label.getText().toString(),player3Label.getText().toString() };
+                createAndStartGame(players, difficulty, numOfCards, cheatingAllowed, theme);
                 }
             }
         });
@@ -336,8 +344,25 @@ public class CreateSessionScreen implements Screen {
            }
         });
 
+        themeButton.addListener(new ClickListener() {
+           public void clicked(InputEvent event, float x, float y) {
+               // code for multiple themes
+           }
+        });
+
+        txfName.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                player = txfName.getText();
+                System.out.println(player);
+            }
+        });
+
     }
 
+    public void createAndStartGame(String[] players, float difficulty, float numOfCards, boolean cheatingAllowed, String theme){
+        // TODO: Connection to Server
+    }
 
 
     @Override
