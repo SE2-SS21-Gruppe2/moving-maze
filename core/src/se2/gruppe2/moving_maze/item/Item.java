@@ -20,6 +20,7 @@ public class Item {
         this.texture=scaleTextureOnLoad(texturePath, onCard);
         this.position=position;
         this.sprite= new Sprite(this.texture);
+        this.name= texturePath.substring(6,texturePath.length()-4);
     }
 
     public Sprite getSprite() {
@@ -48,7 +49,5 @@ public class Item {
 
         return scaledTileTexture;
     }
-
-
 
 }

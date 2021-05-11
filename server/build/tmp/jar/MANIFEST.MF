@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: se2.gruppe2.moving_maze.server.ServerMain
-

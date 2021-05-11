@@ -44,7 +44,7 @@ public class GameBoardFactory {
 
     //TODO: Set different items Images.
     private static void buildBoard(int L, int T, int I, Tile[][] board){
-        boolean tile =false;
+        boolean itemOnTile =false;
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[i].length; j++) {
                 if (isCorner(i,j)){
@@ -65,14 +65,11 @@ public class GameBoardFactory {
                         I--;
                     }
                 }
-                if(tile){
-                    Position position= new Position();
-                    position.setPosition(i,j);
-                    Item item= new Item("items/NicosTestItem.jpg", position,false);
-                    board[i][j].setItem(item);
-                    tile=false;
+                if(itemOnTile){
+                    board[i][j].setItem(buildItem(i,j));
+                    itemOnTile=false;
                 }
-                else tile=true;
+                else itemOnTile=true;
             }
         }
     }
@@ -91,6 +88,17 @@ public class GameBoardFactory {
         Random random = new Random();
         return possibleRotationAngles[random.nextInt(possibleRotationAngles.length)];
     }
+
+    private static Item buildItem(int x, int y){
+        Position position = new Position();
+        position.setPosition(x, y);
+        return new Item("items/NicosTestItem.jpg", position,false);
+    }
+
+
+
+
+
 
 
 
