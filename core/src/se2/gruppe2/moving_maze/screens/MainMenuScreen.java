@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 
+import java.util.ArrayList;
+
 public class MainMenuScreen implements Screen {
 
     final MovingMazeGame game;
@@ -24,9 +26,10 @@ public class MainMenuScreen implements Screen {
     // UI stuff
     Stage stage;
     Skin skin;
-    Group buttonGroup;
+    Table tableLayout = new Table();
     TextButton createSession, joinSession, options, rules, devMode;
     Texture headerLogoScaled;
+    ArrayList<Actor> buttons;
 
 
     // textures and views
@@ -39,7 +42,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        camera = MovingMazeGame.getStandardizedCamera();
+        camera = MovingMazeGame.gameboardCamera();
+        buttons = new ArrayList<>();
 
         // ui
         headerLogoScaled = getScaledImage("ui/logo.png", 0.5f);
@@ -47,29 +51,30 @@ public class MainMenuScreen implements Screen {
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
-        buttonGroup = new Group();
-        buttonGroup.setBounds(0,0,MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
 
         createSession = new TextButton("Create Session", skin);
+        createSession.getLabel().setScale(10, 10);
         joinSession = new TextButton("Join Session", skin);
+        joinSession.setSize(MovingMazeGame.BTN_WIDTH, MovingMazeGame.BTN_HEIGHT);
         options = new TextButton("Options", skin);
+        options.setSize(MovingMazeGame.BTN_WIDTH, MovingMazeGame.BTN_HEIGHT);
         rules = new TextButton("Rules", skin);
+        rules.setSize(MovingMazeGame.BTN_WIDTH, MovingMazeGame.BTN_HEIGHT);
         devMode = new TextButton("Developer Mode", skin);
+        devMode.setSize(MovingMazeGame.BTN_WIDTH, MovingMazeGame.BTN_HEIGHT);
 
-        initButtonPositions();
+        buttons.add(createSession);
+        buttons.add(joinSession);
+        buttons.add(options);
+        buttons.add(rules);
+        buttons.add(devMode);
+
+        tableLayout = get2ColLayout(buttons);
 
         setUpButtonListeners();
 
-        buttonGroup.addActor(createSession);
-        buttonGroup.addActor(joinSession);
-        buttonGroup.addActor(options);
-        buttonGroup.addActor(rules);
-        buttonGroup.addActor(devMode);
-
-        stage.addActor(buttonGroup);
-        stage.getCamera().position.set(MovingMazeGame.WIDTH/2.0f, MovingMazeGame.HEIGHT/2.0f, 0);
-
-
+        stage.addActor(tableLayout);
+        stage.getCamera().position.set(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f, 0);
 
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
@@ -192,13 +197,27 @@ public class MainMenuScreen implements Screen {
     }
 
     /**
-     * Initializes the positions of all buttons.
+     * Get a 2-column Table-Layout for a list of actors (e.g. buttons)
+     * @param uiElements The ui Elements to add to the table
+     * @return the table containing the ui-elements
      */
-    private void initButtonPositions() {
-        createSession.setPosition(camera.viewportWidth/2 - createSession.getWidth()/2, camera.viewportHeight-headerLogoScaled.getHeight()-100);
-        joinSession.setPosition(camera.viewportWidth/2 - joinSession.getWidth()/2, createSession.getY()-createSession.getHeight()-20);
-        options.setPosition(camera.viewportWidth/2 - options.getWidth()/2, joinSession.getY()-joinSession.getHeight()-20);
-        rules.setPosition(camera.viewportWidth/2 - rules.getWidth()/2, options.getY()-options.getHeight()-20);
-        devMode.setPosition(camera.viewportWidth/2 - devMode.getWidth()/2, rules.getY()-rules.getHeight()-20);
+    private Table get2ColLayout(ArrayList<Actor> uiElements) {
+        Table tbl = new Table();
+
+        int addCounter = 0;
+
+        for(Actor act : uiElements) {
+
+            if(addCounter > 2) {
+                tbl.row();
+                addCounter = 1;
+            }
+
+            tbl.add(act);
+            addCounter++;
+        }
+
+        return tbl;
     }
+
 }
