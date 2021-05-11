@@ -5,7 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import se2.gruppe2.moving_maze.network.NetworkClient;
 import se2.gruppe2.moving_maze.screens.*;
+
+import java.io.IOException;
 
 public class MovingMazeGame extends Game {
 
@@ -29,6 +32,8 @@ public class MovingMazeGame extends Game {
 	public OptionScreen optionScreen;
 	public RuleScreen ruleScreen;
 
+	// Network
+	public NetworkClient client;
 
 	/**
 	 * Private constructor to avoid accidental instantiation
@@ -55,6 +60,8 @@ public class MovingMazeGame extends Game {
 		gameScreen = new GameScreen(this);
 		optionScreen = new OptionScreen(this);
 		ruleScreen = new RuleScreen(this);
+
+		client = NetworkClient.getInstance();
 
 		// display main-menu when the game is started
 		setScreen(mainMenuScreen);

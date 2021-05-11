@@ -34,9 +34,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void show() {
-        System.out.println("Gamescreen has been shown!");
-    }
+    public void show() { }
 
     @Override
     public void render(float delta) {
@@ -101,11 +99,6 @@ public class GameScreen implements Screen {
             current_x = gb.getX();
         }
     }
-
-
-
-
-
 
     private void setStartCoordinates(){
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
