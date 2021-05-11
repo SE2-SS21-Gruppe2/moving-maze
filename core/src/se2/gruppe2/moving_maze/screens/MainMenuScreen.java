@@ -52,26 +52,13 @@ public class MainMenuScreen implements Screen {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        createSession = new TextButton("Create Session", skin);
-        createSession.getLabel().setScale(10, 10);
-        joinSession = new TextButton("Join Session", skin);
-        joinSession.setSize(MovingMazeGame.BTN_WIDTH, MovingMazeGame.BTN_HEIGHT);
-        options = new TextButton("Options", skin);
-        options.setSize(MovingMazeGame.BTN_WIDTH, MovingMazeGame.BTN_HEIGHT);
-        rules = new TextButton("Rules", skin);
-        rules.setSize(MovingMazeGame.BTN_WIDTH, MovingMazeGame.BTN_HEIGHT);
-        devMode = new TextButton("Developer Mode", skin);
-        devMode.setSize(MovingMazeGame.BTN_WIDTH, MovingMazeGame.BTN_HEIGHT);
+        buttons.add(generateStandardButton("Create Session", game.createSessionScreen));
+        buttons.add(generateStandardButton("Join Session", game.joinSessionScreen));
+        buttons.add(generateStandardButton("Options", game.optionScreen));
+        buttons.add(generateStandardButton("Rules", game.ruleScreen));
+        buttons.add(generateStandardButton("Developer Mode", game.gameScreen));
 
-        buttons.add(createSession);
-        buttons.add(joinSession);
-        buttons.add(options);
-        buttons.add(rules);
-        buttons.add(devMode);
-
-        tableLayout = get2ColLayout(buttons);
-
-        setUpButtonListeners();
+        tableLayout = get2ColLayout(buttons, headerLogoScaled.getHeight()/2f);
 
         stage.addActor(tableLayout);
         stage.getCamera().position.set(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f, 0);
@@ -154,46 +141,25 @@ public class MainMenuScreen implements Screen {
     }
 
     /**
-     * Bind ClickListeners to TextButtons so they load the correct screens.
-     * NOTE: attempts to generalize this with "Screen" failed ...
+     * Generates a TextButton that is ready to be displayed in the main-menu
+     * @param label Label to display on the button
+     * @param target -screen to redirect to when being clicked
+     * @return A textbutton with appropriate properties
      */
-    private void setUpButtonListeners() {
+    private TextButton generateStandardButton(String label, Screen target) {
+        TextButton btn = new TextButton(label, skin);
 
-        joinSession.addListener(new ClickListener() {
+        // Note: does not have any effect when being added as a table-cell
+        btn.setSize(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/6f);
+
+        btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.joinSessionScreen);
+                game.setScreen(target);
             }
         });
 
-        createSession.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.createSessionScreen);
-            }
-        });
-
-        options.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.optionScreen);
-            }
-        });
-
-
-        rules.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.ruleScreen);
-            }
-        });
-
-        devMode.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.gameScreen);
-            }
-        });
+        return btn;
     }
 
     /**
@@ -201,19 +167,21 @@ public class MainMenuScreen implements Screen {
      * @param uiElements The ui Elements to add to the table
      * @return the table containing the ui-elements
      */
-    private Table get2ColLayout(ArrayList<Actor> uiElements) {
+    private Table get2ColLayout(ArrayList<Actor> uiElements, float offsetTop) {
         Table tbl = new Table();
+
+        tbl.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f - offsetTop);
 
         int addCounter = 0;
 
         for(Actor act : uiElements) {
 
-            if(addCounter > 2) {
+            if(addCounter >= 2) {
                 tbl.row();
-                addCounter = 1;
+                addCounter = 0;
             }
 
-            tbl.add(act);
+            tbl.add(act).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f).pad(40);
             addCounter++;
         }
 
