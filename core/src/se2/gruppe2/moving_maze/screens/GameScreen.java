@@ -10,7 +10,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.gameBoard.GameBoard;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardFactory;
+import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.tile.Tile;
+
+import java.util.Random;
 
 public class GameScreen implements Screen {
 
@@ -28,13 +31,18 @@ public class GameScreen implements Screen {
         setStartCoordinates();
         camera = MovingMazeGame.gameboardCamera();
 
+        // in developer mode, all players join the same (static) session
+        game.player = new Player("Developer " + new Random().nextInt(10));
+
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
     }
 
     @Override
-    public void show() { }
+    public void show() {
+        game.client.joinSession(game.player, "devgame");
+    }
 
     @Override
     public void render(float delta) {

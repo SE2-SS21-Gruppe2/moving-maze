@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se2.gruppe2.moving_maze.network.NetworkClient;
+import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.screens.*;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class MovingMazeGame extends Game {
 
@@ -20,6 +22,8 @@ public class MovingMazeGame extends Game {
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
+
+	public Player player;
 
 	public SpriteBatch batch;
 	public BitmapFont font;
@@ -49,6 +53,8 @@ public class MovingMazeGame extends Game {
 		MovingMazeGame.BTN_HEIGHT = Gdx.graphics.getHeight()/8.5f;
 		MovingMazeGame.BTN_WIDTH = Gdx.graphics.getWidth()/5f;
 
+		client = NetworkClient.getInstance();
+
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		font.getData().setScale(3);
@@ -61,7 +67,6 @@ public class MovingMazeGame extends Game {
 		optionScreen = new OptionScreen(this);
 		ruleScreen = new RuleScreen(this);
 
-		client = NetworkClient.getInstance();
 
 		// display main-menu when the game is started
 		setScreen(mainMenuScreen);

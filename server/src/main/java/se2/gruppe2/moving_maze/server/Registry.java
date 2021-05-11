@@ -1,4 +1,4 @@
-package se2.gruppe2.moving_maze.network;
+package se2.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.kryo.Kryo;
 import se2.gruppe2.moving_maze.network.messages.JoinRequest;
@@ -21,7 +21,6 @@ public class Registry {
         kryo.register(Stack.class);
         kryo.register(PlayerRole.class);
         */
-
         kryo.register(String.class);
     }
 

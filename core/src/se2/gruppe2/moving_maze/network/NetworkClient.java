@@ -2,6 +2,8 @@ package se2.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
+import se2.gruppe2.moving_maze.network.messages.JoinRequest;
+import se2.gruppe2.moving_maze.player.Player;
 
 import java.io.IOException;
 
@@ -25,7 +27,9 @@ public class NetworkClient {
                     NetworkConfig.timeout,
                     NetworkConfig.host,
                     NetworkConfig.port
-            ); } catch(IOException ioe) {
+            );
+            Gdx.app.log("moving-maze/NetworkClient", "Connection to gameserver established");
+            } catch(IOException ioe) {
                 Gdx.app.error("moving-maze/NetworkClient", "Failed to connect to gameserver", ioe);
             }
         }
@@ -41,10 +45,23 @@ public class NetworkClient {
      */
     public void initKryoClient(int timeout, String host, int port) throws IOException {
         kryoClient = new Client();
+        Registry.registerClassesOnKryo(kryoClient.getKryo());
         kryoClient.start();
         kryoClient.connect(timeout, host, port);
     }
 
+    /**
+     * Issues a request to join an existing session
+     * @param player that wants to join
+     * @param session that should be joined
+     * @return true if the join was successful, false if session could not be joined
+     */
+    public boolean joinSession(Player player, String session) {
+        //kryoClient.sendTCP(new JoinRequest(session, player));
+        kryoClient.sendTCP("Hello");
 
+        // TODO: actually implement receiving logic
+        return true;
+    }
 
 }
