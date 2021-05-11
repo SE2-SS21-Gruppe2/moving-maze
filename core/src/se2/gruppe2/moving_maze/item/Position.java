@@ -1,6 +1,7 @@
 package se2.gruppe2.moving_maze.item;
 
 public class Position {
+
     private int x;
     private int y;
     private int MAX_X;
@@ -8,7 +9,10 @@ public class Position {
 
 
 
-    public void setPosition(int x, int y){}
+    public void setPosition(int x, int y){
+        setY(y);
+        setX(x);
+    }
 
     public int getX() {
         return x;

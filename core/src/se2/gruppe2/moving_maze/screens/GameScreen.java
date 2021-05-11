@@ -64,6 +64,8 @@ public class GameScreen implements Screen {
 
     }
 
+
+    // TODO: minor Posigining changes.
     private void renderGameBoard(GameBoard gb, SpriteBatch batch) {
         float current_x = gb.getX();
         float current_y = gb.getY();
@@ -75,12 +77,22 @@ public class GameScreen implements Screen {
                 board[i][j].getSprite().setPosition(current_x, current_y);
                 board[i][j].getSprite().draw(batch);
 
+                if(board[i][j].hasItem()){
+                    float current_Ix=current_x+Tile.tileEdgeSize/4;
+                    float current_Iy=current_y+Tile.tileEdgeSize/4;
+                    board[i][j].getItem().getSprite().setPosition(current_Ix,current_Iy);
+                    board[i][j].getItem().getSprite().draw(batch);
+                }
+
+
                 current_x += Tile.tileEdgeSize;
             }
             current_y += Tile.tileEdgeSize;
             current_x = gb.getX();
         }
     }
+
+
 
 
 

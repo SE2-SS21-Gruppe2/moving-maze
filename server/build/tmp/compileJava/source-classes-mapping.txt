@@ -1,6 +1,0 @@
-se2/gruppe2/moving_maze/server/ServerConfiguration.java
- se2.gruppe2.moving_maze.server.ServerConfiguration
-se2/gruppe2/moving_maze/server/ServerMain.java
- se2.gruppe2.moving_maze.server.ServerMain
-se2/gruppe2/moving_maze/server/CustomListener.java
- se2.gruppe2.moving_maze.server.CustomListener
