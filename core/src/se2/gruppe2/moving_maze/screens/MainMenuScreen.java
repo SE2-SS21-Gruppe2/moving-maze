@@ -50,11 +50,11 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         // generate and add buttons
-        buttons.add(generateStandardButton("Create Session", game.createSessionScreen));
-        buttons.add(generateStandardButton("Join Session", game.joinSessionScreen));
+        buttons.add(generateStandardButton("New Game", game.createSessionScreen));
+        buttons.add(generateStandardButton("Join Game", game.joinSessionScreen));
         buttons.add(generateStandardButton("Options", game.optionScreen));
         buttons.add(generateStandardButton("Rules", game.ruleScreen));
-        buttons.add(generateStandardButton("Developer Mode", game.gameScreen));
+        buttons.add(generateStandardButton("Dev Mode", game.gameScreen));
 
         tableLayout = get2ColLayout(buttons, headerLogoScaled.getHeight()/2f);
 
@@ -149,6 +149,9 @@ public class MainMenuScreen implements Screen {
 
         // Note: does not have any effect when being added as a table-cell
         btn.setSize(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/6f);
+
+        // Button-label font size should be approximately half the size of the button itself
+        btn.getLabel().setFontScale(Gdx.graphics.getHeight() / btn.getHeight() / 2.2f);
 
         btn.addListener(new ClickListener() {
             @Override
