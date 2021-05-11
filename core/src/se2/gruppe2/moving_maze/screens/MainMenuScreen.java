@@ -27,10 +27,8 @@ public class MainMenuScreen implements Screen {
     Stage stage;
     Skin skin;
     Table tableLayout = new Table();
-    TextButton createSession, joinSession, options, rules, devMode;
     Texture headerLogoScaled;
     ArrayList<Actor> buttons;
-
 
     // textures and views
     Texture bgImageTexture;
@@ -45,13 +43,13 @@ public class MainMenuScreen implements Screen {
         camera = MovingMazeGame.gameboardCamera();
         buttons = new ArrayList<>();
 
-        // ui
+        // global ui-stuff
         headerLogoScaled = getScaledImage("ui/logo.png", 0.5f);
-
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
+        // generate and add buttons
         buttons.add(generateStandardButton("Create Session", game.createSessionScreen));
         buttons.add(generateStandardButton("Join Session", game.joinSessionScreen));
         buttons.add(generateStandardButton("Options", game.optionScreen));
@@ -181,7 +179,7 @@ public class MainMenuScreen implements Screen {
                 addCounter = 0;
             }
 
-            tbl.add(act).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f).pad(40);
+            tbl.add(act).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f).pad(20);
             addCounter++;
         }
 
