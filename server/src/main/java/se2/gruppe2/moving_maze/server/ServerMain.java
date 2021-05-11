@@ -1,6 +1,7 @@
 package se2.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.kryonet.Server;
+import se2.gruppe2.moving_maze.network.Registry;
 import se2.gruppe2.moving_maze.server.handlers.JoinSessionHandler;
 
 import java.io.IOException;
