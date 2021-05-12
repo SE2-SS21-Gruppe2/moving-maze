@@ -1,4 +1,4 @@
-package se2.gruppe2.moving_maze.HelperClasses;
+package se2.gruppe2.moving_maze.helperclasses;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
