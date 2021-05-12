@@ -2,7 +2,7 @@ package se2.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
-import se2.gruppe2.moving_maze.network.messages.JoinRequest;
+import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
 
 import java.io.IOException;
@@ -57,9 +57,7 @@ public class NetworkClient {
      * @return true if the join was successful, false if session could not be joined
      */
     public boolean joinSession(Player player, String session) {
-        //kryoClient.sendTCP(new JoinRequest(session, player));
-        kryoClient.sendTCP("Hello");
-
+        kryoClient.sendTCP(new JoinRequest(session, player));
         // TODO: actually implement receiving logic
         return true;
     }

@@ -10,8 +10,8 @@ public class ServerMain {
     public static void main(String[] args) {
 
         Server srv = new Server();
-        srv.start();
         Registry.registerClassesOnKryo(srv.getKryo());
+        srv.start();
 
         try {
             srv.bind(ServerConfiguration.PORT);
