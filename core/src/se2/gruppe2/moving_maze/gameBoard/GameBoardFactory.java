@@ -1,7 +1,9 @@
 package se2.gruppe2.moving_maze.gameBoard;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
-
 import se2.gruppe2.moving_maze.item.Item;
 import se2.gruppe2.moving_maze.item.Position;
 import se2.gruppe2.moving_maze.tile.Tile;
@@ -9,9 +11,11 @@ import se2.gruppe2.moving_maze.tile.TileFactory;
 
 import java.util.Random;
 
+
 public class GameBoardFactory {
 
     private static final float[] possibleRotationAngles = {0, 90, 180, 270};
+    private static String[] itemPaths = getFileList();
 
     public static GameBoard getLOnlyBoard() {
         GameBoard gb = new GameBoard();
@@ -45,6 +49,8 @@ public class GameBoardFactory {
     //TODO: Set different items Images.
     private static void buildBoard(int L, int T, int I, Tile[][] board){
         boolean itemOnTile =false;
+        System.out.println("nice");
+        getFileList();
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[i].length; j++) {
                 if (isCorner(i,j)){
@@ -89,10 +95,53 @@ public class GameBoardFactory {
         return possibleRotationAngles[random.nextInt(possibleRotationAngles.length)];
     }
 
+
+
+
     private static Item buildItem(int x, int y){
+        Random random = new Random();
         Position position = new Position();
         position.setPosition(x, y);
-        return new Item("items/NicosTestItem.jpg", position,false);
+        String path= randomItem(random.nextInt(itemPaths.length-1));
+        return new Item(path, position,false);
+    }
+
+
+
+    private static String[] getFileList(){
+        FileHandle handle;
+        if(Gdx.app.getType() == Application.ApplicationType.Android){
+            handle= Gdx.files.internal(".bin/android/assets/items");
+        }
+        else{
+            handle= Gdx.files.internal("android/assets/items");
+        }
+
+        String[] fileNames= new String[handle.list().length];
+        int i=0;
+        for (FileHandle file : handle.list()) {
+            fileNames[i]=file.toString();
+            i++;
+        }
+        return fileNames;
+
+
+
+    }
+
+    public static String randomItem(int num){
+        String path="";
+        while (path==""){
+            if(itemPaths[num]!=""){
+                path = itemPaths[num];
+                itemPaths[num]="";
+                return path;
+            }
+            else {
+                num = num == itemPaths.length-1 ? 0 : num+1;
+            }
+        }
+        return path;
     }
 
 
