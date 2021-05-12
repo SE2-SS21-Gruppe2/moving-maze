@@ -3,12 +3,17 @@ package se2.gruppe2.moving_maze.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.gameBoard.GameBoard;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardFactory;
+import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.tile.Tile;
+
+import java.util.Random;
 
 public class GameScreen implements Screen {
 
@@ -16,16 +21,27 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     final GameBoard gameBoard;
 
+    // background
+    Texture bgImageTexture;
+    TextureRegion bgTextureRegion;
+
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
         this.gameBoard = GameBoardFactory.getStandardGameBoard();
         setStartCoordinates();
         camera = MovingMazeGame.gameboardCamera();
+
+        // in developer mode, all players join the same (static) session
+        game.player = new Player("Developer " + new Random().nextInt(10));
+
+        // instantiate textures
+        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
+        bgTextureRegion = new TextureRegion(bgImageTexture);
     }
 
     @Override
     public void show() {
-        System.out.println("Gamescreen has been shown!");
+        game.client.joinSession(game.player, "devgame");
     }
 
     @Override
@@ -34,8 +50,9 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        renderGameBoard(this.gameBoard, game.batch);
-        game.font.draw(game.batch, "Game screen", 100, 100);
+            game.batch.draw(bgTextureRegion, 0, 0);
+            renderGameBoard(this.gameBoard, game.batch);
+            game.font.draw(game.batch, "Game screen (DEV MODE)", 100, 100);
         game.batch.end();
     }
 
@@ -84,18 +101,12 @@ public class GameScreen implements Screen {
                     board[i][j].getItem().getSprite().draw(batch);
                 }
 
-
                 current_x += Tile.tileEdgeSize;
             }
             current_y += Tile.tileEdgeSize;
             current_x = gb.getX();
         }
     }
-
-
-
-
-
 
     private void setStartCoordinates(){
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
