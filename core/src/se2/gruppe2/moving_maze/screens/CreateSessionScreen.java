@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -37,8 +36,8 @@ public class CreateSessionScreen implements Screen {
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
 
-    private Texture heading;
-    private BitmapFont headingFont;
+    private Texture myFontTexture;
+    private BitmapFont myFont;
     private Texture startImageTexture;
 
     // measures
@@ -94,8 +93,8 @@ public class CreateSessionScreen implements Screen {
 
         myScreenHeight = Gdx.graphics.getHeight();
         myScreenWidth = Gdx.graphics.getWidth();
-        yHeight = Gdx.graphics.getHeight() / 15f;
-        xWidth = Gdx.graphics.getWidth() / 25f;
+        yHeight = myScreenHeight / 15f;
+        xWidth = myScreenWidth / 25f;
 
         // game state variables
         gameReady = true;
@@ -104,10 +103,10 @@ public class CreateSessionScreen implements Screen {
         numOfCards = 3;
         theme = "Original";
 
-        heading = new Texture(Gdx.files.internal("ui/nunito.png"));
-        heading.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        headingFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(heading), false);
-        headingFont.getData().setScale(2f);
+        myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
+        myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
+        myFont.getData().setScale(2f);
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -121,6 +120,7 @@ public class CreateSessionScreen implements Screen {
 
         // Debugging
         stage.setDebugAll(false);
+        System.out.println("Y: "+ myScreenHeight + ", X: " + myScreenWidth);
     }
 
     public void setUpTables(){
@@ -128,20 +128,20 @@ public class CreateSessionScreen implements Screen {
 
         // --- Left Table ---
         leftTable = new Table();
-        leftTable.defaults().padTop(0.5f* xWidth);
-        leftTable.columnDefaults(0).width(200);
+        leftTable.defaults().padTop(25f);
+        leftTable.columnDefaults(0).width(0.15f*myScreenWidth);
 
         // --- LT - 1st Row (Name) ---
         var nameLabel = new Label("Name:", skin);
         nameLabel.setAlignment(Align.left);
         nameLabel.setFontScale(2.5f);
-        leftTable.add(nameLabel).pad(0.5f* xWidth, 0.2f* xWidth, 0, 0).align(Align.left);
+        leftTable.add(nameLabel).pad(25f, 10f, 0, 0).align(Align.left);
 
         txfName = new TextField("Martin", skin);
         var textFieldStyle = skin.get(TextField.TextFieldStyle.class);
         textFieldStyle.font.getData().scale(1.5f);
         txfName.setStyle(textFieldStyle);
-        leftTable.add(txfName).padTop(0.5f* xWidth).maxHeight(100).height(80).expandX().fillX();
+        leftTable.add(txfName).pad(25f, 10f, 0, 10f).maxHeight(100).height(80).expandX().fillX();
 
 
         // --- LT - 2nd Row (Lobby Settings) ---
@@ -149,14 +149,14 @@ public class CreateSessionScreen implements Screen {
         settingsLabel = new Label("Lobby Settings:", skin);
         settingsLabel.setAlignment(Align.left);
         settingsLabel.setFontScale(1.8f);
-        leftTable.add(settingsLabel).colspan(3).pad(1.0f* xWidth, 0.2f* xWidth, 0, 0).align(Align.left).top();
+        leftTable.add(settingsLabel).colspan(3).pad(50f, 10f, 0, 0).align(Align.left).top();
 
         // --- LT - 3rd Row (Difficulty) ---
         leftTable.row();
         var difficultyLabel = new Label("Difficulty", skin);
         difficultyLabel.setAlignment(Align.left);
         difficultyLabel.setFontScale(2.0f);
-        leftTable.add(difficultyLabel).padLeft(0.2f* xWidth).align(Align.left);
+        leftTable.add(difficultyLabel).padLeft(10f).align(Align.left);
 
         difficultySlider = new Slider(1, 3, 1, false, skin);
         difficultySlider.setValue(2);
@@ -164,7 +164,7 @@ public class CreateSessionScreen implements Screen {
         difficultySliderContainer.setTransform(true);
         difficultySliderContainer.size(100, 50);
         difficultySliderContainer.setOrigin((difficultySliderContainer.getWidth()+ 100)/2,
-                (difficultySliderContainer.getHeight()+60)/2);
+                (difficultySliderContainer.getHeight()+50)/2);
         difficultySliderContainer.setScale(3);
         leftTable.add(difficultySliderContainer).expandX().fillX();
 
@@ -178,7 +178,7 @@ public class CreateSessionScreen implements Screen {
         var numberOfCardsLabel = new Label("# of Cards", skin);
         numberOfCardsLabel.setAlignment(Align.left);
         numberOfCardsLabel.setFontScale(2.0f);
-        leftTable.add(numberOfCardsLabel).padLeft(0.2f* xWidth).align(Align.left);
+        leftTable.add(numberOfCardsLabel).padLeft(10f).align(Align.left);
 
         numberOfCardsSlider = new Slider(1, 6, 1, false, skin);
         numberOfCardsSlider.setValue(3);
@@ -186,7 +186,7 @@ public class CreateSessionScreen implements Screen {
         numberOfCardsSliderContainer.setTransform(true);
         numberOfCardsSliderContainer.size(100, 50);
         numberOfCardsSliderContainer.setOrigin((numberOfCardsSliderContainer.getWidth()+ 100)/2,
-                (numberOfCardsSliderContainer.getHeight()+60)/2);
+                (numberOfCardsSliderContainer.getHeight()+50)/2);
         numberOfCardsSliderContainer.setScale(3);
         leftTable.add(numberOfCardsSliderContainer).expandX().fillX();
 
@@ -201,7 +201,7 @@ public class CreateSessionScreen implements Screen {
         var cheatingAllowedLabel = new Label("Cheating", skin);
         cheatingAllowedLabel.setAlignment(Align.left);
         cheatingAllowedLabel.setFontScale(2.0f);
-        leftTable.add(cheatingAllowedLabel).padLeft(0.2f* xWidth).align(Align.left);
+        leftTable.add(cheatingAllowedLabel).padLeft(10f).align(Align.left);
 
         cheatingAllowedButton = new TextButton("Allowed", skin);
         cheatingAllowedButton.getLabel().setFontScale(2.0f);
@@ -217,7 +217,7 @@ public class CreateSessionScreen implements Screen {
         var themeLabel = new Label("Theme", skin);
         themeLabel.setAlignment(Align.left);
         themeLabel.setFontScale(2.0f);
-        leftTable.add(themeLabel).padLeft(0.2f*xWidth).align(Align.left);
+        leftTable.add(themeLabel).padLeft(10f).align(Align.left);
 
         themeButton = new TextButton("Original", skin);
         themeButton.getLabel().setFontScale(2.0f);
@@ -234,34 +234,34 @@ public class CreateSessionScreen implements Screen {
 
         // --- Right Table
         rightTable = new Table();
-        rightTable.defaults().padTop(0.75f* xWidth);
+        rightTable.defaults().padTop(35f);
 
         // --- RT - 1st Row (Connected Players) ---
         connectedPlayersLabel = new Label("Connected Players:", skin);
         connectedPlayersLabel.setAlignment(Align.left);
         connectedPlayersLabel.setFontScale(1.8f);
-        rightTable.add(connectedPlayersLabel).colspan(2).pad(yHeight, 0.2f* xWidth, 0, 0).align(Align.left).top().expandX();
+        rightTable.add(connectedPlayersLabel).colspan(2).pad(48f, 10f, 0, 0).align(Align.left).top().expandX();
 
         // --- RT - 2nd Row (Player 1) ---
         rightTable.row();
         player1Label = new Label("Flo", skin);
         player1Label.setAlignment(Align.left);
         player1Label.setFontScale(2.0f);
-        rightTable.add(player1Label).padLeft(0.8f* xWidth).align(Align.left);
+        rightTable.add(player1Label).padLeft(40f).align(Align.left);
 
         // --- RT - 3rd Row (Player 2) ---
         rightTable.row();
         player2Label = new Label("Alexandra", skin);
         player2Label.setAlignment(Align.left);
         player2Label.setFontScale(2.0f);
-        rightTable.add(player2Label).padLeft(0.8f* xWidth).align(Align.left);
+        rightTable.add(player2Label).padLeft(40f).align(Align.left);
 
         // --- RT - 4th Row (Player 3) ---
         rightTable.row();
         player3Label = new Label("Andi", skin);
         player3Label.setAlignment(Align.left);
         player3Label.setFontScale(2.0f);
-        rightTable.add(player3Label).padLeft(0.8f* xWidth).align(Align.left);
+        rightTable.add(player3Label).padLeft(40f).align(Align.left);
 
 
         // --- RT - 5th Row (Code & Start) ---
@@ -273,7 +273,7 @@ public class CreateSessionScreen implements Screen {
 
         var startIconSprite = new Sprite(startImageTexture);
         startIcon = new Image(new SpriteDrawable(startIconSprite));
-        startIcon.setOrigin(startIcon.getOriginX()+startIcon.getWidth()/2, startIcon.getOriginY()+startIcon.getHeight()/2);
+        startIcon.setOrigin(startIcon.getOriginX()+startIcon.getWidth()/2.0f, startIcon.getOriginY()+startIcon.getHeight()/2.0f);
         startIcon.setScale(1.5f);
         stage.addActor(startIcon);
         rightTable.add(startIcon).padTop(50F).expandY().center();
@@ -286,18 +286,18 @@ public class CreateSessionScreen implements Screen {
         table.setFillParent(true);
 
         // --- Table - 1st Row ---
-        var lblCreateLobbyHeading = new Label("CREATE LOBBY", new Label.LabelStyle(headingFont, Color.WHITE));
+        var lblCreateLobbyHeading = new Label("CREATE LOBBY", new Label.LabelStyle(myFont, Color.WHITE));
         lblCreateLobbyHeading.setFontScale(2.0f);
         lblCreateLobbyHeading.setAlignment(Align.center);
         table.add(lblCreateLobbyHeading).colspan(2).fillX();
 
         // --- Table - 2nd Row ---
         table.row();
-        table.add(leftTable).expand().fill().width(myScreenWidth /2+40);
-        table.add(rightTable).expand().fill().width(myScreenWidth /2-80);
+        table.add(leftTable).expand().fill().width(myScreenWidth /2.0f + 40.0f);
+        table.add(rightTable).expand().fill().width(myScreenWidth /2.0f - 80.0f);
 
         // --- Table - Last Row ---
-        table.row().height(30);
+        table.row().height(30f);
         var emptyLabel = new Label("", skin);
         table.add(emptyLabel).colspan(2);
 
