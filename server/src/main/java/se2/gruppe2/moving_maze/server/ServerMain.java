@@ -9,9 +9,13 @@ import java.io.IOException;
 public class ServerMain {
     public static void main(String[] args) {
 
+
         Server srv = new Server();
         Registry.registerClassesOnKryo(srv.getKryo());
         srv.start();
+
+        // always create a default session for dev-purpose
+        SessionManager.createSessionByKey("devgame");
 
         try {
             srv.bind(ServerConfiguration.PORT);

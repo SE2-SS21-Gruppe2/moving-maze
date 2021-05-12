@@ -3,22 +3,22 @@ package se2.gruppe2.moving_maze.network.messages.out;
 import se2.gruppe2.moving_maze.player.Player;
 
 public class JoinRequest {
-    String sessionCode;
+    String key;
     Player player;
 
     public JoinRequest() {}
 
     public JoinRequest(String sessionCode, Player player) {
-        this.sessionCode = sessionCode;
+        this.key= sessionCode;
         this.player = player;
     }
 
-    public String getSessionCode() {
-        return sessionCode;
+    public String getSessionKey() {
+        return key;
     }
 
-    public void setSessionCode(String sessionCode) {
-        this.sessionCode = sessionCode;
+    public void setSessionKey(String key) {
+        this.key = key;
     }
 
     public Player getPlayer() {
