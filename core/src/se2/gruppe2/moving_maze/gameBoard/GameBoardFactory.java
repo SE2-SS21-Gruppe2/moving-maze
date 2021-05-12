@@ -17,19 +17,6 @@ public class GameBoardFactory {
     private static final float[] possibleRotationAngles = {0, 90, 180, 270};
     private static String[] itemPaths = getFileList();
 
-    public static GameBoard getLOnlyBoard() {
-        GameBoard gb = new GameBoard();
-
-        Tile[][] board = gb.getBoard();
-
-        for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[i].length; j++) {
-                board[i][j] = TileFactory.getLTile().applyRotation(getRandomRotationAngle());
-            }
-        }
-
-        return gb;
-    }
 
     public static GameBoard getStandardGameBoard(){
         GameBoard gb = new GameBoard();
@@ -46,7 +33,7 @@ public class GameBoardFactory {
     }
 
 
-    //TODO: Set different items Images.
+
     private static void buildBoard(int L, int T, int I, Tile[][] board){
         boolean itemOnTile =false;
         System.out.println("nice");
@@ -81,6 +68,9 @@ public class GameBoardFactory {
     }
 
 
+    /**
+     *Checks, if a Tile is a corner-element
+     */
     private static boolean isCorner(int x , int y){
         if (x==0 || x==6){
             if(y==0 || y==6){
@@ -90,14 +80,17 @@ public class GameBoardFactory {
         return false;
     }
 
+    /**
+     *turns the tile to a random degree
+     */
     private static float getRandomRotationAngle() {
         Random random = new Random();
         return possibleRotationAngles[random.nextInt(possibleRotationAngles.length)];
     }
 
-
-
-
+    /**
+     *
+     */
     private static Item buildItem(int x, int y){
         Random random = new Random();
         Position position = new Position();
@@ -106,17 +99,18 @@ public class GameBoardFactory {
         return new Item(path, position,false);
     }
 
-
-
+    /**
+     *LibGDX has the FileHandel Class. With this class you can give a Pathname. When u call then the
+     *.list function, you get a List off all Files in the Folder, that were selectet.
+     */
     private static String[] getFileList(){
         FileHandle handle;
         if(Gdx.app.getType() == Application.ApplicationType.Android){
-            handle= Gdx.files.internal(".bin/android/assets/items");
+            handle= Gdx.files.internal("items");
         }
         else{
             handle= Gdx.files.internal("android/assets/items");
         }
-
         String[] fileNames= new String[handle.list().length];
         int i=0;
         for (FileHandle file : handle.list()) {
@@ -124,12 +118,12 @@ public class GameBoardFactory {
             i++;
         }
         return fileNames;
-
-
-
     }
 
-    public static String randomItem(int num){
+    /**
+     *
+     */
+    private static String randomItem(int num){
         String path="";
         while (path==""){
             if(itemPaths[num]!=""){
@@ -143,13 +137,4 @@ public class GameBoardFactory {
         }
         return path;
     }
-
-
-
-
-
-
-
-
-
 }
