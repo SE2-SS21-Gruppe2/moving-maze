@@ -2,6 +2,8 @@ package se2.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
+import se2.gruppe2.moving_maze.network.listeners.ErrorResponseListener;
+import se2.gruppe2.moving_maze.network.listeners.GameStateUpdateListener;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
 
@@ -13,7 +15,8 @@ public class NetworkClient {
 
     Client kryoClient;
 
-    private NetworkClient() { }
+    private NetworkClient() {
+    }
 
     /**
      * Returns the NetworkClient singleton and instantiates it on the first call
@@ -48,16 +51,20 @@ public class NetworkClient {
         Registry.registerClassesOnKryo(kryoClient.getKryo());
         kryoClient.start();
         kryoClient.connect(timeout, host, port);
+
+        kryoClient.addListener(new ErrorResponseListener());
+        kryoClient.addListener(new GameStateUpdateListener());
     }
 
     /**
      * Issues a request to join an existing session
      * @param player that wants to join
-     * @param session that should be joined
+     * @param sessionKey that should be joined
      * @return true if the join was successful, false if session could not be joined
      */
-    public boolean joinSession(Player player, String session) {
-        kryoClient.sendTCP(new JoinRequest(session, player));
+    public boolean joinSession(Player player, String sessionKey) {
+        kryoClient.sendTCP(new JoinRequest(sessionKey, player));
+        Gdx.app.log("NetworkClient/joinSession", "Submitted request to join session '" + sessionKey + "'");
         // TODO: actually implement receiving logic
         return true;
     }
