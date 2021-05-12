@@ -38,16 +38,8 @@ public class Session {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public ArrayList<Player> getPlayers() {
         return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
     }
 
     public GameStateHandler getState() {
@@ -57,4 +49,5 @@ public class Session {
     public void setState(GameStateHandler state) {
         this.state = state;
     }
+
 }

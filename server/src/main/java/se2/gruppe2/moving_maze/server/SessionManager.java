@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class SessionManager {
     private static int lastKey = 0;
-    private static int rand_min_key = 10000;
-    private static int rand_max_key = 99999;
+    public static final int rand_min_key = 10000;
+    public static final int rand_max_key = 99999;
     private static HashMap<String, Session> sessionRegistry = new HashMap<>();
     private static Random random = new Random();
     private static String logTag;
@@ -37,6 +37,7 @@ public class SessionManager {
     public static Session createRandomSession() {
         String generatedKey = generateRandomKey();
         Session session = new Session(generatedKey);
+        sessionRegistry.put(generatedKey, session);
         Log.info("Generated session with key '" + generatedKey + "'");
         return session;
     }
@@ -65,5 +66,13 @@ public class SessionManager {
     public static String generateRandomKey() {
         String randBetweenBounds = String.valueOf(random.nextInt((rand_max_key-rand_min_key)+1) + rand_min_key);
         return randBetweenBounds + lastKey++;
+    }
+
+    public static void reset() {
+        sessionRegistry = new HashMap<>();
+    }
+
+    public static int getLastKey() {
+        return lastKey;
     }
 }
