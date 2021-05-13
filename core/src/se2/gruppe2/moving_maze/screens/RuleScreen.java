@@ -1,14 +1,35 @@
 package se2.gruppe2.moving_maze.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 
 public class RuleScreen implements Screen {
 
     final MovingMazeGame game;
     OrthographicCamera camera;
+
+    //ui stuff
+    private Stage stage;
+    private Texture backTexture;
+    private TextureRegion textureRegion;
+    private TextureRegionDrawable textureRegionDrawable;
+    private ImageButton backButton;
+
+    //Textures and views
+    private Texture bgImageTexture;
+    private TextureRegion bgTextureRegion;
 
     public RuleScreen(final MovingMazeGame game) {
         this.game = game;
@@ -17,6 +38,26 @@ public class RuleScreen implements Screen {
 
     @Override
     public void show() {
+        //instantiate background textures
+        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
+        bgTextureRegion = new TextureRegion(bgImageTexture);
+
+        //Buttons
+        backTexture = new Texture(Gdx.files.internal("ui/buttons/backButton.png"));
+        textureRegion = new TextureRegion(backTexture);
+        textureRegionDrawable = new TextureRegionDrawable(textureRegion);
+        backButton = new ImageButton(textureRegionDrawable);
+        //backButton.setPosition(MovingMazeGame.WIDTH /9f, MovingMazeGame.HEIGHT - 20f , Align.left);
+
+        stage = new Stage(new ScreenViewport());
+        stage.addActor(backButton);
+
+        Gdx.input.setInputProcessor(stage);
+
+        backButton.addListener(event -> {
+            game.setScreen(game.mainMenuScreen);
+            return true;
+        });
 
     }
 
@@ -26,8 +67,10 @@ public class RuleScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Rule screen", 100, 100);
+        game.batch.draw(bgTextureRegion, 0, 0);
         game.batch.end();
+
+        stage.act(Gdx.graphics.getDeltaTime());stage.draw();
     }
 
     @Override
@@ -54,4 +97,5 @@ public class RuleScreen implements Screen {
     public void dispose() {
 
     }
+
 }
