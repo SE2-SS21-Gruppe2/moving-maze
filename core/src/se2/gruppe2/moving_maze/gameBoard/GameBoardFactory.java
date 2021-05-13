@@ -21,6 +21,7 @@ public class GameBoardFactory {
     private static final float[] possibleRotationAngles = {0, 90, 180, 270};
     private static String[] itemPaths = getFileList();
     private static int itemPathCounter= 0;
+    private static Random random= new Random();
 
     /**
      * Int L,T,I are responsible for how many Tile of a
@@ -63,8 +64,9 @@ public class GameBoardFactory {
                 }
                 else {
                     boolean isTileGiven=false;
+                    int randomTile;
                     while (!isTileGiven){
-                        int randomTile= MathUtils.random.nextInt(3);
+                        randomTile= random.nextInt(3);
                         if(randomTile==0 && L!=0){
                             board[i][j] = TileFactory.getLTile().applyRotation(getRandomRotationAngle());
                             L--;
@@ -108,7 +110,6 @@ public class GameBoardFactory {
      *turns the tile to a random degree
      */
     private static float getRandomRotationAngle() {
-        Random random = new Random();
         return possibleRotationAngles[random.nextInt(possibleRotationAngles.length)];
     }
 
@@ -150,7 +151,6 @@ public class GameBoardFactory {
     }
 
     private static void shuffleArray(){
-        Random random = new Random();
         for (int j = 0; j < itemPaths.length; j++) {
             int swapIndex= random.nextInt(itemPaths.length);
             String temp = itemPaths[swapIndex];
