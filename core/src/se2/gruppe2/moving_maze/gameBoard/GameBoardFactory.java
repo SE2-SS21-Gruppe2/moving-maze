@@ -14,16 +14,29 @@ import java.util.Random;
 
 public class GameBoardFactory {
 
+    /**
+     * itemPath, Array of All Items
+     * itemPathCounter: counter to iterate
+     */
     private static final float[] possibleRotationAngles = {0, 90, 180, 270};
     private static String[] itemPaths = getFileList();
+    private static int itemPathCounter= 0;
 
-
+    /**
+     * Int L,T,I are responsible for how many Tile of a
+     * Type are on the Board. The sum of I,T,L = 45. The
+     * corner Parts are note included, because they are always
+     * L Tiles.
+     *
+     * shuffleArray shuffles the itemPath, so every game items are newly organized.
+     */
     public static GameBoard getStandardGameBoard(){
         GameBoard gb = new GameBoard();
         Tile[][] board = gb.getBoard();
         int L=16;
         int T=17;
         int I=12;
+        shuffleArray();
         buildBoard(L,T,I,board);
         return gb;
     }
@@ -33,10 +46,15 @@ public class GameBoardFactory {
     }
 
 
-
+    /**
+     *for, for: looks at every board
+     * is Corner: when there is a Corner, It mast be a L tile.
+     *L, T, I: Tells how many Tiles  are left.
+     * When a Tile is empty, it can't be placed on the board anymore.
+     * Therefore a new Random number is needed (while)
+     */
     private static void buildBoard(int L, int T, int I, Tile[][] board){
         boolean itemOnTile =false;
-        System.out.println("nice");
         getFileList();
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[i].length; j++) {
@@ -44,18 +62,24 @@ public class GameBoardFactory {
                     board[i][j] = TileFactory.getLTile();
                 }
                 else {
-                    int randomTile= MathUtils.random.nextInt(3);
-                    if(randomTile==0 && L!=0){
-                        board[i][j] = TileFactory.getLTile().applyRotation(getRandomRotationAngle());
-                        L--;
-                    }
-                    else if(randomTile==1 && T != 0){
-                        board[i][j] = TileFactory.getTTile().applyRotation(getRandomRotationAngle());
-                        T--;
-                    }
-                    else {
-                        board[i][j] = TileFactory.getITile().applyRotation(getRandomRotationAngle());
-                        I--;
+                    boolean isTileGiven=false;
+                    while (!isTileGiven){
+                        int randomTile= MathUtils.random.nextInt(3);
+                        if(randomTile==0 && L!=0){
+                            board[i][j] = TileFactory.getLTile().applyRotation(getRandomRotationAngle());
+                            L--;
+                            isTileGiven=true;
+                        }
+                        else if(randomTile==1 && T != 0){
+                            board[i][j] = TileFactory.getTTile().applyRotation(getRandomRotationAngle());
+                            T--;
+                            isTileGiven=true;
+                        }
+                        else if (randomTile==2 && I != 0) {
+                            board[i][j] = TileFactory.getITile().applyRotation(getRandomRotationAngle());
+                            I--;
+                            isTileGiven=true;
+                        }
                     }
                 }
                 if(itemOnTile){
@@ -89,19 +113,23 @@ public class GameBoardFactory {
     }
 
     /**
-     *
+     *Gets all components to create an item
      */
     private static Item buildItem(int x, int y){
-        Random random = new Random();
+
         Position position = new Position();
         position.setPosition(x, y);
-        String path= randomItem(random.nextInt(itemPaths.length-1));
+        String path= itemPaths[itemPathCounter++];
         return new Item(path, position,false);
     }
 
     /**
      *LibGDX has the FileHandel Class. With this class you can give a Pathname. When u call then the
      *.list function, you get a List off all Files in the Folder, that were selectet.
+     * List element if android:I/System.out: items/(image Element)
+     * List element if desktop: android/assets/items/(image Element)
+     *
+     * The second for makes the item instances game per game random.
      */
     private static String[] getFileList(){
         FileHandle handle;
@@ -117,24 +145,18 @@ public class GameBoardFactory {
             fileNames[i]=file.toString();
             i++;
         }
+
         return fileNames;
     }
 
-    /**
-     *
-     */
-    private static String randomItem(int num){
-        String path="";
-        while (path==""){
-            if(itemPaths[num]!=""){
-                path = itemPaths[num];
-                itemPaths[num]="";
-                return path;
-            }
-            else {
-                num = num == itemPaths.length-1 ? 0 : num+1;
-            }
+    private static void shuffleArray(){
+        Random random = new Random();
+        for (int j = 0; j < itemPaths.length; j++) {
+            int swapIndex= random.nextInt(itemPaths.length);
+            String temp = itemPaths[swapIndex];
+            itemPaths[swapIndex]= itemPaths[j];
+            itemPaths[j]=temp;
         }
-        return path;
     }
+
 }
