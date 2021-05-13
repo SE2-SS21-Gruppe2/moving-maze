@@ -1,5 +1,10 @@
 package se2.gruppe2.moving_maze.network;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.esotericsoftware.kryo.Kryo;
 import se2.gruppe2.moving_maze.gameBoard.GameBoard;
 import se2.gruppe2.moving_maze.gameState.ChatMessage;
@@ -12,6 +17,9 @@ import se2.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.player.PlayerRole;
+import se2.gruppe2.moving_maze.tile.ITile;
+import se2.gruppe2.moving_maze.tile.LTile;
+import se2.gruppe2.moving_maze.tile.TTile;
 import se2.gruppe2.moving_maze.tile.Tile;
 
 import java.util.Stack;
@@ -36,8 +44,17 @@ public class Registry {
         kryo.register(ChatMessage.class);
         kryo.register(GameBoard.class);
         kryo.register(Tile.class);
+        kryo.register(LTile.class);
+        kryo.register(TTile.class);
+        kryo.register(ITile.class);
         kryo.register(Tile[].class);
         kryo.register(Tile[][].class);
+        // TODO: separate sprites from logical representation to reduce sending overhead
+        kryo.register(Sprite.class);
+        kryo.register(Texture.class);
+        kryo.register(Color.class);
+        kryo.register(Pixmap.class);
+        kryo.register(PixmapTextureData.class);
     }
 
 }

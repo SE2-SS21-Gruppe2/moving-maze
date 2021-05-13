@@ -2,9 +2,11 @@ se2/gruppe2/moving_maze/server/ServerConfiguration.java
  se2.gruppe2.moving_maze.server.ServerConfiguration
 se2/gruppe2/moving_maze/server/Session.java
  se2.gruppe2.moving_maze.server.Session
-se2/gruppe2/moving_maze/server/handlers/JoinSessionHandler.java
- se2.gruppe2.moving_maze.server.handlers.JoinSessionHandler
 se2/gruppe2/moving_maze/server/SessionManager.java
  se2.gruppe2.moving_maze.server.SessionManager
+se2/gruppe2/moving_maze/server/handlers/JoinSessionHandler.java
+ se2.gruppe2.moving_maze.server.handlers.JoinSessionHandler
 se2/gruppe2/moving_maze/server/ServerMain.java
  se2.gruppe2.moving_maze.server.ServerMain
+se2/gruppe2/moving_maze/server/handlers/GameStateUpdateHandler.java
+ se2.gruppe2.moving_maze.server.handlers.GameStateUpdateHandler

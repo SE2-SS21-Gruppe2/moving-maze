@@ -2,6 +2,7 @@ package se2.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
+import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.network.listeners.ErrorResponseListener;
 import se2.gruppe2.moving_maze.network.listeners.GameStateUpdateListener;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
@@ -66,6 +67,11 @@ public class NetworkClient {
         Gdx.app.log("NetworkClient/joinSession", "Submitted request to join session '" + sessionKey + "'");
         // TODO: actually implement receiving logic
         return true;
+    }
+
+    public void sendGameStateUpdate(GameStateHandler state) {
+        kryoClient.sendTCP(state);
+        Gdx.app.log("NetworkClient/sendGameStateUpdate", "Sent gamestate-update to server");
     }
 
 }
