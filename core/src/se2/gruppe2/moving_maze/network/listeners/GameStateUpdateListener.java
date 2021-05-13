@@ -13,8 +13,8 @@ public class GameStateUpdateListener extends Listener {
             GameStateHandler gsh = (GameStateHandler) obj;
             Gdx.app.log("NetworkClient/gamestate-update", "Gamestate update received!");
             // TODO: uncomment
-            //MovingMazeGame.getGameInstance().setGameState(gsh);
-            //Gdx.app.log("NetworkClient/gamestate-update", "Received gamestate set");
+            // MovingMazeGame.getGameInstance().setGameState(gsh);
+            // Gdx.app.log("NetworkClient/gamestate-update", "Received gamestate set");
         }
     }
 }

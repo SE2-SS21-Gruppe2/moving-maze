@@ -29,12 +29,7 @@ public class GameScreen implements Screen {
 
         // TODO: replace with another logic where gameboard is first sent to the server; right now, this gets overridden by a network event when a new
         // game state is received
-        game.getGameState().setBoard( GameBoardFactory.getStandardGameBoard());
-        setStartCoordinates(game.getGameState().getBoard());
         camera = MovingMazeGame.gameboardCamera();
-
-        // in developer mode, all players join the same (static) session
-        game.player = new Player("Developer " + new Random().nextInt(10));
 
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
@@ -43,7 +38,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        game.client.joinSession(game.player, "devgame");
+        setStartCoordinates(game.getGameState().getBoard());
     }
 
     @Override

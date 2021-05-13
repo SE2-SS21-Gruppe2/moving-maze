@@ -15,8 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
+import se2.gruppe2.moving_maze.gameBoard.GameBoardFactory;
+import se2.gruppe2.moving_maze.player.Player;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainMenuScreen implements Screen {
 
@@ -50,11 +53,14 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         // generate and add buttons
-        buttons.add(generateStandardButton("New Game", game.createSessionScreen));
-        buttons.add(generateStandardButton("Join Game", game.joinSessionScreen));
-        buttons.add(generateStandardButton("Options", game.optionScreen));
-        buttons.add(generateStandardButton("Rules", game.ruleScreen));
-        buttons.add(generateStandardButton("Dev Mode", game.gameScreen));
+        buttons.add(generateStandardButton("New Game", game.createSessionScreen, true));
+        buttons.add(generateStandardButton("Join Game", game.joinSessionScreen, true));
+        buttons.add(generateStandardButton("Options", game.optionScreen, true));
+        buttons.add(generateStandardButton("Rules", game.ruleScreen, true));
+
+        TextButton devMode = generateStandardButton("Dev Mode", game.gameScreen, false);
+        buttons.add(devMode);
+        setupDevMode(devMode);
 
         tableLayout = get2ColLayout(buttons, headerLogoScaled.getHeight()/2f);
 
@@ -144,7 +150,7 @@ public class MainMenuScreen implements Screen {
      * @param target -screen to redirect to when being clicked
      * @return A textbutton with appropriate properties
      */
-    private TextButton generateStandardButton(String label, Screen target) {
+    private TextButton generateStandardButton(String label, Screen target, boolean attachDefaultListener) {
         TextButton btn = new TextButton(label, skin);
 
         // Note: does not have any effect when being added as a table-cell
@@ -153,12 +159,14 @@ public class MainMenuScreen implements Screen {
         // Button-label font size should be approximately half the size of the button itself
         btn.getLabel().setFontScale(Gdx.graphics.getHeight() / btn.getHeight() / 2.2f);
 
-        btn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(target);
-            }
-        });
+        if(attachDefaultListener) {
+            btn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(target);
+                }
+            });
+        }
 
         return btn;
     }
@@ -189,4 +197,20 @@ public class MainMenuScreen implements Screen {
         return tbl;
     }
 
+    /**
+     * Setup non-standard behavior for the dev-mode.
+     * @param devModeButton The button to bind behavior on.
+     */
+    private void setupDevMode(TextButton devModeButton) {
+        devModeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // in developer mode, all players join the same (static) session
+                game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
+                game.player = new Player("Developer " + new Random().nextInt(10));
+                game.client.joinSession(game.player, "devgame");
+                game.setScreen(game.gameScreen);
+            }
+        });
+    }
 }

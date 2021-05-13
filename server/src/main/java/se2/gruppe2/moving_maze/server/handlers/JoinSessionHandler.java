@@ -10,6 +10,10 @@ import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.server.Session;
 import se2.gruppe2.moving_maze.server.SessionManager;
 
+/**
+ * Invoked when a Client tries to join a session.
+ * Tries to add the client to the session and send the gamestate or, in case of failure, return an error message.
+ */
 public class JoinSessionHandler extends Listener {
 
     @Override
