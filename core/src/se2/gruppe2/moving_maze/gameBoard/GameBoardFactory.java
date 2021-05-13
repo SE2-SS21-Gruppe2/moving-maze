@@ -3,7 +3,6 @@ package se2.gruppe2.moving_maze.gameBoard;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.MathUtils;
 import se2.gruppe2.moving_maze.item.Item;
 import se2.gruppe2.moving_maze.item.Position;
 import se2.gruppe2.moving_maze.tile.Tile;
@@ -18,10 +17,11 @@ public class GameBoardFactory {
      * itemPath, Array of All Items
      * itemPathCounter: counter to iterate
      */
-    private static final float[] possibleRotationAngles = {0, 90, 180, 270};
+    private static final float[] possibleRotationAngles = {0, 90, 270, 180};
     private static String[] itemPaths = getFileList();
     private static int itemPathCounter= 0;
     private static Random random= new Random();
+    private static int L,T,I;
 
     /**
      * Int L,T,I are responsible for how many Tile of a
@@ -34,55 +34,40 @@ public class GameBoardFactory {
     public static GameBoard getStandardGameBoard(){
         GameBoard gb = new GameBoard();
         Tile[][] board = gb.getBoard();
-        int L=16;
-        int T=17;
-        int I=12;
+        L=16;
+        T=17;
+        I=12;
         shuffleArray();
         buildBoard(L,T,I,board);
         return gb;
     }
 
     public static GameBoard getEasyGameBoard(){
-        return new GameBoard();
+        GameBoard gb = new GameBoard();
+        Tile[][] board = gb.getBoard();
+        L=10;
+        T=25;
+        I=10;
+        shuffleArray();
+        buildBoard(L,T,I,board);
+        return gb;
     }
 
 
     /**
      *for, for: looks at every board
      * is Corner: when there is a Corner, It mast be a L tile.
-     *L, T, I: Tells how many Tiles  are left.
-     * When a Tile is empty, it can't be placed on the board anymore.
-     * Therefore a new Random number is needed (while)
      */
     private static void buildBoard(int L, int T, int I, Tile[][] board){
         boolean itemOnTile =false;
-        getFileList();
+        int cornerRotation =0;
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[i].length; j++) {
                 if (isCorner(i,j)){
-                    board[i][j] = TileFactory.getLTile();
+                    board[i][j] = TileFactory.getLTile().applyRotation(possibleRotationAngles[cornerRotation++]);
                 }
                 else {
-                    boolean isTileGiven=false;
-                    int randomTile;
-                    while (!isTileGiven){
-                        randomTile= random.nextInt(3);
-                        if(randomTile==0 && L!=0){
-                            board[i][j] = TileFactory.getLTile().applyRotation(getRandomRotationAngle());
-                            L--;
-                            isTileGiven=true;
-                        }
-                        else if(randomTile==1 && T != 0){
-                            board[i][j] = TileFactory.getTTile().applyRotation(getRandomRotationAngle());
-                            T--;
-                            isTileGiven=true;
-                        }
-                        else if (randomTile==2 && I != 0) {
-                            board[i][j] = TileFactory.getITile().applyRotation(getRandomRotationAngle());
-                            I--;
-                            isTileGiven=true;
-                        }
-                    }
+                    board[i][j]= getRandomTile();
                 }
                 if(itemOnTile){
                     board[i][j].setItem(buildItem(i,j));
@@ -117,7 +102,6 @@ public class GameBoardFactory {
      *Gets all components to create an item
      */
     private static Item buildItem(int x, int y){
-
         Position position = new Position();
         position.setPosition(x, y);
         String path= itemPaths[itemPathCounter++];
@@ -156,6 +140,31 @@ public class GameBoardFactory {
             String temp = itemPaths[swapIndex];
             itemPaths[swapIndex]= itemPaths[j];
             itemPaths[j]=temp;
+        }
+    }
+
+
+    /**
+     *L, T, I: Tells how many Tiles  are left.
+     * When a Tile is empty, it can't be placed on the board anymore.
+     * Therefore a new Random number is needed (while)
+     */
+    private static Tile getRandomTile(){
+        while (true){
+            int randomTile= random.nextInt(3);
+            if(randomTile==0 && L!=0){
+                L--;
+                return TileFactory.getLTile().applyRotation(getRandomRotationAngle());
+            }
+            else if(randomTile==1 && T != 0){
+                T--;
+               return TileFactory.getTTile().applyRotation(getRandomRotationAngle());
+            }
+            else if (randomTile==2 && I != 0) {
+                I--;
+                return TileFactory.getITile().applyRotation(getRandomRotationAngle());
+
+            }
         }
     }
 
