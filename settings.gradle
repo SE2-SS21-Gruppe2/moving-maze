@@ -1,3 +1,5 @@
 include 'desktop', 'android', 'core'
 include 'server'
+include 'core:test'
+findProject(':core:test')?.name = 'test'
 

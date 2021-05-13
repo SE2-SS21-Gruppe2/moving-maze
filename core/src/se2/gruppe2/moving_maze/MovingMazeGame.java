@@ -2,19 +2,29 @@ package se2.gruppe2.moving_maze;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import se2.gruppe2.moving_maze.network.NetworkClient;
+import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.screens.*;
+
+import java.io.IOException;
+import java.util.Random;
 
 public class MovingMazeGame extends Game {
 
 	// Constants
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 1100;
+	public static float BTN_WIDTH;
+	public static float BTN_HEIGHT;
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
+
+	public Player player;
 
 	public SpriteBatch batch;
 	public BitmapFont font;
@@ -32,6 +42,8 @@ public class MovingMazeGame extends Game {
 	public AssetManager assets;
 	public OrthographicCamera camera;
 
+	// Network
+	public NetworkClient client;
 
     /**
 	 * Private constructor to avoid accidental instantiation
@@ -43,7 +55,14 @@ public class MovingMazeGame extends Game {
 	 */
 	@Override
 	public void create () {
+
 		assets = new AssetManager();
+		// set game-reliant constants
+		MovingMazeGame.BTN_HEIGHT = Gdx.graphics.getHeight()/8.5f;
+		MovingMazeGame.BTN_WIDTH = Gdx.graphics.getWidth()/5f;
+
+		client = NetworkClient.getInstance();
+
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		font.getData().setScale(3);
@@ -60,10 +79,12 @@ public class MovingMazeGame extends Game {
 		loadingScreen = new LoadingScreen(this);
 		splashScreen = new SplashScreen(this);
 
+
 		// display main-menu when the game is started
 
-		// try loading screen
 		//setScreen(mainMenuScreen);
+    
+    // try loading screen
 		setScreen(loadingScreen);
 	}
 
@@ -108,6 +129,12 @@ public class MovingMazeGame extends Game {
 	public static OrthographicCamera getStandardizedCamera() {
 		OrthographicCamera camera = new OrthographicCamera();
 		camera.setToOrtho(false, MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
+		return camera;
+	}
+
+	public static OrthographicCamera gameboardCamera(){
+		OrthographicCamera camera= new OrthographicCamera();
+		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		return camera;
 	}
 

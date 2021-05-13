@@ -1,2 +1,4 @@
-ConnectionTests.java
- ConnectionTests
+SessionTests.java
+ SessionTests
+SessionManagerTests.java
+ SessionManagerTests
