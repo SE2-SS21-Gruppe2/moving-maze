@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -21,6 +22,7 @@ public class LoadingScreen implements Screen {
     private Texture loadingBar;
     SpriteBatch batch;
     private Stage stage;
+    OrthographicCamera camera;
 
 
 
@@ -30,6 +32,7 @@ public class LoadingScreen implements Screen {
         loadingBar = new Texture(Gdx.files.internal("ui/loadingBar.png"));
         stage = new Stage();
         batch = new SpriteBatch();
+        camera = new OrthographicCamera();
 
     }
 
@@ -65,21 +68,18 @@ public class LoadingScreen implements Screen {
 
 
 
-
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(game.camera.viewportWidth/4, game.camera.viewportHeight / 2 , game.camera.viewportWidth - 64, 16);
-
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.rect(game.camera.viewportWidth/4, game.camera.viewportHeight / 2 , game.camera.viewportWidth/2f - 33, 16);
 
 
         shapeRenderer.setColor(Color.TEAL);
-        shapeRenderer.rect(game.camera.viewportWidth/4, game.camera.viewportHeight / 2 , progress * (game.camera.viewportWidth/2f - 25), 16);
+        shapeRenderer.rect(game.camera.viewportWidth/4, game.camera.viewportHeight / 2 , progress * (game.camera.viewportWidth/2f - 33), 16);
         shapeRenderer.end();
 
-        game.batch.begin();
-        game.batch.draw(new TextureRegion(loadingBar), game.camera.viewportWidth/4 - 124 , game.camera.viewportHeight / 2 - 75 );
-        game.batch.end();
+        batch.begin();
+        batch.draw(new TextureRegion(loadingBar), game.font.getScaleX()/2, game.font.getScaleY()/2);
+        batch.end();
 
 
 
@@ -108,6 +108,8 @@ public class LoadingScreen implements Screen {
     @Override
     public void dispose() {
 
+        batch.dispose();
         shapeRenderer.dispose();
+        loadingBar.dispose();
     }
 }
