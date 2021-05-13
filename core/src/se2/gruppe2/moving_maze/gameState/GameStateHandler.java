@@ -19,4 +19,11 @@ public class GameStateHandler {
     public void initGame(){}
     public void finishGame(){}
 
+    public GameBoard getBoard() {
+        return board;
+    }
+
+    public void setBoard(GameBoard board) {
+        this.board = board;
+    }
 }

@@ -1,6 +1,7 @@
 package se2.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.kryonet.Server;
+import se2.gruppe2.moving_maze.gameBoard.GameBoardFactory;
 import se2.gruppe2.moving_maze.network.Registry;
 import se2.gruppe2.moving_maze.server.handlers.JoinSessionHandler;
 
@@ -16,6 +17,7 @@ public class ServerMain {
 
         // always create a default session for dev-purpose
         SessionManager.createSessionByKey("devgame");
+        // SessionManager.getSessionByKey("devgame").getState().setBoard(GameBoardFactory.getStandardGameBoard());
 
         try {
             srv.bind(ServerConfiguration.PORT);

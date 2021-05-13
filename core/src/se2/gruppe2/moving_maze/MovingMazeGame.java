@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.network.NetworkClient;
 import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.screens.*;
@@ -22,6 +23,8 @@ public class MovingMazeGame extends Game {
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
+
+	private GameStateHandler state;
 
 	public Player player;
 
@@ -54,6 +57,7 @@ public class MovingMazeGame extends Game {
 		MovingMazeGame.BTN_WIDTH = Gdx.graphics.getWidth()/5f;
 
 		client = NetworkClient.getInstance();
+		state = new GameStateHandler();
 
 		batch = new SpriteBatch();
 		font = new BitmapFont();
@@ -115,6 +119,14 @@ public class MovingMazeGame extends Game {
 		OrthographicCamera camera= new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		return camera;
+	}
+
+	public GameStateHandler getGameState() {
+		return state;
+	}
+
+	public void setGameState(GameStateHandler state) {
+		this.state = state;
 	}
 
 }

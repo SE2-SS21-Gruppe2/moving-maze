@@ -19,7 +19,6 @@ public class GameScreen implements Screen {
 
     final MovingMazeGame game;
     OrthographicCamera camera;
-    final GameBoard gameBoard;
 
     // background
     Texture bgImageTexture;
@@ -27,8 +26,11 @@ public class GameScreen implements Screen {
 
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
-        this.gameBoard = GameBoardFactory.getStandardGameBoard();
-        setStartCoordinates();
+
+        // TODO: replace with another logic where gameboard is first sent to the server; right now, this gets overridden by a network event when a new
+        // game state is received
+        game.getGameState().setBoard( GameBoardFactory.getStandardGameBoard());
+        setStartCoordinates(game.getGameState().getBoard());
         camera = MovingMazeGame.gameboardCamera();
 
         // in developer mode, all players join the same (static) session
@@ -51,7 +53,7 @@ public class GameScreen implements Screen {
 
         game.batch.begin();
             game.batch.draw(bgTextureRegion, 0, 0);
-            renderGameBoard(this.gameBoard, game.batch);
+            renderGameBoard(game.getGameState().getBoard(), game.batch);
             game.font.draw(game.batch, "Game screen (DEV MODE)", 100, 100);
         game.batch.end();
     }
@@ -108,16 +110,16 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void setStartCoordinates(){
+    private void setStartCoordinates(GameBoard gameBoard){
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
         if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
-            this.gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 *45, Gdx.graphics.getHeight()/100);
+            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 *45, Gdx.graphics.getHeight()/100);
         }
         else if(aspectRatio==4f/3f){
-            this.gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 * 35, Gdx.graphics.getHeight()/100*10);
+            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 * 35, Gdx.graphics.getHeight()/100*10);
         }
         else if(aspectRatio==1f){
-            this.gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100, Gdx.graphics.getHeight()/100);
+            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100, Gdx.graphics.getHeight()/100);
         }
 
     }

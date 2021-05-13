@@ -11,7 +11,6 @@ import java.io.IOException;
 
 public class NetworkClient {
     private static NetworkClient singleton;
-    private static Registry registry;
 
     Client kryoClient;
 
