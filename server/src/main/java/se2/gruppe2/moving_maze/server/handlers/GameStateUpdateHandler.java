@@ -14,7 +14,7 @@ public class GameStateUpdateHandler extends Listener {
     public void received(Connection con, Object obj) {
 
         if(obj instanceof GameStateHandler) {
-            GameStateHandler state = (GameStateHandler) obj;
+            // GameStateHandler state = (GameStateHandler) obj;
             Log.info("Received updated gamestate from " + con.getRemoteAddressTCP().getAddress().toString());
             // TODO: Distribute updates amongst clients
         }

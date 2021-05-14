@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import se2.gruppe2.moving_maze.tile.TileLogical;
+import se2.gruppe2.moving_maze.tile.TileRepresentation;
 
 public class ItemRepresentation {
     private ItemLogical logicalItem;
@@ -25,8 +25,8 @@ public class ItemRepresentation {
      * @param tile_y coordinate of the tile
      */
     public void draw(SpriteBatch batch, float tile_x, float tile_y) {
-        float iX = tile_x+ TileLogical.tileEdgeSize/4;
-        float iY = tile_y+ TileLogical.tileEdgeSize/4;
+        float iX = tile_x+ TileRepresentation.tileEdgeSize/4;
+        float iY = tile_y+ TileRepresentation.tileEdgeSize/4;
         sprite.setPosition(iX, iY);
         sprite.draw(batch);
     }

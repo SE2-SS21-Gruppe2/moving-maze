@@ -36,6 +36,7 @@ public class GameScreen implements Screen {
     public void show() {
         gameBoardRepresentation = new GameBoardRepresentation(game.getGameState().getBoard());
         setStartCoordinates(gameBoardRepresentation);
+        game.client.sendGameStateUpdate(game.getGameState());
     }
 
     @Override

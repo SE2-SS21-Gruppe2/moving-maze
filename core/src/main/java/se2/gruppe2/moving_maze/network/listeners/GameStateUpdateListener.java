@@ -13,9 +13,17 @@ public class GameStateUpdateListener extends Listener {
             MovingMazeGame game = MovingMazeGame.getGameInstance();
             GameStateHandler gsh = (GameStateHandler) obj;
             Gdx.app.log("NetworkClient/gamestate-update", "Gamestate update received!");
-            game.setGameState(gsh);
-            game.gameScreen.updateRepresentationFromState(gsh);
-            Gdx.app.log("NetworkClient/gamestate-update", "Received gamestate set and representation updated");
+            if(isValidState(gsh)) {
+                game.setGameState(gsh);
+                game.gameScreen.updateRepresentationFromState(gsh);
+                Gdx.app.log("NetworkClient/gamestate-update", "Received gamestate set and representation updated");
+            } else {
+                Gdx.app.error("NetworkClient/gamestate-update", "Received invalid gamestate; not updating internal representation");
+            }
         }
+    }
+
+    private boolean isValidState(GameStateHandler gsh) {
+        return gsh != null && gsh.getBoard() != null;
     }
 }

@@ -10,9 +10,6 @@ import se2.gruppe2.moving_maze.network.NetworkClient;
 import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.screens.*;
 
-import java.io.IOException;
-import java.util.Random;
-
 public class MovingMazeGame extends Game {
 
 	// Constants

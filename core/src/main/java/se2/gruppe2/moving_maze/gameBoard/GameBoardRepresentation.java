@@ -25,9 +25,9 @@ public class GameBoardRepresentation {
         for(int i = 0; i < gameBoardRepresentation.length; i++) {
             for(int j = 0; j < gameBoardRepresentation[i].length; j++) {
                 gameBoardRepresentation[i][j].draw(batch, current_x, current_y);
-                current_x += TileLogical.tileEdgeSize;
+                current_x += TileRepresentation.tileEdgeSize;
             }
-            current_y += TileLogical.tileEdgeSize;
+            current_y += TileRepresentation.tileEdgeSize;
             current_x = origin_x;
         }
     }

@@ -5,12 +5,18 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 import se2.gruppe2.moving_maze.item.ItemRepresentation;
+import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 
 /**
  * Graphical representation of a tile on the gameboard.
  */
 public class TileRepresentation {
+    public static final float tilePadding = 5.0f;
+    public static float tileEdgeSize = (float) Gdx.graphics.getHeight() / GameBoardLogical.tilesPerEdge - tilePadding*2.0f;
+    public static final float tileEdgeSizeNoPadding = tileEdgeSize - 2.0f*tilePadding;
+
     private TileLogical logicalTile;
 
     private Texture texture;
@@ -49,7 +55,7 @@ public class TileRepresentation {
     private Texture scaleTextureOnLoad(String texturePath) {
         Pixmap originalPicture = new Pixmap(Gdx.files.internal(texturePath));
 
-        Pixmap scaledPicture = new Pixmap((int) TileLogical.tileEdgeSizeNoPadding, (int) TileLogical.tileEdgeSizeNoPadding, originalPicture.getFormat());
+        Pixmap scaledPicture = new Pixmap((int) tileEdgeSizeNoPadding, (int) tileEdgeSizeNoPadding, originalPicture.getFormat());
 
         scaledPicture.drawPixmap(originalPicture,
                 0, 0, originalPicture.getWidth(), originalPicture.getHeight(),

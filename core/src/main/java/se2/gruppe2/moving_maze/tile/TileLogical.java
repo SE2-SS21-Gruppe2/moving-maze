@@ -6,9 +6,6 @@ import se2.gruppe2.moving_maze.item.ItemLogical;
 
 public abstract class TileLogical {
 
-    public static final float tilePadding = 5.0f;
-    public static final float tileEdgeSize = (float) Gdx.graphics.getHeight() / GameBoardLogical.tilesPerEdge - tilePadding*2.0f;
-    public static final float tileEdgeSizeNoPadding = tileEdgeSize - 2.0f*tilePadding;
 
     private boolean openTop;
     private boolean openRight;

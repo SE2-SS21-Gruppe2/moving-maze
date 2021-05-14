@@ -4,10 +4,7 @@ import se2.gruppe2.moving_maze.tile.TileLogical;
 
 public class GameBoardLogical {
     public static int tilesPerEdge = 7;
-    public static final float gameBoardSize = tilesPerEdge * TileLogical.tileEdgeSize;
     TileLogical[][] board;
-
-
 
     public GameBoardLogical() {
         board = new TileLogical[tilesPerEdge][tilesPerEdge];
@@ -20,8 +17,6 @@ public class GameBoardLogical {
         board[x][y] = tile;
     }
 
-
-
     public void setBoard(TileLogical[][] board) {
         this.board = board;
     }
@@ -30,7 +25,4 @@ public class GameBoardLogical {
         return this.board;
     }
 
-    private void calcStartCoordinates(){
-
-    }
 }
