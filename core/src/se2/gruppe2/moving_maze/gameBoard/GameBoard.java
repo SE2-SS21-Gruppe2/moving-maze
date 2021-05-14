@@ -14,12 +14,6 @@ public class GameBoard {
         board = new Tile[tilesPerEdge][tilesPerEdge];
     }
 
-    public void setTileOnBoard(int x, int y, Tile tile) {
-        if(x > tilesPerEdge || y > tilesPerEdge)
-            throw new IllegalArgumentException("Invalid indexes");
-
-        board[x][y] = tile;
-    }
 
     public void setStartCoordinates(float x, float y) {
         this.x = x;
