@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 import se2.gruppe2.moving_maze.item.ItemRepresentation;
-import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 
 /**
  * Graphical representation of a tile on the gameboard.

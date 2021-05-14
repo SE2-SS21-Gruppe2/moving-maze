@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se2.gruppe2.moving_maze.tile.TileRepresentation;
+import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 
 public class ItemRepresentation {
+    public static final float itemEdgeSize= (float)(Gdx.graphics.getHeight() / GameBoardLogical.tilesPerEdge - 20f);
     private ItemLogical logicalItem;
     private Texture texture;
     private Sprite sprite;
@@ -42,10 +44,10 @@ public class ItemRepresentation {
         Pixmap scaledPicture;
 
         if(onCard){
-            scaledPicture = new Pixmap((int) ItemLogical.itemEdgeSize,(int) ItemLogical.itemEdgeSize,originalPicture.getFormat());
+            scaledPicture = new Pixmap((int) itemEdgeSize,(int) itemEdgeSize,originalPicture.getFormat());
         }
         else {
-            scaledPicture = new Pixmap((int) ItemLogical.itemEdgeSize/2,(int) ItemLogical.itemEdgeSize/2,originalPicture.getFormat());
+            scaledPicture = new Pixmap((int) itemEdgeSize/2,(int) itemEdgeSize/2,originalPicture.getFormat());
         }
 
         scaledPicture.drawPixmap(originalPicture,

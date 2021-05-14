@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 
 public class ItemLogical {
-    public static final float itemEdgeSize= (float)(Gdx.graphics.getHeight() / GameBoardLogical.tilesPerEdge - 20f);
 
     private String name;
     private Position position;
@@ -20,6 +19,8 @@ public class ItemLogical {
         this.name= texturePath.substring(6,texturePath.length()-4);
         this.texturePath = texturePath;
     }
+
+    public ItemLogical() {}
 
     // GETTER & SETTER
 
