@@ -2,12 +2,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+
 import se2.gruppe2.moving_maze.gameBoard.GameBoardRepresentation;
 import se2.gruppe2.moving_maze.item.Position;
 
 public class MyTests {
 
     Position position;
+
+
 
     @BeforeEach
     public void setup(){
