@@ -41,8 +41,8 @@ public class GameBoardRepresentation {
         TileLogical[][] logicalBoard = logicalGameBoard.getBoard();
         TileRepresentation[][] representation = new TileRepresentation[logicalBoard.length][logicalBoard[0].length];
 
-        for(int i = 0; i <= logicalBoard.length; i++) {
-            for(int j = 0; j <= logicalBoard[i].length; j++) {
+        for(int i = 0; i < logicalBoard.length; i++) {
+            for(int j = 0; j < logicalBoard[i].length; j++) {
                 representation[i][j] = new TileRepresentation(logicalBoard[i][j]);
             }
         }
