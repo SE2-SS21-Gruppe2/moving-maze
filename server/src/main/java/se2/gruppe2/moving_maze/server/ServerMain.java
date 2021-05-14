@@ -9,10 +9,13 @@ import se2.gruppe2.moving_maze.server.handlers.JoinSessionHandler;
 import java.io.IOException;
 
 public class ServerMain {
+
     public static void main(String[] args) {
 
+        int bufferSize = 4096;
 
-        Server srv = new Server();
+        Server srv = new Server(bufferSize, bufferSize);
+
         Registry.registerClassesOnKryo(srv.getKryo());
         srv.start();
 

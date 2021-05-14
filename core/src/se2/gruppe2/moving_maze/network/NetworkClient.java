@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class NetworkClient {
     private static NetworkClient singleton;
+    private int bufferSize = 4096;
 
     Client kryoClient;
 
@@ -47,7 +48,7 @@ public class NetworkClient {
      * @param port (tcp) to talk exchange data with
      */
     public void initKryoClient(int timeout, String host, int port) throws IOException {
-        kryoClient = new Client();
+        kryoClient = new Client(bufferSize, bufferSize);
         Registry.registerClassesOnKryo(kryoClient.getKryo());
         kryoClient.start();
         kryoClient.connect(timeout, host, port);
