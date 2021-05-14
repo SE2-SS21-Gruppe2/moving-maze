@@ -207,8 +207,7 @@ public class MainMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 // in developer mode, all players join the same (static) session
                 game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
-                // TODO: fix and uncomment
-                // game.client.sendGameStateUpdate(game.getGameState());
+                game.client.sendGameStateUpdate(game.getGameState());
                 game.player = new Player("Developer " + new Random().nextInt(10));
                 game.client.joinSession(game.player, "devgame");
                 game.setScreen(game.gameScreen);

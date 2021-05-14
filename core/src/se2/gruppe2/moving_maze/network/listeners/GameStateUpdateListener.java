@@ -10,11 +10,12 @@ public class GameStateUpdateListener extends Listener {
     @Override
     public void received(Connection con, Object obj) {
         if(obj instanceof GameStateHandler) {
+            MovingMazeGame game = MovingMazeGame.getGameInstance();
             GameStateHandler gsh = (GameStateHandler) obj;
             Gdx.app.log("NetworkClient/gamestate-update", "Gamestate update received!");
-            // TODO: uncomment
-            // MovingMazeGame.getGameInstance().setGameState(gsh);
-            // Gdx.app.log("NetworkClient/gamestate-update", "Received gamestate set");
+            game.setGameState(gsh);
+            game.gameScreen.updateRepresentationFromState(gsh);
+            Gdx.app.log("NetworkClient/gamestate-update", "Received gamestate set and representation updated");
         }
     }
 }

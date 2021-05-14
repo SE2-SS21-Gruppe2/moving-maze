@@ -49,12 +49,6 @@ public class Registry {
         kryo.register(ITile.class);
         kryo.register(TileLogical[].class);
         kryo.register(TileLogical[][].class);
-        // TODO: separate sprites from logical representation to reduce sending overhead
-        kryo.register(Sprite.class);
-        kryo.register(Texture.class);
-        kryo.register(Color.class);
-        kryo.register(Pixmap.class);
-        kryo.register(PixmapTextureData.class);
     }
 
 }

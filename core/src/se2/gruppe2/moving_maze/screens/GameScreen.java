@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardRepresentation;
+import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 
 public class GameScreen implements Screen {
 
@@ -90,6 +91,14 @@ public class GameScreen implements Screen {
             gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100f, Gdx.graphics.getHeight()/100f);
         }
 
+    }
+
+    /**
+     * Updates representation based on the current gameState;
+     * @param state to build the representation upon
+     */
+    public void updateRepresentationFromState(GameStateHandler state) {
+        gameBoardRepresentation = new GameBoardRepresentation(state.getBoard());
     }
 
 }
