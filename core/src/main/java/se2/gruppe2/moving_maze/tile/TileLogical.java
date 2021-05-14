@@ -1,7 +1,5 @@
 package se2.gruppe2.moving_maze.tile;
 
-import com.badlogic.gdx.Gdx;
-import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 import se2.gruppe2.moving_maze.item.ItemLogical;
 
 public abstract class TileLogical {

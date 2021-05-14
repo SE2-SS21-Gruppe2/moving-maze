@@ -1,12 +1,5 @@
 package se2.gruppe2.moving_maze.item;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
-import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
-
 public class ItemLogical {
 
     private String name;

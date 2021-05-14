@@ -1,6 +1,5 @@
 package se2.gruppe2.moving_maze.audio;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 

@@ -7,8 +7,6 @@ public class Position {
     private int MAX_X;
     private int MAX_Y;
 
-
-
     public void setPosition(int x, int y){
         setY(y);
         setX(x);

@@ -1,7 +1,5 @@
 package se2.gruppe2.moving_maze.server;
 
-import com.esotericsoftware.minlog.Log;
-import se2.gruppe2.moving_maze.gameState.GameState;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.player.Player;
 

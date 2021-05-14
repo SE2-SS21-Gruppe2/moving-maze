@@ -1,10 +1,5 @@
 package se2.gruppe2.moving_maze.network;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.esotericsoftware.kryo.Kryo;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 import se2.gruppe2.moving_maze.gameState.ChatMessage;
