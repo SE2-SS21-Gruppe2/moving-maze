@@ -1,17 +1,16 @@
-import static org.junit.jupiter.api.Assertions.*;
+package item;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import se2.gruppe2.moving_maze.gameBoard.GameBoardRepresentation;
-import se2.gruppe2.moving_maze.item.Position;
 
-public class MyTests {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    Position position;
+public class PositionTest {
+    se2.gruppe2.moving_maze.item.Position position;
 
     @BeforeEach
     public void setup(){
-        position= new Position();
+        position= new se2.gruppe2.moving_maze.item.Position();
         position.setX(3);
         position.setY(5);
     }
@@ -40,7 +39,7 @@ public class MyTests {
 
     @Test
     public void setPositionTest(){
-        Position pos= new Position();
+        se2.gruppe2.moving_maze.item.Position pos= new se2.gruppe2.moving_maze.item.Position();
         pos.setPosition(3,5);
         assertEquals(position.getX(),pos.getX());
         assertEquals(position.getY(),pos.getY());

@@ -13,6 +13,7 @@ dependencies {
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
     implementation 'com.esotericsoftware:kryonet:2.22.0-RC1'
+
 }
 
 test {
