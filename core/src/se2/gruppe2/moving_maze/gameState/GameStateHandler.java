@@ -1,13 +1,13 @@
 package se2.gruppe2.moving_maze.gameState;
 
-import se2.gruppe2.moving_maze.gameBoard.GameBoard;
+import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
 import se2.gruppe2.moving_maze.player.Player;
 
 public class GameStateHandler {
     private String sessionCode;
     private Player player;
     private Player currentPlayerOnTurn;
-    private GameBoard board;
+    private GameBoardLogical board;
     private GameState gameState;
     private ChatMessage[] chat;
 
@@ -19,11 +19,11 @@ public class GameStateHandler {
     public void initGame(){}
     public void finishGame(){}
 
-    public GameBoard getBoard() {
+    public GameBoardLogical getBoard() {
         return board;
     }
 
-    public void setBoard(GameBoard board) {
+    public void setBoard(GameBoardLogical board) {
         this.board = board;
     }
 }

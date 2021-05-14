@@ -3,10 +3,9 @@ package se2.gruppe2.moving_maze.gameBoard;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.MathUtils;
-import se2.gruppe2.moving_maze.item.Item;
+import se2.gruppe2.moving_maze.item.ItemLogical;
 import se2.gruppe2.moving_maze.item.Position;
-import se2.gruppe2.moving_maze.tile.Tile;
+import se2.gruppe2.moving_maze.tile.TileLogical;
 import se2.gruppe2.moving_maze.tile.TileFactory;
 
 import java.util.Random;
@@ -31,9 +30,9 @@ public class GameBoardFactory {
      *
      * shuffleArray shuffles the itemPath, so every game items are newly organized.
      */
-    public static GameBoard getStandardGameBoard(){
-        GameBoard gb = new GameBoard();
-        Tile[][] board = gb.getBoard();
+    public static GameBoardLogical getStandardGameBoard(){
+        GameBoardLogical gb = new GameBoardLogical();
+        TileLogical[][] board = gb.getBoard();
         int L=16;
         int T=17;
         int I=12;
@@ -42,8 +41,8 @@ public class GameBoardFactory {
         return gb;
     }
 
-    public static GameBoard getEasyGameBoard(){
-        return new GameBoard();
+    public static GameBoardLogical getEasyGameBoard(){
+        return new GameBoardLogical();
     }
 
 
@@ -54,7 +53,7 @@ public class GameBoardFactory {
      * When a Tile is empty, it can't be placed on the board anymore.
      * Therefore a new Random number is needed (while)
      */
-    private static void buildBoard(int L, int T, int I, Tile[][] board){
+    private static void buildBoard(int L, int T, int I, TileLogical[][] board){
         boolean itemOnTile =false;
         getFileList();
         for(int i = 0; i < board.length; i++) {
@@ -116,12 +115,12 @@ public class GameBoardFactory {
     /**
      *Gets all components to create an item
      */
-    private static Item buildItem(int x, int y){
+    private static ItemLogical buildItem(int x, int y){
 
         Position position = new Position();
         position.setPosition(x, y);
         String path= itemPaths[itemPathCounter++];
-        return new Item(path, position,false);
+        return new ItemLogical(path, position,false);
     }
 
     /**

@@ -1,15 +1,15 @@
 package se2.gruppe2.moving_maze.item;
 
 public class Card {
-    private Item item;
+    private ItemLogical item;
 
     //TODO: render Item in bigger, then on GameBoard, on Card.
 
-    public Card(Item item){
+    public Card(ItemLogical item){
         this.item=item;
     }
 
-    public Item getItem() {
+    public ItemLogical getItem() {
         return item;
     }
 }

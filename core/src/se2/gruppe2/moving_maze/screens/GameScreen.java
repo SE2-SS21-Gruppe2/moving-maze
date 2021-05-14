@@ -8,16 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
-import se2.gruppe2.moving_maze.gameBoard.GameBoard;
-import se2.gruppe2.moving_maze.gameBoard.GameBoardFactory;
-import se2.gruppe2.moving_maze.player.Player;
-import se2.gruppe2.moving_maze.tile.Tile;
-
-import java.util.Random;
+import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
+import se2.gruppe2.moving_maze.gameBoard.GameBoardRepresentation;
 
 public class GameScreen implements Screen {
 
     final MovingMazeGame game;
+    GameBoardRepresentation gameBoardRepresentation;
     OrthographicCamera camera;
 
     // background
@@ -27,18 +24,17 @@ public class GameScreen implements Screen {
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
 
-        // TODO: replace with another logic where gameboard is first sent to the server; right now, this gets overridden by a network event when a new
-        // game state is received
         camera = MovingMazeGame.gameboardCamera();
 
-        // instantiate textures
+        // instantiate textures for background
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
     }
 
     @Override
     public void show() {
-        setStartCoordinates(game.getGameState().getBoard());
+        gameBoardRepresentation = new GameBoardRepresentation(game.getGameState().getBoard());
+        setStartCoordinates(gameBoardRepresentation);
     }
 
     @Override
@@ -48,7 +44,7 @@ public class GameScreen implements Screen {
 
         game.batch.begin();
             game.batch.draw(bgTextureRegion, 0, 0);
-            renderGameBoard(game.getGameState().getBoard(), game.batch);
+            gameBoardRepresentation.draw(game.batch);
             game.font.draw(game.batch, "Game screen (DEV MODE)", 100, 100);
         game.batch.end();
     }
@@ -78,43 +74,20 @@ public class GameScreen implements Screen {
 
     }
 
-
-    // TODO: minor Posigining changes.
-    private void renderGameBoard(GameBoard gb, SpriteBatch batch) {
-        float current_x = gb.getX();
-        float current_y = gb.getY();
-
-        Tile[][] board = gb.getBoard();
-
-        for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[i].length; j++) {
-                board[i][j].getSprite().setPosition(current_x, current_y);
-                board[i][j].getSprite().draw(batch);
-
-                if(board[i][j].hasItem()){
-                    float current_Ix=current_x+Tile.tileEdgeSize/4;
-                    float current_Iy=current_y+Tile.tileEdgeSize/4;
-                    board[i][j].getItem().getSprite().setPosition(current_Ix,current_Iy);
-                    board[i][j].getItem().getSprite().draw(batch);
-                }
-
-                current_x += Tile.tileEdgeSize;
-            }
-            current_y += Tile.tileEdgeSize;
-            current_x = gb.getX();
-        }
-    }
-
-    private void setStartCoordinates(GameBoard gameBoard){
+    /**
+     * Calculates the start-coordinates for a gameboard with respect to the aspect-ratio.
+     * @param gameBoard to set the coordinates on
+     */
+    private void setStartCoordinates(GameBoardRepresentation gameBoard){
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
         if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
-            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 *45, Gdx.graphics.getHeight()/100);
+            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100f *45, Gdx.graphics.getHeight()/100f);
         }
         else if(aspectRatio==4f/3f){
-            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100 * 35, Gdx.graphics.getHeight()/100*10);
+            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100f * 35, Gdx.graphics.getHeight()/100f*10);
         }
         else if(aspectRatio==1f){
-            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100, Gdx.graphics.getHeight()/100);
+            gameBoard.setStartCoordinates(Gdx.graphics.getWidth()/100f, Gdx.graphics.getHeight()/100f);
         }
 
     }
