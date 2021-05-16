@@ -5,10 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -47,16 +49,19 @@ public class RuleScreen implements Screen {
         textureRegion = new TextureRegion(backTexture);
         textureRegionDrawable = new TextureRegionDrawable(textureRegion);
         backButton = new ImageButton(textureRegionDrawable);
-        //backButton.setPosition(MovingMazeGame.WIDTH /9f, MovingMazeGame.HEIGHT - 20f , Align.left);
+        backButton.setPosition(20f, camera.viewportHeight - 20f, Align.left);
 
         stage = new Stage(new ScreenViewport());
         stage.addActor(backButton);
 
         Gdx.input.setInputProcessor(stage);
 
-        backButton.addListener(event -> {
-            game.setScreen(game.mainMenuScreen);
-            return true;
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(game.mainMenuScreen);
+
+            }
         });
 
     }
