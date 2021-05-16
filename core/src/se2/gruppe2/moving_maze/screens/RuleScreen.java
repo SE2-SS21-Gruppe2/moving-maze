@@ -34,6 +34,13 @@ public class RuleScreen implements Screen {
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
 
+    //Texts
+    private String txtAblauf;
+    private String txtSpielende;
+    private String txtSpielfigurZiehen;
+    private String txtVerschieben;
+    private String txtZiel;
+
     public RuleScreen(final MovingMazeGame game) {
         this.game = game;
         camera = MovingMazeGame.getStandardizedCamera();
@@ -77,6 +84,9 @@ public class RuleScreen implements Screen {
         table = new Table();
         table.setWidth(Gdx.graphics.getWidth());
         table.defaults().padTop(25f);
+
+        txtZiel = Gdx.files.internal("klsdfj").readString();
+
         var label = new Label("Test:", skin);
         label.setAlignment(Align.left);
         label.setFontScale(2.5f);
