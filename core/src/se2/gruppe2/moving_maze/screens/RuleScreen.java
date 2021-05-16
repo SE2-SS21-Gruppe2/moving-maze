@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -28,6 +31,8 @@ public class RuleScreen implements Screen {
     private TextureRegion textureRegion;
     private TextureRegionDrawable textureRegionDrawable;
     private ImageButton backButton;
+    private ScrollPane scrollPane;
+    private Table table;
 
     //Textures and views
     private Texture bgImageTexture;
@@ -49,7 +54,7 @@ public class RuleScreen implements Screen {
         textureRegion = new TextureRegion(backTexture);
         textureRegionDrawable = new TextureRegionDrawable(textureRegion);
         backButton = new ImageButton(textureRegionDrawable);
-        backButton.setPosition(20f, camera.viewportHeight - 20f, Align.left);
+        backButton.setPosition(20f, camera.viewportHeight - 20f - backButton.getHeight()/2f, Align.left);
 
         stage = new Stage(new ScreenViewport());
         stage.addActor(backButton);
@@ -64,6 +69,9 @@ public class RuleScreen implements Screen {
             }
         });
 
+        table = new Table();
+        scrollPane = new ScrollPane(table);
+
     }
 
     @Override
@@ -75,7 +83,8 @@ public class RuleScreen implements Screen {
         game.batch.draw(bgTextureRegion, 0, 0);
         game.batch.end();
 
-        stage.act(Gdx.graphics.getDeltaTime());stage.draw();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override
