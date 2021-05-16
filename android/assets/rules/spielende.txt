@@ -1,3 +1,2 @@
-Spielende:
-Du hast alle deine Schätze gefunden? Nun musst du nur noch zurück zu deinem Startfeld.
-Schaffst du es als Erster zurück zu deinem Startfeld, endet das Spiel sofort und du hast gewonnen!
+Du hast alle deine Schaetze gefunden? Nun musst du nur noch zurück zu deinem Startfeld.
+Schaffst du es als Erster zurueck zu deinem Startfeld, endet das Spiel sofort und du hast gewonnen!

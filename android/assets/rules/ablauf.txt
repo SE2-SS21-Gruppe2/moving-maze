@@ -1,10 +1,9 @@
-Ablauf:
 Jeder Spieler schaut sich nun geheim die oberste Schatzkarte seines Stapels an. Sie zeigt den Schatz, den er als Erstes finden muss.
-Der jüngste Spieler beginnt.
+Der juengste Spieler beginnt.
 Anschließend verläuft das Spiel im Uhrzeigersinn.
 
 Ein Zug besteht immer aus zwei Schritten:
-1. Gänge verschieben
+1. Gaenge verschieben
 2. Spielfigur ziehen
 
 Wenn du an der Reihe bist, versuchtst du auf das Feld im Labyrinth zu gelangen, das denselben Schatz wie deine aktuelle Schatzkarte zeigt.
