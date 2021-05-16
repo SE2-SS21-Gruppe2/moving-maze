@@ -6,13 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -33,6 +28,7 @@ public class RuleScreen implements Screen {
     private ImageButton backButton;
     private ScrollPane scrollPane;
     private Table table;
+    private Skin skin;
 
     //Textures and views
     private Texture bgImageTexture;
@@ -58,6 +54,7 @@ public class RuleScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
         stage.addActor(backButton);
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         Gdx.input.setInputProcessor(stage);
 
@@ -69,9 +66,37 @@ public class RuleScreen implements Screen {
             }
         });
 
-        table = new Table();
-        scrollPane = new ScrollPane(table);
+        setUpTable();
+        scrollPane = new ScrollPane(table, skin);
+        scrollPane.setWidth(Gdx.graphics.getWidth());
+        scrollPane.setHeight(Gdx.graphics.getHeight()-Gdx.graphics.getHeight()/8f);
+        stage.addActor(scrollPane);
+    }
 
+    public void setUpTable() {
+        table = new Table();
+        table.setWidth(Gdx.graphics.getWidth());
+        table.defaults().padTop(25f);
+        var label = new Label("Test:", skin);
+        label.setAlignment(Align.left);
+        label.setFontScale(2.5f);
+        table.add(label).width(Gdx.graphics.getWidth()).height(25f).row();
+        var label2 = new Label("This is the first test of the lineksdjflsjflö lksdjflöjsdf ldfk sldf", skin);
+        label2.setAlignment(Align.left);
+        label2.setFontScale(2.5f);
+        table.add(label2).width(Gdx.graphics.getWidth()).height(25f).row();
+        var label3 = new Label("This is the first test of the lineksdjflsjflö lksdjflöjsdf ldfk sldf", skin);
+        label3.setAlignment(Align.left);
+        label3.setFontScale(2.5f);
+        table.add(label3).width(Gdx.graphics.getWidth()).height(25f).row();
+        var label4 = new Label("This is the first test of the lineksdjflsjflö lksdjflöjsdf ldfk sldf", skin);
+        label4.setAlignment(Align.left);
+        label4.setFontScale(2.5f);
+        table.add(label4).width(Gdx.graphics.getWidth()).height(25f).row();
+        var label5 = new Label("This is the first test of the lineksdjflsjflö lksdjflöjsdf ldfk sldf", skin);
+        label5.setAlignment(Align.left);
+        label5.setFontScale(2.5f);
+        table.add(label5).width(Gdx.graphics.getWidth()).height(25f).row();
     }
 
     @Override
@@ -111,5 +136,4 @@ public class RuleScreen implements Screen {
     public void dispose() {
 
     }
-
 }
