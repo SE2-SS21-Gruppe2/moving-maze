@@ -36,6 +36,9 @@ public class Session {
         }
     }
 
+    /**
+     * Send the current session state to all stored players.
+     */
     public void sendStateToPlayers() {
 
         Player currentPlayer;
@@ -47,11 +50,10 @@ public class Session {
 
             if(currentPlayer != null && currentConnection != null) {
                 Log.info("(" + key + ") Sending gamestate update to player '" + currentPlayer.getName() + "'");
-
+                currentConnection.sendTCP(state);
             } else {
                 Log.info("(" + key + ") Player or connection == NULL; not distributing gamestate update");
             }
-
         }
 
         Log.info("(" + key + ") State update finished");
