@@ -19,11 +19,20 @@ public class GameStateHandler {
     public void initGame(){}
     public void finishGame(){}
 
+    // GETTER & SETTER
     public GameBoardLogical getBoard() {
         return board;
     }
 
     public void setBoard(GameBoardLogical board) {
         this.board = board;
+    }
+
+    public String getSessionCode() {
+        return sessionCode;
+    }
+
+    public void setSessionCode(String sessionCode) {
+        this.sessionCode = sessionCode;
     }
 }

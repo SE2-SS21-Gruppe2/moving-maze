@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Client;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.network.listeners.ErrorResponseListener;
 import se2.gruppe2.moving_maze.network.listeners.GameStateUpdateListener;
+import se2.gruppe2.moving_maze.network.listeners.JoinConfirmationListener;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
 
@@ -55,6 +56,7 @@ public class NetworkClient {
 
         kryoClient.addListener(new ErrorResponseListener());
         kryoClient.addListener(new GameStateUpdateListener());
+        kryoClient.addListener(new JoinConfirmationListener());
     }
 
     /**

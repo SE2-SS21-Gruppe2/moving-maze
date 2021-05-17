@@ -8,6 +8,7 @@ import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.item.Card;
 import se2.gruppe2.moving_maze.item.ItemLogical;
 import se2.gruppe2.moving_maze.item.Position;
+import se2.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
@@ -44,6 +45,7 @@ public class Registry {
         kryo.register(ITile.class);
         kryo.register(TileLogical[].class);
         kryo.register(TileLogical[][].class);
+        kryo.register(JoinRequestConfirmation.class);
     }
 
 }

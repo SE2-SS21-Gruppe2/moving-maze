@@ -16,6 +16,7 @@ public class Session {
         players = new ArrayList<>();
         // TODO: use a static INIT function to initialize the game-state
         state = new GameStateHandler();
+        state.setSessionCode(this.key);
     }
 
     /**

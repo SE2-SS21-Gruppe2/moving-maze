@@ -34,8 +34,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        gameBoardRepresentation = new GameBoardRepresentation(game.getGameState().getBoard());
-        setStartCoordinates(gameBoardRepresentation);
+        updateRepresentationFromState(game.getGameState());
         game.client.sendGameStateUpdate(game.getGameState());
     }
 
@@ -100,6 +99,7 @@ public class GameScreen implements Screen {
      */
     public void updateRepresentationFromState(GameStateHandler state) {
         gameBoardRepresentation = new GameBoardRepresentation(state.getBoard());
+        setStartCoordinates(gameBoardRepresentation);
     }
 
 }

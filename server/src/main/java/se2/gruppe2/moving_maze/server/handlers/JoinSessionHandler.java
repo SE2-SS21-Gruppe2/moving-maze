@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
+import se2.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
@@ -24,11 +25,11 @@ public class JoinSessionHandler extends Listener {
 
             Session target = SessionManager.getSessionByKey(jr.getSessionKey());
             if(target != null) {
-                GameStateHandler response = processJoinRequest(jr.getPlayer(), target);
+                GameStateHandler foundSession = processJoinRequest(jr.getPlayer(), target);
 
-                if(response != null) {
+                if(foundSession != null) {
                     Log.info("Player '" + jr.getPlayer().getName() + "' added to '" + jr.getSessionKey() + "'");
-                    con.sendTCP(response);
+                    con.sendTCP(new JoinRequestConfirmation(foundSession.getSessionCode()));
                 } else {
                     String message = "Unable to join session '" + jr.getSessionKey() + "' because MAX_PLAYER count reached. Rejecting player '" + jr.getPlayer().getName() + "'";
                     Log.info(message);

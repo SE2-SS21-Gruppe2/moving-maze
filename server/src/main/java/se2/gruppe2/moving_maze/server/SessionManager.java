@@ -51,7 +51,6 @@ public class SessionManager {
         if(sessionRegistry.get(key) == null) {
             Log.info(logTag , "Creating new session with key '" + key +"'");
             Session session = new Session(key);
-            session.setState(new GameStateHandler());
             sessionRegistry.put(key, session);
             return session;
         } else {
