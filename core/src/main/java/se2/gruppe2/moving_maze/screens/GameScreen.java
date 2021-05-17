@@ -16,6 +16,7 @@ import se2.gruppe2.moving_maze.gameBoard.GameBoardRepresentation;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se2.gruppe2.moving_maze.helperclasses.TextureType;
+import se2.gruppe2.moving_maze.item.ItemLogical;
 import se2.gruppe2.moving_maze.item.Position;
 import se2.gruppe2.moving_maze.tile.TileLogical;
 import se2.gruppe2.moving_maze.tile.TileRepresentation;
@@ -127,7 +128,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Draws
+     * Draws a visual representation of a logical gameboard onto the screen.
      * @param batch
      */
     private void drawGameBoard(SpriteBatch batch) {
@@ -137,16 +138,24 @@ public class GameScreen implements Screen {
         float cur_x = init_pos.getX();
         float cur_y = init_pos.getY();
 
-        Sprite current;
+        Sprite currentSprite;
         TileLogical currentTile;
+        ItemLogical currentItem;
         for(int i = 0; i < tl.length; i++) {
             for(int j = 0; j < tl[i].length; j++) {
                 currentTile = tl[i][j];
+                currentSprite = TextureLoader.getSpriteByTexturePath(currentTile.getTexturePath(), TextureType.TILE);
+                currentItem = currentTile.getItem();
 
-                current = TextureLoader.getSpriteByTexturePath(currentTile.getTexturePath(), TextureType.TILE);
-                current.setPosition(cur_x, cur_y);
-                current.setRotation(currentTile.getRotationDegrees());
-                current.draw(batch);
+                currentSprite.setPosition(cur_x, cur_y);
+                currentSprite.setRotation(currentTile.getRotationDegrees());
+                currentSprite.draw(batch);
+
+                if(currentItem != null) {
+                    currentSprite = TextureLoader.getSpriteByTexturePath(currentItem.getTexturePath(), TextureType.ITEM);
+                    currentSprite.setPosition(cur_x+TileRepresentation.tileEdgeSize/4f, cur_y + TileRepresentation.tileEdgeSize/4f);
+                    currentSprite.draw(batch);
+                }
 
                 cur_x += TileRepresentation.tileEdgeSize;
             }
