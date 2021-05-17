@@ -2,19 +2,19 @@ package se2.gruppe2.moving_maze.tile;
 
 public class TileFactory {
 
-    public static TileLogical getLTile(){
+    public static Tile getLTile(){
         return new LTile();
     }
 
-    public static TileLogical getITile(){
+    public static Tile getITile(){
         return new ITile();
     }
 
-    public static TileLogical getTTile(){
+    public static Tile getTTile(){
         return new TTile();
     }
 
-    public TileLogical getTileByType(TileType tileType){
+    public Tile getTileByType(TileType tileType){
         switch (tileType) {
             case T_TILE:
                 return getTTile();

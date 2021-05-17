@@ -11,20 +11,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardFactory;
-import se2.gruppe2.moving_maze.gameBoard.GameBoardLogical;
-import se2.gruppe2.moving_maze.gameBoard.GameBoardRepresentation;
-import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se2.gruppe2.moving_maze.helperclasses.TextureType;
 import se2.gruppe2.moving_maze.item.ItemLogical;
 import se2.gruppe2.moving_maze.item.Position;
-import se2.gruppe2.moving_maze.tile.TileLogical;
-import se2.gruppe2.moving_maze.tile.TileRepresentation;
+import se2.gruppe2.moving_maze.tile.Tile;
 
 public class GameScreen implements Screen {
 
     final MovingMazeGame game;
-    GameBoardRepresentation gameBoardRepresentation;
     OrthographicCamera camera;
 
     // background
@@ -46,8 +41,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        updateRepresentationFromState(game.getGameState());
-        // setStartCoordinates(gameBoardRepresentation);
         game.client.sendGameStateUpdate(game.getGameState());
 
     }
@@ -113,18 +106,8 @@ public class GameScreen implements Screen {
 
     }
 
-    /**
-     * Updates representation based on the current gameState;
-     * @param state to build the representation upon
-     */
-    public void updateRepresentationFromState(GameStateHandler state) {
-        gameBoardRepresentation = new GameBoardRepresentation(state.getBoard());
-        // setStartCoordinates(gameBoardRepresentation);
-    }
-
     public void recreateGameBoard() {
         game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
-        updateRepresentationFromState(game.getGameState());
     }
 
     /**
@@ -132,14 +115,14 @@ public class GameScreen implements Screen {
      * @param batch
      */
     private void drawGameBoard(SpriteBatch batch) {
-        TileLogical[][] tl = game.getGameState().getBoard().getBoard();
+        Tile[][] tl = game.getGameState().getBoard().getBoard();
         Position init_pos = getStartCoordinates();
 
         float cur_x = init_pos.getX();
         float cur_y = init_pos.getY();
 
         Sprite currentSprite;
-        TileLogical currentTile;
+        Tile currentTile;
         ItemLogical currentItem;
         for(int i = 0; i < tl.length; i++) {
             for(int j = 0; j < tl[i].length; j++) {
@@ -153,14 +136,14 @@ public class GameScreen implements Screen {
 
                 if(currentItem != null) {
                     currentSprite = TextureLoader.getSpriteByTexturePath(currentItem.getTexturePath(), TextureType.ITEM);
-                    currentSprite.setPosition(cur_x+TileRepresentation.tileEdgeSize/4f, cur_y + TileRepresentation.tileEdgeSize/4f);
+                    currentSprite.setPosition(cur_x+TextureLoader.tileEdgeSize/4f, cur_y + TextureLoader.tileEdgeSize/4f);
                     currentSprite.draw(batch);
                 }
 
-                cur_x += TileRepresentation.tileEdgeSize;
+                cur_x += TextureLoader.tileEdgeSize;
             }
             cur_x = init_pos.getX();
-            cur_y += TileRepresentation.tileEdgeSize;
+            cur_y += TextureLoader.tileEdgeSize;
         }
     }
 

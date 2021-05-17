@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import se2.gruppe2.moving_maze.item.ItemLogical;
 import se2.gruppe2.moving_maze.item.Position;
-import se2.gruppe2.moving_maze.tile.TileLogical;
+import se2.gruppe2.moving_maze.tile.Tile;
 import se2.gruppe2.moving_maze.tile.TileFactory;
 
 import java.util.Random;
@@ -30,9 +30,9 @@ public class GameBoardFactory {
      *
      * shuffleArray shuffles the itemPath, so every game items are newly organized.
      */
-    public static GameBoardLogical getStandardGameBoard(){
-        GameBoardLogical gb = new GameBoardLogical();
-        TileLogical[][] board = gb.getBoard();
+    public static GameBoard getStandardGameBoard(){
+        GameBoard gb = new GameBoard();
+        Tile[][] board = gb.getBoard();
         int L=16;
         int T=17;
         int I=12;
@@ -41,8 +41,8 @@ public class GameBoardFactory {
         return gb;
     }
 
-    public static GameBoardLogical getEasyGameBoard(){
-        return new GameBoardLogical();
+    public static GameBoard getEasyGameBoard(){
+        return new GameBoard();
     }
 
 
@@ -53,7 +53,7 @@ public class GameBoardFactory {
      * When a Tile is empty, it can't be placed on the board anymore.
      * Therefore a new Random number is needed (while)
      */
-    private static void buildBoard(int L, int T, int I, TileLogical[][] board){
+    private static void buildBoard(int L, int T, int I, Tile[][] board){
         boolean itemOnTile =false;
         getFileList();
         for(int i = 0; i < board.length; i++) {

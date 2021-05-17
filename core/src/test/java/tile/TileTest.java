@@ -4,19 +4,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import se2.gruppe2.moving_maze.item.ItemLogical;
-import se2.gruppe2.moving_maze.tile.LTile;
-import se2.gruppe2.moving_maze.tile.TileFactory;
-import se2.gruppe2.moving_maze.tile.TileLogical;
+import se2.gruppe2.moving_maze.tile.Tile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
 public class TileTest {
 
-    TileLogical tileLogical;
+    Tile tileLogical;
     @Mock
     ItemLogical item;
 
@@ -25,7 +21,7 @@ public class TileTest {
     @BeforeEach
     public void setup(){
         tileLogical = Mockito.mock(
-                TileLogical.class,
+                Tile.class,
                 Mockito.CALLS_REAL_METHODS
         );
     }

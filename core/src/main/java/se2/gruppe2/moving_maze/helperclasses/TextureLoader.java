@@ -4,12 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import se2.gruppe2.moving_maze.item.ItemRepresentation;
-import se2.gruppe2.moving_maze.tile.TileRepresentation;
+import se2.gruppe2.moving_maze.gameBoard.GameBoard;
 
 import java.util.HashMap;
 
 public class TextureLoader {
+    public static final float tilePadding = 5.0f;
+    public static float tileEdgeSize = (float) Gdx.graphics.getHeight() / GameBoard.tilesPerEdge - tilePadding*2.0f;
+    public static final float tileEdgeSizeNoPadding = tileEdgeSize - 2.0f*tilePadding;
+    public static final float itemEdgeSize= (float)(Gdx.graphics.getHeight() / GameBoard.tilesPerEdge - 20f);
+
+
     private static HashMap<String, Sprite> textures = new HashMap<>();
 
     /**
@@ -52,10 +57,10 @@ public class TextureLoader {
         Pixmap scaledPicture;
 
         if(onCard){
-            scaledPicture = new Pixmap((int) ItemRepresentation.itemEdgeSize,(int) ItemRepresentation.itemEdgeSize,originalPicture.getFormat());
+            scaledPicture = new Pixmap((int) TextureLoader.itemEdgeSize,(int) TextureLoader.itemEdgeSize,originalPicture.getFormat());
         }
         else {
-            scaledPicture = new Pixmap((int) ItemRepresentation.itemEdgeSize/2,(int) ItemRepresentation.itemEdgeSize/2,originalPicture.getFormat());
+            scaledPicture = new Pixmap((int) TextureLoader.itemEdgeSize/2,(int) TextureLoader.itemEdgeSize/2,originalPicture.getFormat());
         }
 
         scaledPicture.drawPixmap(originalPicture,
@@ -78,7 +83,7 @@ public class TextureLoader {
     private static Texture getScaledTileTexture(String texturePath) {
         Pixmap originalPicture = new Pixmap(Gdx.files.internal(texturePath));
 
-        Pixmap scaledPicture = new Pixmap((int) TileRepresentation.tileEdgeSizeNoPadding, (int) TileRepresentation.tileEdgeSizeNoPadding, originalPicture.getFormat());
+        Pixmap scaledPicture = new Pixmap((int) tileEdgeSizeNoPadding, (int) tileEdgeSizeNoPadding, originalPicture.getFormat());
 
         scaledPicture.drawPixmap(originalPicture,
                 0, 0, originalPicture.getWidth(), originalPicture.getHeight(),

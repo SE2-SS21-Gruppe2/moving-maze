@@ -2,7 +2,7 @@ package se2.gruppe2.moving_maze.tile;
 
 import se2.gruppe2.moving_maze.item.ItemLogical;
 
-public abstract class TileLogical {
+public abstract class Tile {
 
     private boolean openTop;
     private boolean openRight;
@@ -12,9 +12,9 @@ public abstract class TileLogical {
     private float rotationDegrees;
     private String texturePath;
 
-    public TileLogical(){}
+    public Tile(){}
 
-    public TileLogical(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath) {
+    public Tile(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath) {
         this.openTop = openTop;
         this.openRight = openRight;
         this.openBottom = openBottom;
@@ -22,7 +22,7 @@ public abstract class TileLogical {
         this.texturePath = texturePath;
     }
 
-    public TileLogical(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath, float rotationDegrees) {
+    public Tile(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath, float rotationDegrees) {
         this(openTop, openRight, openBottom, openLeft, texturePath );
         this.rotationDegrees = rotationDegrees;
     }
@@ -32,7 +32,7 @@ public abstract class TileLogical {
      * @param rotationDegrees Rotation to apply to the tile
      * @return
      */
-    public TileLogical applyRotation(float rotationDegrees) {
+    public Tile applyRotation(float rotationDegrees) {
         this.setRotationDegrees(rotationDegrees);
         return this;
     }
