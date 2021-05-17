@@ -16,8 +16,6 @@ public class TileTest {
     @Mock
     ItemLogical item;
 
-
-
     @BeforeEach
     public void setup(){
         tileLogical = Mockito.mock(

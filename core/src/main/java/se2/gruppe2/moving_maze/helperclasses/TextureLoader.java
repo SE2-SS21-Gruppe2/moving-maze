@@ -12,7 +12,7 @@ public class TextureLoader {
     public static final float tilePadding = 5.0f;
     public static float tileEdgeSize = (float) Gdx.graphics.getHeight() / GameBoard.tilesPerEdge - tilePadding*2.0f;
     public static final float tileEdgeSizeNoPadding = tileEdgeSize - 2.0f*tilePadding;
-    public static final float itemEdgeSize= (float)(Gdx.graphics.getHeight() / GameBoard.tilesPerEdge - 20f);
+    public static final float itemEdgeSize= (float)(Gdx.graphics.getHeight()*1f / GameBoard.tilesPerEdge - 20f);
 
 
     private static HashMap<String, Sprite> textures = new HashMap<>();

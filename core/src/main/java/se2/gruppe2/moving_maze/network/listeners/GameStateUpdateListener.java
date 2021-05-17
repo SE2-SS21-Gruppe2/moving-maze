@@ -14,7 +14,6 @@ public class GameStateUpdateListener extends Listener {
             GameStateHandler gsh = (GameStateHandler) obj;
             Gdx.app.log("NetworkClient/gamestate-update", "Gamestate update received!");
             if(isValidState(gsh)) {
-                game.gameScreen.updatedFromServer = true;
                 game.setGameState(gsh);
                 Gdx.app.log("NetworkClient/gamestate-update", "Received gamestate set and representation updated");
             } else {

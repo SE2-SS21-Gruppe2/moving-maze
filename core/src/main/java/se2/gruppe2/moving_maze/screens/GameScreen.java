@@ -26,11 +26,8 @@ public class GameScreen implements Screen {
     Texture bgImageTexture;
     TextureRegion bgTextureRegion;
 
-    public boolean updatedFromServer;
-
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
-        updatedFromServer = false;
 
         camera = MovingMazeGame.gameboardCamera();
 
@@ -42,7 +39,6 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         game.client.sendGameStateUpdate(game.getGameState());
-
     }
 
     @Override
@@ -108,6 +104,7 @@ public class GameScreen implements Screen {
 
     public void recreateGameBoard() {
         game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
+        game.client.sendGameStateUpdate(game.getGameState());
     }
 
     /**
