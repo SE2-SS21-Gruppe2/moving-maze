@@ -23,13 +23,12 @@ public class JoinSessionHandler extends Listener {
             JoinRequest jr = (JoinRequest) obj;
             Log.info("Received request to join session '" + jr.getSessionKey() + "' from " + con.getRemoteAddressTCP().getAddress().toString());
 
-            Session target = SessionManager.getSessionByKey(jr.getSessionKey());
-            if(target != null) {
-                GameStateHandler foundSession = processJoinRequest(jr.getPlayer(), target);
+            if(SessionManager.sessionExists(jr.getSessionKey())) {
+                boolean joinSuccess = processJoinRequest(jr.getPlayer(), con, jr.getSessionKey());
 
-                if(foundSession != null) {
+                if(joinSuccess) {
                     Log.info("Player '" + jr.getPlayer().getName() + "' added to '" + jr.getSessionKey() + "'");
-                    con.sendTCP(new JoinRequestConfirmation(foundSession.getSessionCode()));
+                    con.sendTCP(new JoinRequestConfirmation(jr.getSessionKey()));
                 } else {
                     String message = "Unable to join session '" + jr.getSessionKey() + "' because MAX_PLAYER count reached. Rejecting player '" + jr.getPlayer().getName() + "'";
                     Log.info(message);
@@ -43,13 +42,14 @@ public class JoinSessionHandler extends Listener {
         }
     }
 
-    public GameStateHandler processJoinRequest(Player pl, Session se) {
+    public boolean processJoinRequest(Player pl, Connection con, String key) {
         try {
-            se.addPlayer(pl);
-            return se.getState();
+            Session se = SessionManager.getSessionByKey(key);
+            se.addPlayer(pl, con);
+            return true;
         } catch(IllegalStateException ise) {
-            Log.error("Failed to join session '" + se.getKey() + "': MAX_PLAYER limit reached");
-            return null;
+            Log.error("Failed to join session '" + key + "': MAX_PLAYER limit reached");
+            return false;
         }
     }
 

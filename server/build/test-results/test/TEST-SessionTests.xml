@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SessionTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-05-17T08:01:28" hostname="ricebowl" time="0.059">
+  <properties/>
+  <testcase name="correctKeyOnNewSession()" classname="SessionTests" time="0.051"/>
+  <testcase name="playerAdded()" classname="SessionTests" time="0.004"/>
+  <testcase name="gameStateSet()" classname="SessionTests" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

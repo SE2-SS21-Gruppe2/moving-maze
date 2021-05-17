@@ -75,4 +75,8 @@ public class SessionManager {
     public static int getLastKey() {
         return lastKey;
     }
+
+    public static boolean sessionExists(String key) {
+        return sessionRegistry.get(key) != null;
+    }
 }
