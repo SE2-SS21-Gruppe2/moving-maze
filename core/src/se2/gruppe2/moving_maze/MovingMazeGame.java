@@ -1,6 +1,7 @@
 package se2.gruppe2.moving_maze;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -35,11 +36,16 @@ public class MovingMazeGame extends Game {
 	public GameScreen gameScreen;
 	public OptionScreen optionScreen;
 	public RuleScreen ruleScreen;
+	// new
+	public LoadingScreen loadingScreen;
+	public SplashScreen splashScreen;
+	public AssetManager assets;
+	public OrthographicCamera camera;
 
 	// Network
 	public NetworkClient client;
 
-	/**
+    /**
 	 * Private constructor to avoid accidental instantiation
 	 */
 	private MovingMazeGame() { }
@@ -49,6 +55,8 @@ public class MovingMazeGame extends Game {
 	 */
 	@Override
 	public void create () {
+
+		assets = new AssetManager();
 		// set game-reliant constants
 		MovingMazeGame.BTN_HEIGHT = Gdx.graphics.getHeight()/8.5f;
 		MovingMazeGame.BTN_WIDTH = Gdx.graphics.getWidth()/5f;
@@ -58,6 +66,8 @@ public class MovingMazeGame extends Game {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		font.getData().setScale(3);
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, WIDTH, HEIGHT);
 
 		// Instantiate all screens
 		joinSessionScreen = new JoinSessionScreen(this);
@@ -66,10 +76,16 @@ public class MovingMazeGame extends Game {
 		gameScreen = new GameScreen(this);
 		optionScreen = new OptionScreen(this);
 		ruleScreen = new RuleScreen(this);
+		loadingScreen = new LoadingScreen(this);
+		splashScreen = new SplashScreen(this);
 
 
 		// display main-menu when the game is started
-		setScreen(mainMenuScreen);
+
+		//setScreen(mainMenuScreen);
+    
+    // try loading screen
+		setScreen(loadingScreen);
 	}
 
 	/**
@@ -87,6 +103,11 @@ public class MovingMazeGame extends Game {
 	public void dispose () {
 		batch.dispose();
 		font.dispose();
+		assets.dispose();
+		loadingScreen.dispose();
+		splashScreen.dispose();
+		mainMenuScreen.dispose();
+
 	}
 
 	/**
