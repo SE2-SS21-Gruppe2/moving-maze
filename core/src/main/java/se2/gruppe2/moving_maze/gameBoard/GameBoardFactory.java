@@ -90,6 +90,8 @@ public class GameBoardFactory {
                 else itemOnTile=true;
             }
         }
+
+        itemPathCounter = 0;
     }
 
 

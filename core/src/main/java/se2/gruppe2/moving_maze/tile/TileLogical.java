@@ -4,7 +4,6 @@ import se2.gruppe2.moving_maze.item.ItemLogical;
 
 public abstract class TileLogical {
 
-
     private boolean openTop;
     private boolean openRight;
     private boolean openBottom;
