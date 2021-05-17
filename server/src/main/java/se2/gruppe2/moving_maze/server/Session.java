@@ -1,11 +1,13 @@
 package se2.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.minlog.Log;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.player.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Session {
     private static final int MAX_PLAYERS = 4;
@@ -32,6 +34,27 @@ public class Session {
         } else {
             throw new IllegalStateException();
         }
+    }
+
+    public void sendStateToPlayers() {
+
+        Player currentPlayer;
+        Connection currentConnection;
+        for(Map.Entry<Player, Connection> entry : players.entrySet()) {
+
+            currentPlayer = entry.getKey();
+            currentConnection = entry.getValue();
+
+            if(currentPlayer != null && currentConnection != null) {
+                Log.info("(" + key + ") Sending gamestate update to player '" + currentPlayer.getName() + "'");
+
+            } else {
+                Log.info("(" + key + ") Player or connection == NULL; not distributing gamestate update");
+            }
+
+        }
+
+        Log.info("(" + key + ") State update finished");
     }
 
     // GETTER & SETTER
