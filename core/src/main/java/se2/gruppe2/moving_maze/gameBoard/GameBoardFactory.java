@@ -3,7 +3,7 @@ package se2.gruppe2.moving_maze.gameBoard;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import se2.gruppe2.moving_maze.item.Item;
+import se2.gruppe2.moving_maze.item.ItemLogical;
 import se2.gruppe2.moving_maze.item.Position;
 import se2.gruppe2.moving_maze.tile.Tile;
 import se2.gruppe2.moving_maze.tile.TileFactory;
@@ -76,6 +76,8 @@ public class GameBoardFactory {
                 else itemOnTile=true;
             }
         }
+
+        itemPathCounter = 0;
     }
 
 
@@ -101,11 +103,11 @@ public class GameBoardFactory {
     /**
      *Gets all components to create an item
      */
-    private static Item buildItem(int x, int y){
+    private static ItemLogical buildItem(int x, int y){
         Position position = new Position();
         position.setPosition(x, y);
         String path= itemPaths[itemPathCounter++];
-        return new Item(path, position,false);
+        return new ItemLogical(path, position,false);
     }
 
     /**
