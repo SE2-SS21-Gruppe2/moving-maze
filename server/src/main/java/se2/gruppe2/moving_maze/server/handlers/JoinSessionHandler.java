@@ -27,7 +27,7 @@ public class JoinSessionHandler extends Listener {
                 boolean joinSuccess = processJoinRequest(jr.getPlayer(), con, jr.getSessionKey());
 
                 if(joinSuccess) {
-                    Log.info("Player '" + jr.getPlayer().getName() + "' added to '" + jr.getSessionKey() + "'");
+                    Log.info("Player '" + jr.getPlayer().getName() + "' added to '" + jr.getSessionKey() + "'. This session now has " + SessionManager.getSessionByKey(jr.getSessionKey()).getNumberOfPlayersInSession() + " connected players.");
                     con.sendTCP(new JoinRequestConfirmation(jr.getSessionKey()));
                 } else {
                     String message = "Unable to join session '" + jr.getSessionKey() + "' because MAX_PLAYER count reached. Rejecting player '" + jr.getPlayer().getName() + "'";

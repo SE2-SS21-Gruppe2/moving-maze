@@ -394,6 +394,7 @@ public class CreateSessionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.mainMenuScreen);
+                // TODO: delete session on server
             }
         });
     }

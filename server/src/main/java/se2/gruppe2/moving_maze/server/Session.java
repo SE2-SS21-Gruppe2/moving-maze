@@ -76,4 +76,12 @@ public class Session {
         this.state = state;
     }
 
+    public int getNumberOfPlayersInSession() {
+        int num = 0;
+        for (Map.Entry<Player, Connection> p : players.entrySet()) {
+            num++;
+        }
+        return num;
+    }
+
 }
