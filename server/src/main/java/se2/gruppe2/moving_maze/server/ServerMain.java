@@ -20,8 +20,8 @@ public class ServerMain {
         srv.start();
 
         // always create a default session for dev-purpose
-        SessionManager.createSessionByKey("devgame");
-        // SessionManager.getSessionByKey("devgame").getState().setBoard(GameBoardFactory.getStandardGameBoard());
+        SessionManager.createSessionByKey("DEVGME");
+        // SessionManager.getSessionByKey("DEVGME").getState().setBoard(GameBoardFactory.getStandardGameBoard());
 
         try {
             srv.bind(ServerConfiguration.PORT);

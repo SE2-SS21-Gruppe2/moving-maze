@@ -82,6 +82,8 @@ public class CreateSessionScreen implements Screen {
     private int numOfCards;
     private String theme;
 
+    private float clock;
+
 
     public CreateSessionScreen(final MovingMazeGame game) {
         this.game = game;
@@ -121,9 +123,7 @@ public class CreateSessionScreen implements Screen {
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
-
-
-
+        clock = 0;
 
         setUpTables();
         stage.addActor(table);
@@ -140,6 +140,7 @@ public class CreateSessionScreen implements Screen {
 
         game.player = new Player("Developer " + new Random().nextInt(10));
         game.client.createNewSession();
+
 
         // Debugging
         stage.setDebugAll(false);
@@ -297,7 +298,7 @@ public class CreateSessionScreen implements Screen {
 
         // --- RT - 5th Row (Code & Start) ---
         rightTable.row();
-        gameCode = new Label("XYABCD", myLblStyle);
+        gameCode = new Label("      ", myLblStyle);
         gameCode.setAlignment(Align.center);
         gameCode.setFontScale(1.3f*scalingFactor);
         rightTable.add(gameCode).padLeft(20f*scalingFactor).expandY().align(Align.center).center();
@@ -417,6 +418,16 @@ public class CreateSessionScreen implements Screen {
         stage.draw();
         game.batch.end();
 
+        clock -= Gdx.graphics.getDeltaTime();
+        if (clock < 0){
+            updateGameCodeAndConnectedPlayers();
+            clock = 5;
+        }
+    }
+
+    private void updateGameCodeAndConnectedPlayers() {
+
+        gameCode.setText(game.getSessionKey());
 
     }
 

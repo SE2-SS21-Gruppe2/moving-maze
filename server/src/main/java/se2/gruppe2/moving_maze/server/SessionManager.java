@@ -64,8 +64,16 @@ public class SessionManager {
      * @return key represented as String
      */
     public static String generateRandomKey() {
-        String randBetweenBounds = String.valueOf(random.nextInt((rand_max_key-rand_min_key)+1) + rand_min_key);
-        return randBetweenBounds + lastKey++;
+        //String randBetweenBounds = String.valueOf(random.nextInt((rand_max_key-rand_min_key)+1) + rand_min_key);
+        //return randBetweenBounds + lastKey++;
+
+        String setOfCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String randomString = "";
+        for (int i = 0; i < 6; i++){
+            randomString += setOfCharacters.charAt(random.nextInt(setOfCharacters.length()));
+        }
+        return randomString;
+
     }
 
     public static void reset() {
@@ -79,4 +87,5 @@ public class SessionManager {
     public static boolean sessionExists(String key) {
         return sessionRegistry.get(key) != null;
     }
+
 }

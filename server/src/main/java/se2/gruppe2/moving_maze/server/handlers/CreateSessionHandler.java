@@ -17,7 +17,12 @@ public class CreateSessionHandler extends Listener {
             CreateSessionRequest csr = (CreateSessionRequest) obj;
             Log.info("Received request to create new session");
 
-            Session newSession = SessionManager.createSessionByKey(SessionManager.generateRandomKey());
+            Session newSession;
+            int tryCounter = 5;
+            do {
+                newSession = SessionManager.createRandomSession();
+                tryCounter--;
+            } while( newSession == null && tryCounter != 0);
 
             if (newSession != null) {
                 Log.info("New session created with session key '" + newSession.getKey() + "'");

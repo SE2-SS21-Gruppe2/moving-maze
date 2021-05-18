@@ -25,6 +25,7 @@ public class MovingMazeGame extends Game {
 	private GameStateHandler state;
 
 	public Player player;
+	public String sessionKey;
 
 	public SpriteBatch batch;
 	public BitmapFont font;
@@ -149,4 +150,11 @@ public class MovingMazeGame extends Game {
 		this.state = state;
 	}
 
+	public String getSessionKey() {
+		return sessionKey;
+	}
+
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
+	}
 }
