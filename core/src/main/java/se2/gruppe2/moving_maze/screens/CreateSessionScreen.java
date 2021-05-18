@@ -19,6 +19,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
+import se2.gruppe2.moving_maze.player.Player;
+
+import java.util.Random;
 
 public class CreateSessionScreen implements Screen {
 
@@ -135,10 +138,13 @@ public class CreateSessionScreen implements Screen {
 
         setUpActorListeners();
 
+        game.player = new Player("Developer " + new Random().nextInt(10));
+        game.client.createNewSession();
+
         // Debugging
         stage.setDebugAll(false);
-        System.out.println("Y: "+ myScreenHeight + ", X: " + myScreenWidth);
-        System.out.println("Scaling Factor "+ scalingFactor);
+        //System.out.println("Y: "+ myScreenHeight + ", X: " + myScreenWidth);
+        //System.out.println("Scaling Factor "+ scalingFactor);
     }
 
     public void setUpTables(){

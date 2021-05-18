@@ -8,8 +8,10 @@ import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.item.Card;
 import se2.gruppe2.moving_maze.item.ItemLogical;
 import se2.gruppe2.moving_maze.item.Position;
+import se2.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.RequestProcessError;
+import se2.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.player.PlayerRole;
@@ -46,6 +48,8 @@ public class Registry {
         kryo.register(Tile[].class);
         kryo.register(Tile[][].class);
         kryo.register(JoinRequestConfirmation.class);
+        kryo.register(CreateSessionRequest.class);
+        kryo.register(CreateSessionRequestConfirmation.class);
     }
 
 }
