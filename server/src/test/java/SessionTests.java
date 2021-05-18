@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.esotericsoftware.kryonet.Connection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
@@ -23,9 +24,10 @@ public class SessionTests {
     @Test
     public void playerAdded() {
         Player p = new Player("John Doe");
-        se.addPlayer(p);
+        // TODO: mock connection
+        se.addPlayer(p, null);
 
-        assertEquals(p, se.getPlayers().get(0));
+        assertEquals(1, se.getPlayers().size());
     }
 
     @Test

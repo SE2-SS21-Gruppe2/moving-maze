@@ -1,6 +1,7 @@
 package se2.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.minlog.Log;
+import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -36,10 +37,9 @@ public class SessionManager {
      */
     public static Session createRandomSession() {
         String generatedKey = generateRandomKey();
-        Session session = new Session(generatedKey);
-        sessionRegistry.put(generatedKey, session);
-        Log.info("Generated session with key '" + generatedKey + "'");
-        return session;
+        Log.info("Generated session-key '" + generatedKey + "'");
+
+        return createSessionByKey(generatedKey);
     }
 
     /**
@@ -74,5 +74,9 @@ public class SessionManager {
 
     public static int getLastKey() {
         return lastKey;
+    }
+
+    public static boolean sessionExists(String key) {
+        return sessionRegistry.get(key) != null;
     }
 }

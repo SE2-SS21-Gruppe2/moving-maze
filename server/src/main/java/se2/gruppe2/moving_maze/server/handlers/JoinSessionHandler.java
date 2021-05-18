@@ -4,12 +4,17 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
+import se2.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.server.Session;
 import se2.gruppe2.moving_maze.server.SessionManager;
 
+/**
+ * Invoked when a Client tries to join a session.
+ * Tries to add the client to the session and send the gamestate or, in case of failure, return an error message.
+ */
 public class JoinSessionHandler extends Listener {
 
     @Override
@@ -18,13 +23,12 @@ public class JoinSessionHandler extends Listener {
             JoinRequest jr = (JoinRequest) obj;
             Log.info("Received request to join session '" + jr.getSessionKey() + "' from " + con.getRemoteAddressTCP().getAddress().toString());
 
-            Session target = SessionManager.getSessionByKey(jr.getSessionKey());
-            if(target != null) {
-                GameStateHandler response = processJoinRequest(jr.getPlayer(), target);
+            if(SessionManager.sessionExists(jr.getSessionKey())) {
+                boolean joinSuccess = processJoinRequest(jr.getPlayer(), con, jr.getSessionKey());
 
-                if(response != null) {
+                if(joinSuccess) {
                     Log.info("Player '" + jr.getPlayer().getName() + "' added to '" + jr.getSessionKey() + "'");
-                    con.sendTCP(response);
+                    con.sendTCP(new JoinRequestConfirmation(jr.getSessionKey()));
                 } else {
                     String message = "Unable to join session '" + jr.getSessionKey() + "' because MAX_PLAYER count reached. Rejecting player '" + jr.getPlayer().getName() + "'";
                     Log.info(message);
@@ -38,13 +42,14 @@ public class JoinSessionHandler extends Listener {
         }
     }
 
-    public GameStateHandler processJoinRequest(Player pl, Session se) {
+    public boolean processJoinRequest(Player pl, Connection con, String key) {
         try {
-            se.addPlayer(pl);
-            return se.getState();
+            Session se = SessionManager.getSessionByKey(key);
+            se.addPlayer(pl, con);
+            return true;
         } catch(IllegalStateException ise) {
-            Log.error("Failed to join session '" + se.getKey() + "': MAX_PLAYER limit reached");
-            return null;
+            Log.error("Failed to join session '" + key + "': MAX_PLAYER limit reached");
+            return false;
         }
     }
 
