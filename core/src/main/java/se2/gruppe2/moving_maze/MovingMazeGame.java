@@ -14,8 +14,8 @@ import se2.gruppe2.moving_maze.screens.*;
 public class MovingMazeGame extends Game {
 
 	// Constants
-	public static final int HEIGHT = 600;
-	public static final int WIDTH = 1100;
+	public static int HEIGHT;
+	public static int WIDTH;
 	public static float BTN_WIDTH;
 	public static float BTN_HEIGHT;
 
@@ -60,6 +60,8 @@ public class MovingMazeGame extends Game {
 		// set game-reliant constants
 		MovingMazeGame.BTN_HEIGHT = Gdx.graphics.getHeight()/8.5f;
 		MovingMazeGame.BTN_WIDTH = Gdx.graphics.getWidth()/5f;
+		MovingMazeGame.WIDTH = Gdx.graphics.getWidth();
+		MovingMazeGame.HEIGHT = Gdx.graphics.getHeight();
 
 		client = NetworkClient.getInstance();
 		state = new GameStateHandler();

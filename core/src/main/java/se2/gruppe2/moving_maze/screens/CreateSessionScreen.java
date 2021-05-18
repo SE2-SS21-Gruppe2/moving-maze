@@ -39,12 +39,15 @@ public class CreateSessionScreen implements Screen {
     private Texture myFontTexture;
     private BitmapFont myFont;
     private Texture startImageTexture;
+    private Label.LabelStyle myLblStyle;
+    private TextButton backButton;
 
     // measures
     private float myScreenHeight;
     private float myScreenWidth;
     private float yHeight;
     private float xWidth;
+    private float scalingFactor;
 
     // Tables
     private Table table;
@@ -56,6 +59,7 @@ public class CreateSessionScreen implements Screen {
     private Slider numberOfCardsSlider;
     private Label numOfCardsValueLabel;
     private TextButton cheatingAllowedButton;
+    private Label themeLabel;
     private TextButton themeButton;
     private Label connectedPlayersLabel;
     private Label player1Label;
@@ -88,7 +92,7 @@ public class CreateSessionScreen implements Screen {
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_nomoss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
         startImageTexture = new Texture(Gdx.files.internal("ui/start.png"));
-        
+
         myShapeRenderer = new MyShapeRenderer();
 
         myScreenHeight = Gdx.graphics.getHeight();
@@ -106,21 +110,35 @@ public class CreateSessionScreen implements Screen {
         myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
         myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
-        myFont.getData().setScale(2f);
+        //myFont.getData().setScale(2f);
+        myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
+        scalingFactor = myScreenWidth/1280f;
+
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
 
-        setUpTables();
-        setUpActorListeners();
 
+
+        setUpTables();
         stage.addActor(table);
+
+        backButton = new TextButton("Back", skin);
+        backButton.getLabel().setFontScale(2.0f*scalingFactor);
+        Container<TextButton> backButtonContainer = new Container<>(backButton);
+        backButtonContainer.setTransform(true);
+        backButtonContainer.size(100*scalingFactor, 50f*scalingFactor);
+        backButtonContainer.setPosition(75f*scalingFactor,myScreenHeight - 50f*scalingFactor - backButtonContainer.getHeight());
+        stage.addActor(backButtonContainer);
+
+        setUpActorListeners();
 
         // Debugging
         stage.setDebugAll(false);
         System.out.println("Y: "+ myScreenHeight + ", X: " + myScreenWidth);
+        System.out.println("Scaling Factor "+ scalingFactor);
     }
 
     public void setUpTables(){
@@ -128,155 +146,162 @@ public class CreateSessionScreen implements Screen {
 
         // --- Left Table ---
         leftTable = new Table();
-        leftTable.defaults().padTop(25f);
-        leftTable.columnDefaults(0).width(0.15f*myScreenWidth);
+        leftTable.defaults().padTop(35f*scalingFactor);
+        leftTable.columnDefaults(0).width(0.17f*myScreenWidth);
+        leftTable.columnDefaults(2).width(50f*scalingFactor);
 
         // --- LT - 1st Row (Name) ---
-        var nameLabel = new Label("Name:", skin);
+        var nameLabel = new Label("Name:", myLblStyle);
         nameLabel.setAlignment(Align.left);
-        nameLabel.setFontScale(2.5f);
-        leftTable.add(nameLabel).pad(25f, 10f, 0, 0).align(Align.left);
+        nameLabel.setFontScale(scalingFactor);
+        leftTable.add(nameLabel).pad(0, 20f*scalingFactor, 0, 0).align(Align.left);
 
         txfName = new TextField("Martin", skin);
         var textFieldStyle = skin.get(TextField.TextFieldStyle.class);
-        textFieldStyle.font.getData().scale(1.5f);
+        textFieldStyle.font.getData().scale(scalingFactor);
         txfName.setStyle(textFieldStyle);
-        leftTable.add(txfName).pad(25f, 10f, 0, 10f).maxHeight(100).height(80).expandX().fillX();
+        leftTable.add(txfName).pad(10f, 10f, 0, 10f).width(250f*scalingFactor).height(75f*scalingFactor).expandX().fillX();
 
 
         // --- LT - 2nd Row (Lobby Settings) ---
         leftTable.row();
-        settingsLabel = new Label("Lobby Settings:", skin);
+        settingsLabel = new Label("Lobby Settings:", myLblStyle);
         settingsLabel.setAlignment(Align.left);
-        settingsLabel.setFontScale(1.8f);
-        leftTable.add(settingsLabel).colspan(3).pad(50f, 10f, 0, 0).align(Align.left).top();
+        settingsLabel.setFontScale(0.85f*scalingFactor);
+        leftTable.add(settingsLabel).colspan(3).pad(50f*scalingFactor, 20f*scalingFactor, 0, 0).align(Align.left).top();
 
         // --- LT - 3rd Row (Difficulty) ---
         leftTable.row();
-        var difficultyLabel = new Label("Difficulty", skin);
+        var difficultyLabel = new Label("Difficulty", myLblStyle);
         difficultyLabel.setAlignment(Align.left);
-        difficultyLabel.setFontScale(2.0f);
-        leftTable.add(difficultyLabel).padLeft(10f).align(Align.left);
+        difficultyLabel.setFontScale(scalingFactor);
+        leftTable.add(difficultyLabel).padLeft(20f*scalingFactor).align(Align.left);
 
         difficultySlider = new Slider(1, 3, 1, false, skin);
         difficultySlider.setValue(2);
         Container<Slider> difficultySliderContainer = new Container<>(difficultySlider);
         difficultySliderContainer.setTransform(true);
-        difficultySliderContainer.size(100, 50);
-        difficultySliderContainer.setOrigin((difficultySliderContainer.getWidth()+ 100)/2,
-                (difficultySliderContainer.getHeight()+50)/2);
-        difficultySliderContainer.setScale(3);
+        difficultySliderContainer.size(100f*scalingFactor, 25f*scalingFactor);
+        difficultySliderContainer.setOrigin((difficultySliderContainer.getWidth() + 100f*scalingFactor)/2.0f,
+                (difficultySliderContainer.getHeight() + 25f*scalingFactor)/2.0f);
+        difficultySliderContainer.setScale(2.5f);
         leftTable.add(difficultySliderContainer).expandX().fillX();
 
-        difficultyValueLabel = new Label(String.valueOf(Math.round(difficultySlider.getValue())), skin);
-        difficultyValueLabel.setFontScale(2.0f);
-        leftTable.add(difficultyValueLabel).align(Align.center).padRight(30.0f);
+        difficultyValueLabel = new Label(String.valueOf(Math.round(difficultySlider.getValue())), myLblStyle);
+        difficultyValueLabel.setFontScale(scalingFactor);
+        difficultyValueLabel.setAlignment(Align.center);
+        leftTable.add(difficultyValueLabel).align(Align.center).padRight(20f*scalingFactor);
 
 
         // --- LT - 4th Row (# of cards) ---
         leftTable.row();
-        var numberOfCardsLabel = new Label("# of Cards", skin);
+        var numberOfCardsLabel = new Label("# of Cards", myLblStyle);
         numberOfCardsLabel.setAlignment(Align.left);
-        numberOfCardsLabel.setFontScale(2.0f);
-        leftTable.add(numberOfCardsLabel).padLeft(10f).align(Align.left);
+        numberOfCardsLabel.setFontScale(scalingFactor);
+        leftTable.add(numberOfCardsLabel).padLeft(20f*scalingFactor).align(Align.left);
 
         numberOfCardsSlider = new Slider(1, 6, 1, false, skin);
         numberOfCardsSlider.setValue(3);
         Container<Slider> numberOfCardsSliderContainer = new Container<>(numberOfCardsSlider);
         numberOfCardsSliderContainer.setTransform(true);
-        numberOfCardsSliderContainer.size(100, 50);
-        numberOfCardsSliderContainer.setOrigin((numberOfCardsSliderContainer.getWidth()+ 100)/2,
-                (numberOfCardsSliderContainer.getHeight()+50)/2);
-        numberOfCardsSliderContainer.setScale(3);
+        numberOfCardsSliderContainer.size(100f*scalingFactor, 25f*scalingFactor);
+        numberOfCardsSliderContainer.setOrigin((numberOfCardsSliderContainer.getWidth() + 100f*scalingFactor)/2.0f,
+                (numberOfCardsSliderContainer.getHeight() + 25f*scalingFactor)/2.0f);
+        numberOfCardsSliderContainer.setScale(2.5f);
         leftTable.add(numberOfCardsSliderContainer).expandX().fillX();
 
 
-        numOfCardsValueLabel = new Label(String.valueOf(Math.round(numberOfCardsSlider.getValue())), skin);
-        numOfCardsValueLabel.setFontScale(2.0f);
-        leftTable.add(numOfCardsValueLabel).align(Align.center).padRight(30.0f);
+        numOfCardsValueLabel = new Label(String.valueOf(Math.round(numberOfCardsSlider.getValue())), myLblStyle);
+        numOfCardsValueLabel.setFontScale(scalingFactor);
+        numOfCardsValueLabel.setAlignment(Align.center);
+        leftTable.add(numOfCardsValueLabel).align(Align.center).padRight(20f*scalingFactor);
 
 
         // --- LT - 5th Row (Cheating) ---
         leftTable.row();
-        var cheatingAllowedLabel = new Label("Cheating", skin);
+        var cheatingAllowedLabel = new Label("Cheating", myLblStyle);
         cheatingAllowedLabel.setAlignment(Align.left);
-        cheatingAllowedLabel.setFontScale(2.0f);
-        leftTable.add(cheatingAllowedLabel).padLeft(10f).align(Align.left);
+        cheatingAllowedLabel.setFontScale(scalingFactor);
+        leftTable.add(cheatingAllowedLabel).padLeft(20f*scalingFactor).align(Align.left);
 
         cheatingAllowedButton = new TextButton("Allowed", skin);
-        cheatingAllowedButton.getLabel().setFontScale(2.0f);
+        cheatingAllowedButton.getLabel().setFontScale(2.0f*scalingFactor);
         Container<TextButton> cheatingAllowedButtonContainer = new Container<>(cheatingAllowedButton);
         cheatingAllowedButtonContainer.setTransform(true);
-        cheatingAllowedButtonContainer.size(225
-                ,cheatingAllowedButton.getHeight()*0.8f);
+        cheatingAllowedButtonContainer.size(225f*scalingFactor,cheatingAllowedButton.getHeight()*0.8f);
         leftTable.add(cheatingAllowedButtonContainer).expandX().fillX();
 
 
         // --- LT - 6th Row (Theme) ---
         leftTable.row();
-        var themeLabel = new Label("Theme", skin);
+        themeLabel = new Label("Theme", myLblStyle);
         themeLabel.setAlignment(Align.left);
-        themeLabel.setFontScale(2.0f);
-        leftTable.add(themeLabel).padLeft(10f).align(Align.left);
+        themeLabel.setFontScale(scalingFactor);
+        leftTable.add(themeLabel).padLeft(20f*scalingFactor).align(Align.left);
 
         themeButton = new TextButton("Original", skin);
-        themeButton.getLabel().setFontScale(2.0f);
+        themeButton.getLabel().setFontScale(2.0f*scalingFactor);
         themeButton.setDisabled(true);
         themeButton.setTouchable(Touchable.disabled);
         themeButton.setColor(0.5f, 0.5f,0.5f,1f);
         Container<TextButton> themeButtonContainer = new Container<>(themeButton);
         themeButtonContainer.setTransform(true);
-        themeButtonContainer.size(225, themeButton.getHeight()*0.8f);
+        themeButtonContainer.size(225f*scalingFactor, themeButton.getHeight()*0.8f);
         leftTable.add(themeButtonContainer).expandX().fillX();
+
+        leftTable.row();
+        var emptyLabel1 = new Label("", myLblStyle);
+        emptyLabel1.setFontScale(0.1f*scalingFactor);
+        leftTable.add(emptyLabel1).colspan(3).padLeft(20f*scalingFactor).expand().fill();
 
 
 
 
         // --- Right Table
         rightTable = new Table();
-        rightTable.defaults().padTop(35f);
+        rightTable.defaults().padTop(35f*scalingFactor);
 
         // --- RT - 1st Row (Connected Players) ---
-        connectedPlayersLabel = new Label("Connected Players:", skin);
+        connectedPlayersLabel = new Label("Connected Players:", myLblStyle);
         connectedPlayersLabel.setAlignment(Align.left);
-        connectedPlayersLabel.setFontScale(1.8f);
-        rightTable.add(connectedPlayersLabel).colspan(2).pad(48f, 10f, 0, 0).align(Align.left).top().expandX();
+        connectedPlayersLabel.setFontScale(0.85f*scalingFactor);
+        rightTable.add(connectedPlayersLabel).colspan(2).pad(0, 10f, 0, 0).align(Align.left).top().expandX();
 
         // --- RT - 2nd Row (Player 1) ---
         rightTable.row();
-        player1Label = new Label("Flo", skin);
+        player1Label = new Label("Flo", myLblStyle);
         player1Label.setAlignment(Align.left);
-        player1Label.setFontScale(2.0f);
+        player1Label.setFontScale(scalingFactor);
         rightTable.add(player1Label).padLeft(40f).align(Align.left);
 
         // --- RT - 3rd Row (Player 2) ---
         rightTable.row();
-        player2Label = new Label("Alexandra", skin);
+        player2Label = new Label("Alexandra", myLblStyle);
         player2Label.setAlignment(Align.left);
-        player2Label.setFontScale(2.0f);
+        player2Label.setFontScale(scalingFactor);
         rightTable.add(player2Label).padLeft(40f).align(Align.left);
 
         // --- RT - 4th Row (Player 3) ---
         rightTable.row();
-        player3Label = new Label("Andi", skin);
+        player3Label = new Label("Andi", myLblStyle);
         player3Label.setAlignment(Align.left);
-        player3Label.setFontScale(2.0f);
+        player3Label.setFontScale(scalingFactor);
         rightTable.add(player3Label).padLeft(40f).align(Align.left);
 
 
         // --- RT - 5th Row (Code & Start) ---
         rightTable.row();
-        gameCode = new Label("XYABCD", skin);
+        gameCode = new Label("XYABCD", myLblStyle);
         gameCode.setAlignment(Align.center);
-        gameCode.setFontScale(3.0f);
-        rightTable.add(gameCode).padTop(50F).padLeft(10F).expandY().center();
+        gameCode.setFontScale(1.3f*scalingFactor);
+        rightTable.add(gameCode).padLeft(20f*scalingFactor).expandY().align(Align.center).center();
 
         var startIconSprite = new Sprite(startImageTexture);
         startIcon = new Image(new SpriteDrawable(startIconSprite));
         startIcon.setOrigin(startIcon.getOriginX()+startIcon.getWidth()/2.0f, startIcon.getOriginY()+startIcon.getHeight()/2.0f);
-        startIcon.setScale(1.5f);
+        startIcon.setScale(0.75f*scalingFactor);
         stage.addActor(startIcon);
-        rightTable.add(startIcon).padTop(50F).expandY().center();
+        rightTable.add(startIcon).expand().align(Align.center).center();
 
 
 
@@ -286,18 +311,18 @@ public class CreateSessionScreen implements Screen {
         table.setFillParent(true);
 
         // --- Table - 1st Row ---
-        var lblCreateLobbyHeading = new Label("CREATE LOBBY", new Label.LabelStyle(myFont, Color.WHITE));
-        lblCreateLobbyHeading.setFontScale(2.0f);
+        var lblCreateLobbyHeading = new Label("CREATE LOBBY", myLblStyle);
+        lblCreateLobbyHeading.setFontScale(2.0f*scalingFactor);
         lblCreateLobbyHeading.setAlignment(Align.center);
-        table.add(lblCreateLobbyHeading).colspan(2).fillX();
+        table.add(lblCreateLobbyHeading).colspan(2).padBottom(15f*scalingFactor).padTop(10f*scalingFactor).fillX().expand();
 
         // --- Table - 2nd Row ---
         table.row();
-        table.add(leftTable).expand().fill().width(myScreenWidth /2.0f + 40.0f);
-        table.add(rightTable).expand().fill().width(myScreenWidth /2.0f - 80.0f);
+        table.add(leftTable).expand().fill().width(myScreenWidth /2.0f + 40.0f).top();
+        table.add(rightTable).expand().fill().width(myScreenWidth /2.0f - 80.0f).top();
 
         // --- Table - Last Row ---
-        table.row().height(30f);
+        table.row().height(30f*scalingFactor);
         var emptyLabel = new Label("", skin);
         table.add(emptyLabel).colspan(2);
 
@@ -326,28 +351,28 @@ public class CreateSessionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (gameReady){
-                System.out.println("GAME STARTED");
-                String[] players = {player, player1Label.getText().toString(), player2Label.getText().toString(),player3Label.getText().toString() };
-                createAndStartGame(players, difficulty, numOfCards, cheatingAllowed, theme);
+                    System.out.println("GAME STARTED");
+                    String[] players = {player, player1Label.getText().toString(), player2Label.getText().toString(),player3Label.getText().toString() };
+                    createAndStartGame(players, difficulty, numOfCards, cheatingAllowed, theme);
                 }
             }
         });
 
         cheatingAllowedButton.addListener(new ClickListener() {
-           public void clicked(InputEvent event, float x, float y) {
-               cheatingAllowed ^= true;
-               if (cheatingAllowed) {
-                   cheatingAllowedButton.setText("Allowed");
-               } else {
-                   cheatingAllowedButton.setText("Not Allowed");
-               }
-           }
+            public void clicked(InputEvent event, float x, float y) {
+                cheatingAllowed ^= true;
+                if (cheatingAllowed) {
+                    cheatingAllowedButton.setText("Allowed");
+                } else {
+                    cheatingAllowedButton.setText("Not Allowed");
+                }
+            }
         });
 
         themeButton.addListener(new ClickListener() {
-           public void clicked(InputEvent event, float x, float y) {
-               // code for multiple themes
-           }
+            public void clicked(InputEvent event, float x, float y) {
+                // code for multiple themes
+            }
         });
 
         txfName.addListener(new ChangeListener() {
@@ -358,6 +383,12 @@ public class CreateSessionScreen implements Screen {
             }
         });
 
+        backButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(game.mainMenuScreen);
+            }
+        });
     }
 
     public void createAndStartGame(String[] players, float difficulty, float numOfCards, boolean cheatingAllowed, String theme){
@@ -389,14 +420,13 @@ public class CreateSessionScreen implements Screen {
         myShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         myShapeRenderer.setColor(0.5f,0.5f,0.5f,0.8f);
         // name
-        myShapeRenderer.roundedRect(leftTable.getX()+5, txfName.getY() + txfName.getHeight()/2 - 10, leftTable.getWidth() - leftTable.getX() + 10, txfName.getHeight()+30,10);
+        myShapeRenderer.roundedRect(leftTable.getX() + 5f*scalingFactor, txfName.getY() + txfName.getHeight()/2 - 5f*scalingFactor, leftTable.getWidth() - leftTable.getX() + 10f*scalingFactor, txfName.getHeight()+25f*scalingFactor,10);
         // lobby settings
-        myShapeRenderer.roundedRect(leftTable.getX()+5, leftTable.getY(), leftTable.getWidth() - leftTable.getX() + 10,((settingsLabel.getY() + settingsLabel.getHeight()+60) - leftTable.getY()),10);
+        myShapeRenderer.roundedRect(leftTable.getX()+5f*scalingFactor, themeLabel.getY() + themeLabel.getHeight()/2.0f, leftTable.getWidth() - leftTable.getX() + 10f*scalingFactor, ((settingsLabel.getY() + settingsLabel.getHeight()) - themeLabel.getY() + themeLabel.getHeight()),10);
         // joining players
-        myShapeRenderer.roundedRect(rightTable.getX()+3, player3Label.getY() + player1Label.getHeight()/3, rightTable.getWidth() - leftTable.getX(),((connectedPlayersLabel.getY() + connectedPlayersLabel.getHeight()+ 2*player3Label.getHeight()/3) - player3Label.getY()),10);
+        myShapeRenderer.roundedRect(rightTable.getX(), player3Label.getY() + connectedPlayersLabel.getHeight()/3.0f, rightTable.getWidth() - leftTable.getX() + 5f*scalingFactor, ((txfName.getY() + txfName.getHeight()/2 - 5f*scalingFactor) + (txfName.getHeight()+25f*scalingFactor) - player3Label.getY() - connectedPlayersLabel.getHeight()/3.0f),10);
         // game code
-        myShapeRenderer.roundedRect(rightTable.getX()+10, gameCode.getY()+gameCode.getHeight()/2, gameCode.getWidth()+30, gameCode.getHeight()+20, 10);
-
+        myShapeRenderer.roundedRect(rightTable.getX() + gameCode.getX() - 10f*scalingFactor, rightTable.getY() + gameCode.getY() - 10f*scalingFactor, gameCode.getWidth()+20f*scalingFactor, gameCode.getHeight()+20f*scalingFactor, 10);
         myShapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
