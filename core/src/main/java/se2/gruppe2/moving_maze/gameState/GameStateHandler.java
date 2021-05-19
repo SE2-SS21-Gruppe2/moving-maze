@@ -11,14 +11,6 @@ public class GameStateHandler {
     private GameState gameState;
     private ChatMessage[] chat;
 
-    public boolean submitUpdateGameState(){
-        return false;
-    }
-    public void receiveUpdateGameState(){}
-
-    public void initGame(){}
-    public void finishGame(){}
-
     // GETTER & SETTER
     public GameBoard getBoard() {
         return board;
