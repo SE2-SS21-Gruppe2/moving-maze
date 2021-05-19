@@ -9,13 +9,15 @@ import se2.gruppe2.moving_maze.gameBoard.GameBoard;
 import java.util.HashMap;
 
 public class TextureLoader {
-    public static final float tilePadding = 5.0f;
-    public static float tileEdgeSize = (float) Gdx.graphics.getHeight() / GameBoard.tilesPerEdge - tilePadding*2.0f;
-    public static final float tileEdgeSizeNoPadding = tileEdgeSize - 2.0f*tilePadding;
-    public static final float itemEdgeSize= (float)(Gdx.graphics.getHeight()*1f / GameBoard.tilesPerEdge - 20f);
-
+    public static final float TILE_PADDING = 5.0f;
+    public static final float TILE_EDGE_SIZE = (float) Gdx.graphics.getHeight() / GameBoard.TILES_PER_EDGE - TILE_PADDING *2.0f;
+    public static final float TILE_EDGE_SIZE_NO_PADDING = TILE_EDGE_SIZE - 2.0f* TILE_PADDING;
+    public static final float TIME_EDGE_SIZE = (Gdx.graphics.getHeight()*1f / GameBoard.TILES_PER_EDGE - 20f);
 
     private static HashMap<String, Sprite> textures = new HashMap<>();
+
+    // prevent instantiation - static utility class
+    private TextureLoader() {}
 
     /**
      * Stores, scales & loads textures
@@ -53,21 +55,21 @@ public class TextureLoader {
      * @return the scaled texture
      */
     private static Texture getScaledItemTexture(String texturePath, boolean onCard) {
-        Pixmap originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+        var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
         Pixmap scaledPicture;
 
         if(onCard){
-            scaledPicture = new Pixmap((int) TextureLoader.itemEdgeSize,(int) TextureLoader.itemEdgeSize,originalPicture.getFormat());
+            scaledPicture = new Pixmap((int) TextureLoader.TIME_EDGE_SIZE,(int) TextureLoader.TIME_EDGE_SIZE,originalPicture.getFormat());
         }
         else {
-            scaledPicture = new Pixmap((int) TextureLoader.itemEdgeSize/2,(int) TextureLoader.itemEdgeSize/2,originalPicture.getFormat());
+            scaledPicture = new Pixmap((int) TextureLoader.TIME_EDGE_SIZE /2,(int) TextureLoader.TIME_EDGE_SIZE /2,originalPicture.getFormat());
         }
 
         scaledPicture.drawPixmap(originalPicture,
                 0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
                 0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
 
-        Texture scaledTileTexture = new Texture(scaledPicture);
+        var scaledTileTexture = new Texture(scaledPicture);
 
         originalPicture.dispose();
         scaledPicture.dispose();
@@ -81,15 +83,15 @@ public class TextureLoader {
      * @return the constructed, scaled texture
      */
     private static Texture getScaledTileTexture(String texturePath) {
-        Pixmap originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+        var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
 
-        Pixmap scaledPicture = new Pixmap((int) tileEdgeSizeNoPadding, (int) tileEdgeSizeNoPadding, originalPicture.getFormat());
+        var scaledPicture = new Pixmap((int) TILE_EDGE_SIZE_NO_PADDING, (int) TILE_EDGE_SIZE_NO_PADDING, originalPicture.getFormat());
 
         scaledPicture.drawPixmap(originalPicture,
                 0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
                 0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
 
-        Texture scaledTileTexture = new Texture(scaledPicture);
+        var scaledTileTexture = new Texture(scaledPicture);
 
         originalPicture.dispose();
         scaledPicture.dispose();

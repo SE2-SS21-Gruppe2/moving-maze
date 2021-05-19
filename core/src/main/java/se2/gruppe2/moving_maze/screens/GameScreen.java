@@ -135,14 +135,14 @@ public class GameScreen implements Screen {
 
                 if(currentItem != null) {
                     currentSprite = TextureLoader.getSpriteByTexturePath(currentItem.getTexturePath(), TextureType.ITEM);
-                    currentSprite.setPosition(cur_x+TextureLoader.tileEdgeSize/4f, cur_y + TextureLoader.tileEdgeSize/4f);
+                    currentSprite.setPosition(cur_x+TextureLoader.TILE_EDGE_SIZE /4f, cur_y + TextureLoader.TILE_EDGE_SIZE /4f);
                     currentSprite.draw(batch);
                 }
 
-                cur_x += TextureLoader.tileEdgeSize;
+                cur_x += TextureLoader.TILE_EDGE_SIZE;
             }
             cur_x = init_pos.getX();
-            cur_y += TextureLoader.tileEdgeSize;
+            cur_y += TextureLoader.TILE_EDGE_SIZE;
         }
     }
 

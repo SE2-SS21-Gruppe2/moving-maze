@@ -6,8 +6,8 @@ public class Position {
 
     private int x;
     private int y;
-    public static final int MAX_X = GameBoard.tilesPerEdge;
-    public static final int MAX_Y = GameBoard.tilesPerEdge;
+    public static final int MAX_X = GameBoard.TILES_PER_EDGE;
+    public static final int MAX_Y = GameBoard.TILES_PER_EDGE;
 
     public Position() {
 
