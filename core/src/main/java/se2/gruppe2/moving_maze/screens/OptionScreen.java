@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,6 +21,7 @@ import se2.gruppe2.moving_maze.audio.AudioManager;
 public class OptionScreen implements Screen {
 
     private final MovingMazeGame game;
+    private final SpriteBatch batch;
     private OrthographicCamera camera;
 
     private Texture bgImageTexture;
@@ -54,8 +56,8 @@ public class OptionScreen implements Screen {
     private AudioManager audioManager = AudioManager.getInstance();
 
     public OptionScreen(final MovingMazeGame game) {
-
         this.game = game;
+        this.batch = game.getBatch();
     }
 
     @Override
@@ -109,10 +111,10 @@ public class OptionScreen implements Screen {
     public void render(float delta) {
 
         ScreenUtils.clear(0,0,0,1);
-        game.batch.setProjectionMatrix(camera.combined);
-        game.batch.begin();
-        game.batch.draw(bgTextureRegion, 0, 0);
-        game.batch.end();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(bgTextureRegion, 0, 0);
+        batch.end();
         stage.draw();
     }
 
@@ -204,7 +206,7 @@ public class OptionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                game.setScreen(game.mainMenuScreen);
+                game.setScreen(game.getMainMenuScreen());
 
             }
         });

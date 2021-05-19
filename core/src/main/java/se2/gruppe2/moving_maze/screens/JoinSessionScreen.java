@@ -2,16 +2,19 @@ package se2.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 
 public class JoinSessionScreen implements Screen {
 
-    final MovingMazeGame game;
-    OrthographicCamera camera;
+    private final MovingMazeGame game;
+    private final SpriteBatch batch;
+    private OrthographicCamera camera;
 
     public JoinSessionScreen(final MovingMazeGame game) {
         this.game = game;
+        this.batch = game.getBatch();
         camera = MovingMazeGame.getStandardizedCamera();
     }
 
@@ -23,11 +26,11 @@ public class JoinSessionScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0,0,0,1);
-        game.batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
-        game.font.draw(game.batch, "Join session", 100, 100);
-        game.batch.end();
+        batch.begin();
+        game.getFont().draw(batch, "Join session", 100, 100);
+        batch.end();
     }
 
     @Override

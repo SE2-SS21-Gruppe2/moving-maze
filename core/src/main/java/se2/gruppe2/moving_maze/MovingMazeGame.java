@@ -16,34 +16,32 @@ public class MovingMazeGame extends Game {
 	// Constants
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 1100;
-	public static float BTN_WIDTH;
-	public static float BTN_HEIGHT;
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
 
 	private GameStateHandler state;
 
-	public Player player;
+	private Player player;
 
-	public SpriteBatch batch;
-	public BitmapFont font;
+	private SpriteBatch batch;
+	private BitmapFont font;
 
 	// Pre-instantiate screens to re-use
-	public JoinSessionScreen joinSessionScreen;
-	public CreateSessionScreen createSessionScreen;
-	public MainMenuScreen mainMenuScreen;
-	public GameScreen gameScreen;
-	public OptionScreen optionScreen;
-	public RuleScreen ruleScreen;
+	private JoinSessionScreen joinSessionScreen;
+	private CreateSessionScreen createSessionScreen;
+	private MainMenuScreen mainMenuScreen;
+	private GameScreen gameScreen;
+	private OptionScreen optionScreen;
+	private RuleScreen ruleScreen;
 	// new
-	public LoadingScreen loadingScreen;
-	public SplashScreen splashScreen;
-	public AssetManager assets;
-	public OrthographicCamera camera;
+	private LoadingScreen loadingScreen;
+	private SplashScreen splashScreen;
+	private AssetManager assets;
+	private OrthographicCamera camera;
 
 	// Network
-	public NetworkClient client;
+	private NetworkClient client;
 
     /**
 	 * Private constructor to avoid accidental instantiation
@@ -58,8 +56,6 @@ public class MovingMazeGame extends Game {
 
 		assets = new AssetManager();
 		// set game-reliant constants
-		MovingMazeGame.BTN_HEIGHT = Gdx.graphics.getHeight()/8.5f;
-		MovingMazeGame.BTN_WIDTH = Gdx.graphics.getWidth()/5f;
 
 		client = NetworkClient.getInstance();
 		state = new GameStateHandler();
@@ -80,21 +76,8 @@ public class MovingMazeGame extends Game {
 		loadingScreen = new LoadingScreen(this);
 		splashScreen = new SplashScreen(this);
 
-
-		// display main-menu when the game is started
-
-		//setScreen(mainMenuScreen);
-    
-    // try loading screen
+		// when started, show loading screen (which then transitions to the MainMenuScreen)
 		setScreen(loadingScreen);
-	}
-
-	/**
-	 * Lifecycle method called to render each frame
-	 */
-	@Override
-	public void render () {
-		super.render();
 	}
 
 	/**
@@ -127,18 +110,13 @@ public class MovingMazeGame extends Game {
 	 * Mostly used by screens to get the same virtual resolution.
 	 * @return OrthographicCamera with standardized height and width
 	 */
-	public static OrthographicCamera getStandardizedCamera() {
-		OrthographicCamera camera = new OrthographicCamera();
-		camera.setToOrtho(false, MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
-		return camera;
-	}
-
-	public static OrthographicCamera gameboardCamera(){
-		OrthographicCamera camera= new OrthographicCamera();
+	public static OrthographicCamera getStandardizedCamera(){
+		var camera= new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		return camera;
 	}
 
+	// GETTER & SETTER
 	public GameStateHandler getGameState() {
 		return state;
 	}
@@ -147,4 +125,63 @@ public class MovingMazeGame extends Game {
 		this.state = state;
 	}
 
+	public BitmapFont getFont() {
+		return this.font;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public SpriteBatch getBatch() {
+		return batch;
+	}
+
+	public GameScreen getGameScreen() {
+		return gameScreen;
+	}
+
+	public OptionScreen getOptionScreen() {
+		return optionScreen;
+	}
+
+	public CreateSessionScreen getCreateSessionScreen() {
+		return createSessionScreen;
+	}
+
+	public JoinSessionScreen getJoinSessionScreen() {
+		return joinSessionScreen;
+	}
+
+	public RuleScreen getRuleScreen() {
+		return ruleScreen;
+	}
+
+	public MainMenuScreen getMainMenuScreen() {
+		return mainMenuScreen;
+	}
+
+	public SplashScreen getSplashScreen() {
+		return splashScreen;
+	}
+
+	public LoadingScreen getLoadingScreen() {
+		return loadingScreen;
+	}
+
+	public NetworkClient getClient() {
+		return this.client;
+	}
+
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+
+	public AssetManager getAssets() {
+		return assets;
+	}
 }

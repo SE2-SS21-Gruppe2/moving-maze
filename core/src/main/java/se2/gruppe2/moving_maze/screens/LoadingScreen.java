@@ -26,20 +26,17 @@ public class LoadingScreen implements Screen {
     private Image loadingImg;
     private Table table;
 
-
-
-
     public LoadingScreen(MovingMazeGame game){
         this.game = game;
-        this.stage = new Stage(new FitViewport(MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT, game.camera));
+        this.stage = new Stage(new FitViewport(MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT, game.getCamera()));
 
     }
 
     private void queueAssets() {
 
-        game.assets.load("ui/splash.png", Texture.class);
-        game.assets.load("ui/uiskin.atlas", TextureAtlas.class);
-        game.assets.load("ui/loadingBar.png",Texture.class);
+        game.getAssets().load("ui/splash.png", Texture.class);
+        game.getAssets().load("ui/uiskin.atlas", TextureAtlas.class);
+        game.getAssets().load("ui/loadingBar.png",Texture.class);
 
     }
 
@@ -53,7 +50,7 @@ public class LoadingScreen implements Screen {
         stage = new Stage();
 
         this.shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setProjectionMatrix(game.camera.combined);
+        shapeRenderer.setProjectionMatrix(game.getCamera().combined);
 
 
         this.progress = 0f;
@@ -71,9 +68,9 @@ public class LoadingScreen implements Screen {
         table = new Table();
         table.setWidth(stage.getWidth());
         table.align(Align.center|Align.top);
-        table.setPosition(0, Gdx.graphics.getHeight()/2 + 70f);
+        table.setPosition(0, Gdx.graphics.getHeight()/2f + 70f);
         table.padBottom(500);
-        table.add(loadingImg).size(Gdx.graphics.getWidth()/2,100).center();
+        table.add(loadingImg).size(Gdx.graphics.getWidth()/2f,100).center();
 
 
         stage.addActor(table);
@@ -81,9 +78,9 @@ public class LoadingScreen implements Screen {
     }
 
     private void update(float delta) {
-        progress = MathUtils.lerp(progress, game.assets.getProgress(), .1f);
-        if (game.assets.update() && progress >= game.assets.getProgress() - 0.01f) {
-            game.setScreen(game.splashScreen);
+        progress = MathUtils.lerp(progress, game.getAssets().getProgress(), .1f);
+        if (game.getAssets().update() && progress >= game.getAssets().getProgress() - 0.01f) {
+            game.setScreen(game.getSplashScreen());
         }
     }
 
@@ -96,11 +93,11 @@ public class LoadingScreen implements Screen {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.rect(game.camera.viewportWidth/4 + 15, game.camera.viewportHeight / 2 , game.camera.viewportWidth/2f -33 , 16);
+        shapeRenderer.rect(game.getCamera().viewportWidth/4 + 15, game.getCamera().viewportHeight / 2 , game.getCamera().viewportWidth/2f -33 , 16);
 
 
         shapeRenderer.setColor(Color.TEAL);
-        shapeRenderer.rect(game.camera.viewportWidth/4 + 15, game.camera.viewportHeight / 2 , progress * (game.camera.viewportWidth/2f -33), 16);
+        shapeRenderer.rect(game.getCamera().viewportWidth/4 + 15, game.getCamera().viewportHeight / 2 , progress * (game.getCamera().viewportWidth/2f -33), 16);
         shapeRenderer.end();
 
         stage.draw();

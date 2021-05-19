@@ -21,7 +21,7 @@ public class SplashScreen implements Screen {
 
         public SplashScreen(final MovingMazeGame game) {
             this.game = game;
-            this.stage = new Stage(new FitViewport(MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT, game.camera));
+            this.stage = new Stage(new FitViewport(MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT, game.getCamera()));
         }
 
         @Override
@@ -29,9 +29,9 @@ public class SplashScreen implements Screen {
 
             Gdx.input.setInputProcessor(stage);
 
-            Runnable transitionRunnable = () -> game.setScreen(game.mainMenuScreen);
+            Runnable transitionRunnable = () -> game.setScreen(game.getMainMenuScreen());
 
-            Texture splashTex = game.assets.get("ui/splash.png", Texture.class);
+            Texture splashTex = game.getAssets().get("ui/splash.png", Texture.class);
             splashImg = new Image(splashTex);
             splashImg.setOrigin(splashImg.getWidth() / 2, splashImg.getHeight() / 2);
             splashImg.setPosition(stage.getWidth() , stage.getHeight() );
