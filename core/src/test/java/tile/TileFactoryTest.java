@@ -1,15 +1,7 @@
 package tile;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
-import se_ii.gruppe2.moving_maze.tile.ITile;
-import se_ii.gruppe2.moving_maze.tile.LTile;
-import se_ii.gruppe2.moving_maze.tile.TTile;
 import se_ii.gruppe2.moving_maze.tile.TileFactory;
-import se_ii.gruppe2.moving_maze.tile.Tile;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
