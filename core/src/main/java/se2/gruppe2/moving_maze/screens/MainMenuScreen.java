@@ -18,8 +18,8 @@ import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.gameBoard.GameBoardFactory;
 import se2.gruppe2.moving_maze.player.Player;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MainMenuScreen implements Screen {
 
@@ -208,7 +208,7 @@ public class MainMenuScreen implements Screen {
                 // in developer mode, all players join the same (static) session
                 game.getGameState().setSessionCode("devgame");
                 game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
-                game.player = new Player("Developer " + new Random().nextInt(10));
+                game.player = new Player("Developer " + new SecureRandom().nextInt(10));
                 game.client.joinSession(game.player, "devgame");
                 game.setScreen(game.gameScreen);
             }

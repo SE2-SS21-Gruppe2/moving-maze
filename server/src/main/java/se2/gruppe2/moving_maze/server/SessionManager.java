@@ -3,15 +3,15 @@ package se2.gruppe2.moving_maze.server;
 import com.esotericsoftware.minlog.Log;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
-import java.util.Random;
 
 public class SessionManager {
     private static int lastKey = 0;
     public static final int rand_min_key = 10000;
     public static final int rand_max_key = 99999;
     private static HashMap<String, Session> sessionRegistry = new HashMap<>();
-    private static Random random = new Random();
+    private static final SecureRandom random = new SecureRandom();
     private static String logTag;
 
     /**

@@ -8,8 +8,7 @@ import se2.gruppe2.moving_maze.item.Position;
 import se2.gruppe2.moving_maze.tile.Tile;
 import se2.gruppe2.moving_maze.tile.TileFactory;
 
-import java.util.Random;
-
+import java.security.SecureRandom;
 
 public class GameBoardFactory {
 
@@ -18,9 +17,9 @@ public class GameBoardFactory {
      * itemPathCounter: counter to iterate
      */
     private static final float[] possibleRotationAngles = {0, 90, 270, 180};
-    private static String[] itemPaths = getFileList();
+    private static final String[] itemPaths = getFileList();
     private static int itemPathCounter= 0;
-    private static Random random= new Random();
+    private static final SecureRandom random= new SecureRandom();
     private static int L,T,I;
 
     /**
