@@ -16,8 +16,6 @@ public class MovingMazeGame extends Game {
 	// Constants
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 1100;
-	public static float BTN_WIDTH;
-	public static float BTN_HEIGHT;
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
@@ -58,8 +56,6 @@ public class MovingMazeGame extends Game {
 
 		assets = new AssetManager();
 		// set game-reliant constants
-		MovingMazeGame.BTN_HEIGHT = Gdx.graphics.getHeight()/8.5f;
-		MovingMazeGame.BTN_WIDTH = Gdx.graphics.getWidth()/5f;
 
 		client = NetworkClient.getInstance();
 		state = new GameStateHandler();
