@@ -1,7 +1,6 @@
 package se2.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.minlog.Log;
-import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ public class SessionManager {
     public static final int rand_max_key = 99999;
     private static HashMap<String, Session> sessionRegistry = new HashMap<>();
     private static final SecureRandom random = new SecureRandom();
-    private static String logTag;
 
     /**
      * Searches and returns a session by its key
@@ -49,12 +47,12 @@ public class SessionManager {
      */
     public static Session createSessionByKey(String key) {
         if(sessionRegistry.get(key) == null) {
-            Log.info(logTag , "Creating new session with key '" + key +"'");
+            Log.info("SessionManager", "Creating new session with key '" + key +"'");
             Session session = new Session(key);
             sessionRegistry.put(key, session);
             return session;
         } else {
-            Log.warn(logTag, "Session with key '" + key +"' cannot be created because it already exists!");
+            Log.warn("SessionManager", "Session with key '" + key +"' cannot be created because it already exists!");
             return null;
         }
     }

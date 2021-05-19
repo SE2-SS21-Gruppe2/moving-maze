@@ -1,11 +1,13 @@
 package se2.gruppe2.moving_maze.item;
 
+import se2.gruppe2.moving_maze.gameBoard.GameBoard;
+
 public class Position {
 
     private int x;
     private int y;
-    private int MAX_X;
-    private int MAX_Y;
+    public static final int MAX_X = GameBoard.tilesPerEdge;
+    public static final int MAX_Y = GameBoard.tilesPerEdge;
 
     public Position() {
 

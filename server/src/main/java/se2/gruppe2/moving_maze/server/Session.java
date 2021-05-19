@@ -6,7 +6,6 @@ import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 import se2.gruppe2.moving_maze.player.Player;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Session {
