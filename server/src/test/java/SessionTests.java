@@ -1,11 +1,10 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.esotericsoftware.kryonet.Connection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import se2.gruppe2.moving_maze.gameState.GameStateHandler;
-import se2.gruppe2.moving_maze.player.Player;
-import se2.gruppe2.moving_maze.server.Session;
+import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
+import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.server.Session;
 
 public class SessionTests {
     Session se;

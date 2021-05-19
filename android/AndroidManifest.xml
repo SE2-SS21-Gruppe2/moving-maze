@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/GdxTheme" >
         <activity
-            android:name="se2.gruppe2.moving_maze.AndroidLauncher"
+            android:name="se_ii.gruppe2.moving_maze.AndroidLauncher"
             android:label="@string/app_name" 
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout">

@@ -27,7 +27,7 @@ jacocoTestReport {
 jar {
     dependsOn('copyJSON')
     manifest {
-        attributes "Main-Class": "se2.gruppe2.moving_maze.server.ServerMain"
+        attributes "Main-Class": "se_ii.gruppe2.moving_maze.server.ServerMain"
     }
     from {
         configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
