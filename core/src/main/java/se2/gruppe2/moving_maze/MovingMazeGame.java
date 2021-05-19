@@ -22,18 +22,18 @@ public class MovingMazeGame extends Game {
 
 	private GameStateHandler state;
 
-	public Player player;
+	private Player player;
 
-	public SpriteBatch batch;
-	public BitmapFont font;
+	private SpriteBatch batch;
+	private BitmapFont font;
 
 	// Pre-instantiate screens to re-use
-	public JoinSessionScreen joinSessionScreen;
-	public CreateSessionScreen createSessionScreen;
-	public MainMenuScreen mainMenuScreen;
-	public GameScreen gameScreen;
-	public OptionScreen optionScreen;
-	public RuleScreen ruleScreen;
+	private JoinSessionScreen joinSessionScreen;
+	private CreateSessionScreen createSessionScreen;
+	private MainMenuScreen mainMenuScreen;
+	private GameScreen gameScreen;
+	private OptionScreen optionScreen;
+	private RuleScreen ruleScreen;
 	// new
 	public LoadingScreen loadingScreen;
 	public SplashScreen splashScreen;
@@ -123,18 +123,13 @@ public class MovingMazeGame extends Game {
 	 * Mostly used by screens to get the same virtual resolution.
 	 * @return OrthographicCamera with standardized height and width
 	 */
-	public static OrthographicCamera getStandardizedCamera() {
-		OrthographicCamera camera = new OrthographicCamera();
-		camera.setToOrtho(false, MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
-		return camera;
-	}
-
-	public static OrthographicCamera gameboardCamera(){
+	public static OrthographicCamera getStandardizedCamera(){
 		OrthographicCamera camera= new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		return camera;
 	}
 
+	// GETTER & SETTER
 	public GameStateHandler getGameState() {
 		return state;
 	}
@@ -143,4 +138,43 @@ public class MovingMazeGame extends Game {
 		this.state = state;
 	}
 
+	public BitmapFont getFont() {
+		return this.font;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public SpriteBatch getBatch() {
+		return batch;
+	}
+
+	public GameScreen getGameScreen() {
+		return gameScreen;
+	}
+
+	public OptionScreen getOptionScreen() {
+		return optionScreen;
+	}
+
+	public CreateSessionScreen getCreateSessionScreen() {
+		return createSessionScreen;
+	}
+
+	public JoinSessionScreen getJoinSessionScreen() {
+		return joinSessionScreen;
+	}
+
+	public RuleScreen getRuleScreen() {
+		return ruleScreen;
+	}
+
+	public MainMenuScreen getMainMenuScreen() {
+		return mainMenuScreen;
+	}
 }

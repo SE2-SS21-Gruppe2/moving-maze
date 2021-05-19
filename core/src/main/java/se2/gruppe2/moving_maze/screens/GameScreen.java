@@ -19,17 +19,19 @@ import se2.gruppe2.moving_maze.tile.Tile;
 
 public class GameScreen implements Screen {
 
-    final MovingMazeGame game;
-    OrthographicCamera camera;
+    private final MovingMazeGame game;
+    private final SpriteBatch batch;
+    private OrthographicCamera camera;
 
     // background
-    Texture bgImageTexture;
-    TextureRegion bgTextureRegion;
+    private Texture bgImageTexture;
+    private TextureRegion bgTextureRegion;
 
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
+        this.batch = game.getBatch();
 
-        camera = MovingMazeGame.gameboardCamera();
+        camera = MovingMazeGame.getStandardizedCamera();
 
         // instantiate textures for background
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
@@ -44,18 +46,18 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0,0,0,1);
-        game.batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             Gdx.app.log("recreateBoard", "Recreating gameboard");
             recreateGameBoard();
         }
 
-        game.batch.begin();
-            game.batch.draw(bgTextureRegion, 0, 0);
-            drawGameBoard(game.batch);
-            game.font.draw(game.batch, "Game screen (DEV MODE)", 100, 100);
-        game.batch.end();
+        batch.begin();
+            batch.draw(bgTextureRegion, 0, 0);
+            drawGameBoard(batch);
+            game.getFont().draw(batch, "Game screen (DEV MODE)", 100, 100);
+        batch.end();
     }
 
     @Override

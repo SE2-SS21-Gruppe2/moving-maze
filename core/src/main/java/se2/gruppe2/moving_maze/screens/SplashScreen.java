@@ -29,7 +29,7 @@ public class SplashScreen implements Screen {
 
             Gdx.input.setInputProcessor(stage);
 
-            Runnable transitionRunnable = () -> game.setScreen(game.mainMenuScreen);
+            Runnable transitionRunnable = () -> game.setScreen(game.getMainMenuScreen());
 
             Texture splashTex = game.assets.get("ui/splash.png", Texture.class);
             splashImg = new Image(splashTex);
