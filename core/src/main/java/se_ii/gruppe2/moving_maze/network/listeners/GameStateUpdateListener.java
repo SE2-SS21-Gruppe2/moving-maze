@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
-import se_ii.gruppe2.moving_maze.gameState.GameStateHandler;
+import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 
 public class GameStateUpdateListener extends Listener {
     private final String logTag = "NetworkClient/gamestate-update";

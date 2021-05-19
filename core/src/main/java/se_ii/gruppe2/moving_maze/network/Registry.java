@@ -1,10 +1,10 @@
 package se_ii.gruppe2.moving_maze.network;
 
 import com.esotericsoftware.kryo.Kryo;
-import se_ii.gruppe2.moving_maze.gameBoard.GameBoard;
-import se_ii.gruppe2.moving_maze.gameState.ChatMessage;
-import se_ii.gruppe2.moving_maze.gameState.GameState;
-import se_ii.gruppe2.moving_maze.gameState.GameStateHandler;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
+import se_ii.gruppe2.moving_maze.gamestate.ChatMessage;
+import se_ii.gruppe2.moving_maze.gamestate.GameState;
+import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.item.Card;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;

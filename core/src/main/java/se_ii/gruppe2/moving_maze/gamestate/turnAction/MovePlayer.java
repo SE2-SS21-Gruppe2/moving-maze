@@ -1,6 +1,6 @@
-package se_ii.gruppe2.moving_maze.gameState.turnAction;
+package se_ii.gruppe2.moving_maze.gamestate.turnAction;
 
-public class DrawNewCard implements  TurnAction{
+public class MovePlayer implements TurnAction {
     @Override
     public void execute() {
 

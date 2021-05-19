@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import se_ii.gruppe2.moving_maze.gameBoard.GameBoard;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 
 import java.util.HashMap;
 

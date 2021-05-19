@@ -1,6 +1,6 @@
-package se_ii.gruppe2.moving_maze.gameState;
+package se_ii.gruppe2.moving_maze.gamestate;
 
-import se_ii.gruppe2.moving_maze.gameBoard.GameBoard;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.player.Player;
 
 public class GameStateHandler {

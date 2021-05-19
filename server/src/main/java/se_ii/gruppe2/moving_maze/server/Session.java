@@ -2,7 +2,7 @@ package se_ii.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
-import se_ii.gruppe2.moving_maze.gameState.GameStateHandler;
+import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.player.Player;
 
 import java.util.HashMap;

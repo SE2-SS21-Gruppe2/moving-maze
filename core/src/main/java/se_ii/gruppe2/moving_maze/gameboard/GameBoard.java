@@ -1,4 +1,4 @@
-package se_ii.gruppe2.moving_maze.gameBoard;
+package se_ii.gruppe2.moving_maze.gameboard;
 
 import se_ii.gruppe2.moving_maze.tile.Tile;
 

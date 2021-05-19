@@ -3,7 +3,7 @@ package se_ii.gruppe2.moving_maze.server.handlers;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import se_ii.gruppe2.moving_maze.gameState.GameStateHandler;
+import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se_ii.gruppe2.moving_maze.server.Session;
 import se_ii.gruppe2.moving_maze.server.SessionManager;

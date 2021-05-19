@@ -1,6 +1,6 @@
 package se_ii.gruppe2.moving_maze.item;
 
-import se_ii.gruppe2.moving_maze.gameBoard.GameBoard;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 
 public class Position {
 

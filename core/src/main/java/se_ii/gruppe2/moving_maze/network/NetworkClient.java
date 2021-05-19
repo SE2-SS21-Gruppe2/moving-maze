@@ -2,7 +2,7 @@ package se_ii.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
-import se_ii.gruppe2.moving_maze.gameState.GameStateHandler;
+import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.listeners.ErrorResponseListener;
 import se_ii.gruppe2.moving_maze.network.listeners.GameStateUpdateListener;
 import se_ii.gruppe2.moving_maze.network.listeners.JoinConfirmationListener;
