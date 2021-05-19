@@ -71,9 +71,9 @@ public class LoadingScreen implements Screen {
         table = new Table();
         table.setWidth(stage.getWidth());
         table.align(Align.center|Align.top);
-        table.setPosition(0, Gdx.graphics.getHeight()/2 + 70f);
+        table.setPosition(0, Gdx.graphics.getHeight()/2f + 70f);
         table.padBottom(500);
-        table.add(loadingImg).size(Gdx.graphics.getWidth()/2,100).center();
+        table.add(loadingImg).size(Gdx.graphics.getWidth()/2f,100).center();
 
 
         stage.addActor(table);
