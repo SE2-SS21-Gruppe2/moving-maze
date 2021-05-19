@@ -122,13 +122,13 @@ public class MainMenuScreen implements Screen {
      * @return the scaled version of the image as Texture-object
      */
     private Texture getScaledImage(String path, float percentOfScreen) {
-        Pixmap originalBg = new Pixmap(Gdx.files.internal(path));
+        var originalBg = new Pixmap(Gdx.files.internal(path));
 
         // determine how much the picture has to be scaled in order to fit the screen width exactly
         float baseScalingFactor = (originalBg.getWidth()*1.0f) / (camera.viewportWidth);
         float scalingFactor = baseScalingFactor / percentOfScreen;
 
-        Pixmap scaledBg = new Pixmap((int) (originalBg.getWidth()/scalingFactor),
+        var scaledBg = new Pixmap((int) (originalBg.getWidth()/scalingFactor),
                                     (int) (originalBg.getHeight()/scalingFactor),
                                         originalBg.getFormat());
 
@@ -137,7 +137,7 @@ public class MainMenuScreen implements Screen {
                 0, 0, originalBg.getWidth(), originalBg.getHeight(),
                 0, 0, scaledBg.getWidth(), scaledBg.getHeight());
 
-        Texture scaledBgTexture = new Texture(scaledBg);
+        var scaledBgTexture = new Texture(scaledBg);
 
         originalBg.dispose();
         scaledBg.dispose();
@@ -152,7 +152,7 @@ public class MainMenuScreen implements Screen {
      * @return A textbutton with appropriate properties
      */
     private TextButton generateStandardButton(String label, Screen target, boolean attachDefaultListener) {
-        TextButton btn = new TextButton(label, skin);
+        var btn = new TextButton(label, skin);
 
         // Note: does not have any effect when being added as a table-cell
         btn.setSize(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/6f);
@@ -178,11 +178,10 @@ public class MainMenuScreen implements Screen {
      * @return the table containing the ui-elements
      */
     private Table get2ColLayout(ArrayList<Actor> uiElements, float offsetTop) {
-        Table tbl = new Table();
-
+        var tbl = new Table();
         tbl.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f - offsetTop);
 
-        int addCounter = 0;
+        var addCounter = 0;
 
         for(Actor act : uiElements) {
 
