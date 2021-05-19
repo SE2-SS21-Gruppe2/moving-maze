@@ -35,13 +35,13 @@ public class MovingMazeGame extends Game {
 	private OptionScreen optionScreen;
 	private RuleScreen ruleScreen;
 	// new
-	public LoadingScreen loadingScreen;
-	public SplashScreen splashScreen;
-	public AssetManager assets;
-	public OrthographicCamera camera;
+	private LoadingScreen loadingScreen;
+	private SplashScreen splashScreen;
+	private AssetManager assets;
+	private OrthographicCamera camera;
 
 	// Network
-	public NetworkClient client;
+	private NetworkClient client;
 
     /**
 	 * Private constructor to avoid accidental instantiation
@@ -76,21 +76,8 @@ public class MovingMazeGame extends Game {
 		loadingScreen = new LoadingScreen(this);
 		splashScreen = new SplashScreen(this);
 
-
-		// display main-menu when the game is started
-
-		//setScreen(mainMenuScreen);
-    
-    // try loading screen
+		// when started, show loading screen (which then transitions to the MainMenuScreen)
 		setScreen(loadingScreen);
-	}
-
-	/**
-	 * Lifecycle method called to render each frame
-	 */
-	@Override
-	public void render () {
-		super.render();
 	}
 
 	/**
@@ -176,5 +163,25 @@ public class MovingMazeGame extends Game {
 
 	public MainMenuScreen getMainMenuScreen() {
 		return mainMenuScreen;
+	}
+
+	public SplashScreen getSplashScreen() {
+		return splashScreen;
+	}
+
+	public LoadingScreen getLoadingScreen() {
+		return loadingScreen;
+	}
+
+	public NetworkClient getClient() {
+		return this.client;
+	}
+
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+
+	public AssetManager getAssets() {
+		return assets;
 	}
 }

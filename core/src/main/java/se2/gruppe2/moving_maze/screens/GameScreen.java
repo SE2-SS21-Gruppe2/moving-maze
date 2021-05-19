@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        game.client.sendGameStateUpdate(game.getGameState());
+        game.getClient().sendGameStateUpdate(game.getGameState());
     }
 
     @Override
@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
 
     public void recreateGameBoard() {
         game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
-        game.client.sendGameStateUpdate(game.getGameState());
+        game.getClient().sendGameStateUpdate(game.getGameState());
     }
 
     /**
