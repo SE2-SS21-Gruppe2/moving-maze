@@ -115,34 +115,34 @@ public class GameScreen implements Screen {
      */
     private void drawGameBoard(SpriteBatch batch) {
         Tile[][] tl = game.getGameState().getBoard().getBoard();
-        Position init_pos = getStartCoordinates();
+        Position initPos = getStartCoordinates();
 
-        float cur_x = init_pos.getX();
-        float cur_y = init_pos.getY();
+        float curX = initPos.getX();
+        float curY = initPos.getY();
 
         Sprite currentSprite;
         Tile currentTile;
         ItemLogical currentItem;
-        for(int i = 0; i < tl.length; i++) {
-            for(int j = 0; j < tl[i].length; j++) {
+        for(var i = 0; i < tl.length; i++) {
+            for(var j = 0; j < tl[i].length; j++) {
                 currentTile = tl[i][j];
                 currentSprite = TextureLoader.getSpriteByTexturePath(currentTile.getTexturePath(), TextureType.TILE);
                 currentItem = currentTile.getItem();
 
-                currentSprite.setPosition(cur_x, cur_y);
+                currentSprite.setPosition(curX, curY);
                 currentSprite.setRotation(currentTile.getRotationDegrees());
                 currentSprite.draw(batch);
 
                 if(currentItem != null) {
                     currentSprite = TextureLoader.getSpriteByTexturePath(currentItem.getTexturePath(), TextureType.ITEM);
-                    currentSprite.setPosition(cur_x+TextureLoader.TILE_EDGE_SIZE /4f, cur_y + TextureLoader.TILE_EDGE_SIZE /4f);
+                    currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE /4f, curY + TextureLoader.TILE_EDGE_SIZE /4f);
                     currentSprite.draw(batch);
                 }
 
-                cur_x += TextureLoader.TILE_EDGE_SIZE;
+                curX += TextureLoader.TILE_EDGE_SIZE;
             }
-            cur_x = init_pos.getX();
-            cur_y += TextureLoader.TILE_EDGE_SIZE;
+            curX = initPos.getX();
+            curY += TextureLoader.TILE_EDGE_SIZE;
         }
     }
 
