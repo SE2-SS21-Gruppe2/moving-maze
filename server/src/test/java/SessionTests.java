@@ -1,6 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.esotericsoftware.kryonet.Connection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
