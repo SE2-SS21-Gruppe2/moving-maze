@@ -3,7 +3,7 @@ package se2.gruppe2.moving_maze.gameBoard;
 import se2.gruppe2.moving_maze.tile.Tile;
 
 public class GameBoard {
-    public static int tilesPerEdge = 7;
+    public static final int tilesPerEdge = 7;
     Tile[][] board;
 
     public GameBoard() {

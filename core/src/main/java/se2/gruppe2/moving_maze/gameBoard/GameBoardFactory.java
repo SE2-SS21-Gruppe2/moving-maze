@@ -20,7 +20,12 @@ public class GameBoardFactory {
     private static final String[] itemPaths = getFileList();
     private static int itemPathCounter= 0;
     private static final SecureRandom random= new SecureRandom();
-    private static int L,T,I;
+    private static int amountOfLTiles;
+    private static int amountOfTTiles;
+    private static int amountOfITiles;
+
+    // static utility class - prevent instantiation
+    private GameBoardFactory() {}
 
     /**
      * Int L,T,I are responsible for how many Tile of a
@@ -31,24 +36,24 @@ public class GameBoardFactory {
      * shuffleArray shuffles the itemPath, so every game items are newly organized.
      */
     public static GameBoard getStandardGameBoard(){
-        GameBoard gb = new GameBoard();
+        var gb = new GameBoard();
         Tile[][] board = gb.getBoard();
-        L=16;
-        T=17;
-        I=12;
+        amountOfLTiles =16;
+        amountOfTTiles =17;
+        amountOfITiles =12;
         shuffleArray();
-        buildBoard(L,T,I,board);
+        buildBoard(board);
         return gb;
     }
 
     public static GameBoard getEasyGameBoard(){
-        GameBoard gb = new GameBoard();
+        var gb = new GameBoard();
         Tile[][] board = gb.getBoard();
-        L=10;
-        T=25;
-        I=10;
+        amountOfLTiles =10;
+        amountOfTTiles =25;
+        amountOfITiles =10;
         shuffleArray();
-        buildBoard(L,T,I,board);
+        buildBoard(board);
         return gb;
     }
 
@@ -57,11 +62,11 @@ public class GameBoardFactory {
      *for, for: looks at every board
      * is Corner: when there is a Corner, It mast be a L tile.
      */
-    private static void buildBoard(int L, int T, int I, Tile[][] board){
-        boolean itemOnTile =false;
-        int cornerRotation =0;
-        for(int i = 0; i < board.length; i++) {
-            for(int j = 0; j < board[i].length; j++) {
+    private static void buildBoard(Tile[][] board){
+        var itemOnTile =false;
+        var cornerRotation =0;
+        for(var i = 0; i < board.length; i++) {
+            for(var j = 0; j < board[i].length; j++) {
                 if (isCorner(i,j)){
                     board[i][j] = TileFactory.getLTile().applyRotation(possibleRotationAngles[cornerRotation++]);
                 }
@@ -84,12 +89,7 @@ public class GameBoardFactory {
      *Checks, if a Tile is a corner-element
      */
     private static boolean isCorner(int x , int y){
-        if (x==0 || x==6){
-            if(y==0 || y==6){
-                return true;
-            }
-        }
-        return false;
+        return (x == 0 || x == 6) && (y == 0 || y == 6);
     }
 
     /**
@@ -103,7 +103,7 @@ public class GameBoardFactory {
      *Gets all components to create an item
      */
     private static ItemLogical buildItem(int x, int y){
-        Position position = new Position();
+        var position = new Position();
         position.setPosition(x, y);
         String path= itemPaths[itemPathCounter++];
         return new ItemLogical(path, position,false);
@@ -125,8 +125,8 @@ public class GameBoardFactory {
         else{
             handle= Gdx.files.internal("android/assets/items");
         }
-        String[] fileNames= new String[handle.list().length];
-        int i=0;
+        var fileNames= new String[handle.list().length];
+        var i = 0;
         for (FileHandle file : handle.list()) {
             fileNames[i]=file.toString();
             i++;
@@ -136,8 +136,8 @@ public class GameBoardFactory {
     }
 
     private static void shuffleArray(){
-        for (int j = 0; j < itemPaths.length; j++) {
-            int swapIndex= random.nextInt(itemPaths.length);
+        for (var j = 0; j < itemPaths.length; j++) {
+            var swapIndex= random.nextInt(itemPaths.length);
             String temp = itemPaths[swapIndex];
             itemPaths[swapIndex]= itemPaths[j];
             itemPaths[j]=temp;
@@ -152,17 +152,17 @@ public class GameBoardFactory {
      */
     private static Tile getRandomTile(){
         while (true){
-            int randomTile= random.nextInt(3);
-            if(randomTile==0 && L!=0){
-                L--;
+            var randomTile= random.nextInt(3);
+            if(randomTile==0 && amountOfLTiles !=0){
+                amountOfLTiles--;
                 return TileFactory.getLTile().applyRotation(getRandomRotationAngle());
             }
-            else if(randomTile==1 && T != 0){
-                T--;
+            else if(randomTile==1 && amountOfTTiles != 0){
+                amountOfTTiles--;
                return TileFactory.getTTile().applyRotation(getRandomRotationAngle());
             }
-            else if (randomTile==2 && I != 0) {
-                I--;
+            else if (randomTile==2 && amountOfITiles != 0) {
+                amountOfITiles--;
                 return TileFactory.getITile().applyRotation(getRandomRotationAngle());
 
             }

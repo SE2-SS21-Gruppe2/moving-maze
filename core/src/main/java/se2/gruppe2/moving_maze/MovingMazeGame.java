@@ -111,7 +111,7 @@ public class MovingMazeGame extends Game {
 	 * @return OrthographicCamera with standardized height and width
 	 */
 	public static OrthographicCamera getStandardizedCamera(){
-		OrthographicCamera camera= new OrthographicCamera();
+		var camera= new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		return camera;
 	}
