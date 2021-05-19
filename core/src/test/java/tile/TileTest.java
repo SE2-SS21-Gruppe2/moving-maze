@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import se2.gruppe2.moving_maze.item.ItemLogical;
-import se2.gruppe2.moving_maze.tile.Tile;
+import se_ii.gruppe2.moving_maze.item.ItemLogical;
+import se_ii.gruppe2.moving_maze.tile.Tile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

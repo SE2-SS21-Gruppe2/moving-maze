@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import se2.gruppe2.moving_maze.item.Position;
-import se2.gruppe2.moving_maze.item.ItemLogical;
+import se_ii.gruppe2.moving_maze.item.Position;
+import se_ii.gruppe2.moving_maze.item.ItemLogical;
 
 
 public class ItemLogicalTest {

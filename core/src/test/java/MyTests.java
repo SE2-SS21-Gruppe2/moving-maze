@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import se2.gruppe2.moving_maze.item.Position;
+import se_ii.gruppe2.moving_maze.item.Position;
 
 public class MyTests {
 
