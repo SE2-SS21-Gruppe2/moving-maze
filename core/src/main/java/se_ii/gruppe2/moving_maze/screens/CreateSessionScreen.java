@@ -418,26 +418,26 @@ public class CreateSessionScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // lifecycle method
     }
 
     @Override
     public void pause() {
-
+        // lifecycle method
     }
 
     @Override
     public void resume() {
-
+        // lifecycle method
     }
 
     @Override
     public void hide() {
-
+        // lifecycle method
     }
 
     @Override
     public void dispose() {
-
+        // lifecycle method
     }
 }

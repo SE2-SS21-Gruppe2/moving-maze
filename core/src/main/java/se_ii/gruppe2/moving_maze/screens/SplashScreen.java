@@ -66,17 +66,17 @@ public class SplashScreen implements Screen {
 
         @Override
         public void pause() {
-
+            // lifecycle function
         }
 
         @Override
         public void resume() {
-
+            // lifecycle function
         }
 
         @Override
         public void hide() {
-
+            // lifecycle function
         }
 
         @Override

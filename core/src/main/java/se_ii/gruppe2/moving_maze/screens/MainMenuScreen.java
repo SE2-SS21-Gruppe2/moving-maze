@@ -93,27 +93,27 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // lifecycle function
     }
 
     @Override
     public void pause() {
-
+        // lifecycle function
     }
 
     @Override
     public void resume() {
-
+        // lifecycle function
     }
 
     @Override
     public void hide() {
-
+        // lifecycle function
     }
 
     @Override
     public void dispose() {
-
+        // lifecycle function
     }
 
     /**
