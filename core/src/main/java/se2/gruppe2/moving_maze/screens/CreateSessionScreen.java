@@ -139,7 +139,7 @@ public class CreateSessionScreen implements Screen {
         setUpActorListeners();
 
         game.player = new Player("Developer " + new Random().nextInt(10));
-        game.client.createNewSession();
+        game.client.createNewSession(game.player);
 
 
         // Debugging
@@ -298,7 +298,7 @@ public class CreateSessionScreen implements Screen {
 
         // --- RT - 5th Row (Code & Start) ---
         rightTable.row();
-        gameCode = new Label("      ", myLblStyle);
+        gameCode = new Label("------", myLblStyle);
         gameCode.setAlignment(Align.center);
         gameCode.setFontScale(1.3f*scalingFactor);
         rightTable.add(gameCode).padLeft(20f*scalingFactor).expandY().align(Align.center).center();
@@ -359,8 +359,9 @@ public class CreateSessionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (gameReady){
                     System.out.println("GAME STARTED");
-                    String[] players = {player, player1Label.getText().toString(), player2Label.getText().toString(),player3Label.getText().toString() };
-                    createAndStartGame(players, difficulty, numOfCards, cheatingAllowed, theme);
+                    // TODO: update playerName on server
+                    // TODO: create and start game
+                    // createAndStartGame(, difficulty, numOfCards, cheatingAllowed, theme);
                 }
             }
         });
@@ -394,7 +395,8 @@ public class CreateSessionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.mainMenuScreen);
-                // TODO: delete session on server
+                game.client.closeSession(game.sessionKey);
+                game.sessionKey = "";
             }
         });
     }
@@ -450,12 +452,18 @@ public class CreateSessionScreen implements Screen {
 
         myShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         // joining players
-        myShapeRenderer.setColor(0.2f, 0.8f, 0.2f, 1);
-        myShapeRenderer.roundedRect(rightTable.getX()+0.4f*xWidth, player1Label.getY() + player1Label.getHeight()*0.65f, rightTable.getWidth() - 0.8f*xWidth, player1Label.getHeight()*1.5f, 10);
-        myShapeRenderer.setColor(0.8f, 0.2f, 0.2f, 1);
-        myShapeRenderer.roundedRect(rightTable.getX()+0.4f*xWidth, player2Label.getY() + player1Label.getHeight()*0.65f, rightTable.getWidth() - 0.8f*xWidth, player1Label.getHeight()*1.5f, 10);
-        myShapeRenderer.setColor(0.2f, 0.2f, 0.8f, 1);
-        myShapeRenderer.roundedRect(rightTable.getX()+0.4f*xWidth, player3Label.getY() + player1Label.getHeight()*0.65f, rightTable.getWidth() - 0.8f*xWidth, player1Label.getHeight()*1.5f, 10);
+        if(!player1Label.getText().equals("")){
+            myShapeRenderer.setColor(0.2f, 0.8f, 0.2f, 1);
+            myShapeRenderer.roundedRect(rightTable.getX()+0.4f*xWidth, player1Label.getY() + player1Label.getHeight()*0.65f, rightTable.getWidth() - 0.8f*xWidth, player1Label.getHeight()*1.5f, 10);
+        }
+        if(!player2Label.getText().equals("")) {
+            myShapeRenderer.setColor(0.8f, 0.2f, 0.2f, 1);
+            myShapeRenderer.roundedRect(rightTable.getX() + 0.4f * xWidth, player2Label.getY() + player1Label.getHeight() * 0.65f, rightTable.getWidth() - 0.8f * xWidth, player1Label.getHeight() * 1.5f, 10);
+        }
+        if (!player3Label.getText().equals("")) {
+            myShapeRenderer.setColor(0.2f, 0.2f, 0.8f, 1);
+            myShapeRenderer.roundedRect(rightTable.getX() + 0.4f * xWidth, player3Label.getY() + player1Label.getHeight() * 0.65f, rightTable.getWidth() - 0.8f * xWidth, player1Label.getHeight() * 1.5f, 10);
+        }
         //myShapeRenderer.setColor(0.8f, 0.8f, 0.2f, 1);
         //myShapeRenderer.circle(10.75f* xWidth, 10.25f* yHeight, 2* xWidth /3);
         myShapeRenderer.end();
@@ -478,11 +486,15 @@ public class CreateSessionScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        bgImageTexture.dispose();
+        myFontTexture.dispose();
+        stage.dispose();
+        skin.dispose();
+        startImageTexture.dispose();
     }
 }

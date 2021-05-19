@@ -1,8 +1,8 @@
 package se2.gruppe2.moving_maze;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -83,6 +83,8 @@ public class MovingMazeGame extends Game {
 		loadingScreen = new LoadingScreen(this);
 		splashScreen = new SplashScreen(this);
 
+		sessionKey = "------";
+
 
 		// display main-menu when the game is started
 
@@ -157,4 +159,5 @@ public class MovingMazeGame extends Game {
 	public void setSessionKey(String sessionKey) {
 		this.sessionKey = sessionKey;
 	}
+
 }

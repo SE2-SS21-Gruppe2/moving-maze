@@ -3,10 +3,8 @@ package se2.gruppe2.moving_maze.network;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import se2.gruppe2.moving_maze.gameState.GameStateHandler;
-import se2.gruppe2.moving_maze.network.listeners.CreateSessionConfirmationListener;
-import se2.gruppe2.moving_maze.network.listeners.ErrorResponseListener;
-import se2.gruppe2.moving_maze.network.listeners.GameStateUpdateListener;
-import se2.gruppe2.moving_maze.network.listeners.JoinConfirmationListener;
+import se2.gruppe2.moving_maze.network.listeners.*;
+import se2.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
@@ -80,11 +78,15 @@ public class NetworkClient {
         Gdx.app.log("NetworkClient/sendGameStateUpdate", "Sent gamestate-update to server");
     }
 
-    public void createNewSession() {
-        kryoClient.sendTCP(new CreateSessionRequest());
+    public void createNewSession(Player player) {
+        kryoClient.sendTCP(new CreateSessionRequest(player));
         Gdx.app.log("NetworkClient/createNewSession", "Submitted request to create new session");
-        // TODO: implement receiving logic
 
+    }
+
+    public void closeSession(String sessionKey) {
+        kryoClient.sendTCP(new CloseSessionRequest(sessionKey));
+        Gdx.app.log("NetworkClient/closeSession", "Submitted request to close session '" + sessionKey + "'");
     }
 
 }

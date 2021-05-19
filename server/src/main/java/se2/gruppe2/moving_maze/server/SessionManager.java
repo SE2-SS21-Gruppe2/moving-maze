@@ -1,7 +1,6 @@
 package se2.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.minlog.Log;
-import se2.gruppe2.moving_maze.gameState.GameStateHandler;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -88,4 +87,8 @@ public class SessionManager {
         return sessionRegistry.get(key) != null;
     }
 
+    public static void closeSession(String sessionKey) {
+        sessionRegistry.remove(sessionKey);
+        Log.info("Session '" + sessionKey + "' closed.");
+    }
 }

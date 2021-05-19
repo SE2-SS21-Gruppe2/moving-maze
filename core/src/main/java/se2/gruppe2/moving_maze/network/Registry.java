@@ -11,6 +11,7 @@ import se2.gruppe2.moving_maze.item.Position;
 import se2.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.RequestProcessError;
+import se2.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se2.gruppe2.moving_maze.player.Player;
@@ -50,6 +51,7 @@ public class Registry {
         kryo.register(JoinRequestConfirmation.class);
         kryo.register(CreateSessionRequest.class);
         kryo.register(CreateSessionRequestConfirmation.class);
+        kryo.register(CloseSessionRequest.class);
     }
 
 }
