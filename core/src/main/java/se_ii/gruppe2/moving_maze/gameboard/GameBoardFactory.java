@@ -3,6 +3,8 @@ package se_ii.gruppe2.moving_maze.gameboard;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+
+import se_ii.gruppe2.moving_maze.item.ItemFactory;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.tile.Tile;
@@ -74,6 +76,7 @@ public class GameBoardFactory {
                     board[i][j]= getRandomTile();
                 }
                 if(itemOnTile){
+                    //board[i][j].setItem(ItemFactory.buildItem(i,j));
                     board[i][j].setItem(buildItem(i,j));
                     itemOnTile=false;
                 }
