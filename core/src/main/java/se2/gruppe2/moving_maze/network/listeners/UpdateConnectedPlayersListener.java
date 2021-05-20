@@ -12,7 +12,7 @@ public class UpdateConnectedPlayersListener extends Listener {
     public void received(Connection con, Object obj) {
         if(obj instanceof UpdateConnectedPlayersConfirmation) {
             UpdateConnectedPlayersConfirmation ucpc = (UpdateConnectedPlayersConfirmation) obj;
-            MovingMazeGame game = MovingMazeGame.getGameInstance();
+            var game = MovingMazeGame.getGameInstance();
             game.setConnectedPlayers(ucpc.getConnectedPlayers());
             Gdx.app.log("NetworkClient/UpdateConnectedPlayersConfirmation", "Received update for connected players.");
         }

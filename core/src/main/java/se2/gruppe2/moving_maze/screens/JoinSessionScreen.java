@@ -51,11 +51,10 @@ public class JoinSessionScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         float scalingFactor = Gdx.graphics.getWidth()/1280.0f;
-        Texture myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
+        var myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
         myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        BitmapFont myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
-        //myFont.getData().setScale(2f);
-        Label.LabelStyle myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
+        var myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
+        var myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
 
         var lblCreateLobbyHeading = new Label("CREATE LOBBY", myLblStyle);
         lblCreateLobbyHeading.setFontScale(2.0f*scalingFactor);
@@ -76,14 +75,14 @@ public class JoinSessionScreen implements Screen {
         joinGame.setSize(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
         joinGame.getLabel().setFontScale(Gdx.graphics.getHeight()/joinGame.getHeight()/2.2f);
 
-        float offsetTop = 100f;
+        var offsetTop = 100f;
         tableLayout = new Table();
         tableLayout.setPosition(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f - offsetTop);
         tableLayout.add(playerName).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
         tableLayout.row();
         tableLayout.add(gameCode).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
         tableLayout.row();
-        tableLayout.add(joinGame).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);;
+        tableLayout.add(joinGame).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
 
         stage.addActor(tableLayout);
         stage.getCamera().position.set(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f, 0);
@@ -195,13 +194,13 @@ public class JoinSessionScreen implements Screen {
     }
 
     private Texture getScaledImage(String path, float percentOfScreen) {
-        Pixmap originalBg = new Pixmap(Gdx.files.internal(path));
+        var originalBg = new Pixmap(Gdx.files.internal(path));
 
         // determine how much the picture has to be scaled in order to fit the screen width exactly
         float baseScalingFactor = (originalBg.getWidth()*1.0f) / (camera.viewportWidth);
         float scalingFactor = baseScalingFactor / percentOfScreen;
 
-        Pixmap scaledBg = new Pixmap((int) (originalBg.getWidth()/scalingFactor),
+        var scaledBg = new Pixmap((int) (originalBg.getWidth()/scalingFactor),
                 (int) (originalBg.getHeight()/scalingFactor),
                 originalBg.getFormat());
 
@@ -210,7 +209,7 @@ public class JoinSessionScreen implements Screen {
                 0, 0, originalBg.getWidth(), originalBg.getHeight(),
                 0, 0, scaledBg.getWidth(), scaledBg.getHeight());
 
-        Texture scaledBgTexture = new Texture(scaledBg);
+        var scaledBgTexture = new Texture(scaledBg);
 
         originalBg.dispose();
         scaledBg.dispose();

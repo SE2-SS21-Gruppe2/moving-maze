@@ -26,9 +26,9 @@ public class MovingMazeGame extends Game {
 
 	private GameStateHandler state;
 
-	public Player player;
-	public String sessionKey;
-	public ArrayList<String> connectedPlayers;
+	private Player player;
+	private String sessionKey;
+	private ArrayList<String> connectedPlayers;
 
 	public SpriteBatch batch;
 	public BitmapFont font;
@@ -171,6 +171,10 @@ public class MovingMazeGame extends Game {
     public void setConnectedPlayers(ArrayList<String> connectedPlayers) {
 		this.connectedPlayers = connectedPlayers;
     }
+
+	public ArrayList<String> getConnectedPlayers() {
+		return connectedPlayers;
+	}
 
 	public Player getPlayer() {
 		return player;

@@ -10,7 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -20,8 +23,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
 import se2.gruppe2.moving_maze.player.Player;
-
-import java.util.Random;
 
 public class CreateSessionScreen implements Screen {
 
@@ -39,7 +40,6 @@ public class CreateSessionScreen implements Screen {
     private TextureRegion bgTextureRegion;
 
     private Texture myFontTexture;
-    private BitmapFont myFont;
     private Texture startImageTexture;
     private Label.LabelStyle myLblStyle;
     private TextButton backButton;
@@ -47,7 +47,6 @@ public class CreateSessionScreen implements Screen {
     // measures
     private float myScreenHeight;
     private float myScreenWidth;
-    private float yHeight;
     private float xWidth;
     private float scalingFactor;
 
@@ -73,14 +72,9 @@ public class CreateSessionScreen implements Screen {
     // game state variables
     private Boolean gameReady;
     private Boolean cheatingAllowed;
-    private String player1;
-    private String player2;
-    private String player3;
-    private String player;
     private int difficulty;
     private int numOfCards;
     private String theme;
-
     private float clock;
 
 
@@ -101,7 +95,6 @@ public class CreateSessionScreen implements Screen {
 
         myScreenHeight = Gdx.graphics.getHeight();
         myScreenWidth = Gdx.graphics.getWidth();
-        yHeight = myScreenHeight / 15f;
         xWidth = myScreenWidth / 25f;
 
         // game state variables
@@ -113,8 +106,7 @@ public class CreateSessionScreen implements Screen {
 
         myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
         myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
-        //myFont.getData().setScale(2f);
+        BitmapFont myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
         myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
         scalingFactor = myScreenWidth/1280f;
 
@@ -137,8 +129,8 @@ public class CreateSessionScreen implements Screen {
 
         setUpActorListeners();
 
-        game.player = new Player("Developer " + new Random().nextInt(10));
-        game.client.createNewSession(game.player);
+        game.setPlayer(new Player("temp_SessionCreator"));
+        game.client.createNewSession(game.getPlayer());
 
 
         // Debugging
@@ -244,7 +236,7 @@ public class CreateSessionScreen implements Screen {
         themeLabel.setFontScale(scalingFactor);
         leftTable.add(themeLabel).padLeft(20f*scalingFactor).align(Align.left);
 
-        themeButton = new TextButton("Original", skin);
+        themeButton = new TextButton(theme, skin);
         themeButton.getLabel().setFontScale(2.0f*scalingFactor);
         themeButton.setDisabled(true);
         themeButton.setTouchable(Touchable.disabled);
@@ -359,11 +351,9 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (gameReady == true){
-                    System.out.println("GAME STARTED");
+                if (Boolean.TRUE.equals(gameReady)){
                     // TODO: update playerName on server
                     // TODO: create and start game
-                    // createAndStartGame(, difficulty, numOfCards, cheatingAllowed, theme);
                 }
             }
         });
@@ -373,7 +363,7 @@ public class CreateSessionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 cheatingAllowed ^= true;
-                if (cheatingAllowed == true) {
+                if (Boolean.TRUE.equals(cheatingAllowed)) {
                     cheatingAllowedButton.setText("Allowed");
                 } else {
                     cheatingAllowedButton.setText("Not Allowed");
@@ -393,7 +383,7 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                player = txfName.getText();
+
             }
         });
 
@@ -402,8 +392,8 @@ public class CreateSessionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.mainMenuScreen);
-                game.client.closeSession(game.sessionKey);
-                game.sessionKey = "";
+                game.client.closeSession(game.getSessionKey());
+                game.setSessionKey("------");
             }
         });
     }
@@ -441,19 +431,19 @@ public class CreateSessionScreen implements Screen {
 
 
 
-        if (!game.connectedPlayers.isEmpty()){
-            if (game.connectedPlayers.size() > 0){
-                player1Label.setText(game.connectedPlayers.get(0));
+        if (!game.getConnectedPlayers().isEmpty()){
+            if (game.getConnectedPlayers().size() > 0){
+                player1Label.setText(game.getConnectedPlayers().get(0));
             } else {
                 player1Label.setText("");
             }
-            if (game.connectedPlayers.size() > 1){
-                player2Label.setText(game.connectedPlayers.get(1));
+            if (game.getConnectedPlayers().size() > 1){
+                player2Label.setText(game.getConnectedPlayers().get(1));
             } else {
                 player2Label.setText("");
             }
-            if (game.connectedPlayers.size() > 2){
-                player3Label.setText(game.connectedPlayers.get(2));
+            if (game.getConnectedPlayers().size() > 2){
+                player3Label.setText(game.getConnectedPlayers().get(2));
             } else {
                 player3Label.setText("");
             }
@@ -484,15 +474,15 @@ public class CreateSessionScreen implements Screen {
 
         myShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         // joining players
-        if(player1Label.getText().toString() != ""){
+        if(!player1Label.getText().toString().equals("")){
             myShapeRenderer.setColor(0.2f, 0.8f, 0.2f, 1);
             myShapeRenderer.roundedRect(rightTable.getX()+0.4f*xWidth, player1Label.getY() + player1Label.getHeight()*0.65f, rightTable.getWidth() - 0.8f*xWidth, player1Label.getHeight()*1.5f, 10);
         }
-        if(player2Label.getText().toString() != "") {
+        if(!player2Label.getText().toString().equals("")) {
             myShapeRenderer.setColor(0.8f, 0.2f, 0.2f, 1);
             myShapeRenderer.roundedRect(rightTable.getX() + 0.4f * xWidth, player2Label.getY() + player1Label.getHeight() * 0.65f, rightTable.getWidth() - 0.8f * xWidth, player1Label.getHeight() * 1.5f, 10);
         }
-        if (player3Label.getText().toString() != "") {
+        if (!player3Label.getText().toString().equals("")) {
             myShapeRenderer.setColor(0.2f, 0.2f, 0.8f, 1);
             myShapeRenderer.roundedRect(rightTable.getX() + 0.4f * xWidth, player3Label.getY() + player1Label.getHeight() * 0.65f, rightTable.getWidth() - 0.8f * xWidth, player1Label.getHeight() * 1.5f, 10);
         }

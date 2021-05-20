@@ -13,7 +13,7 @@ public class CreateSessionConfirmationListener extends Listener {
         if (obj instanceof CreateSessionRequestConfirmation) {
             CreateSessionRequestConfirmation csrc = (CreateSessionRequestConfirmation) obj;
             Gdx.app.log("NetworkClient/CreateSessionRequestConfirmation", "Created Session with session key '" + csrc.getSessionKey() + "'");
-            MovingMazeGame game = MovingMazeGame.getGameInstance();
+            var game = MovingMazeGame.getGameInstance();
             game.setSessionKey(csrc.getSessionKey());
         }
     }

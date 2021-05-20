@@ -25,16 +25,10 @@ public class WaitingScreen implements Screen {
 
     //ui stuff
     private Stage stage;
-    private Skin skin;
-    private TextButton backButton;
-    private float scalingFactor;
+
 
     //Textures and views
-    private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
-    private Texture myFontTexture;
-    private BitmapFont myFont;
-    private Label.LabelStyle myLblStyle;
 
     public WaitingScreen(final MovingMazeGame game) {
         this.game = game;
@@ -44,16 +38,16 @@ public class WaitingScreen implements Screen {
     @Override
     public void show() {
         //instantiate background textures
-        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
+        var bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
 
         stage = new Stage(new ScreenViewport());
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        scalingFactor = Gdx.graphics.getWidth()/1280f;
+        var skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        var scalingFactor = Gdx.graphics.getWidth()/1280f;
 
 
         //Button
-        backButton = new TextButton("Back", skin);
+        var backButton = new TextButton("Back", skin);
         backButton.getLabel().setFontScale(2.0f*scalingFactor);
         Container<TextButton> backButtonContainer = new Container<>(backButton);
         backButtonContainer.setTransform(true);
@@ -62,12 +56,12 @@ public class WaitingScreen implements Screen {
         stage.addActor(backButtonContainer);
 
 
-        myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
+        var myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
         myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
-        myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
+        var myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
+        var myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
 
-        Label myLabel = new Label("Waiting for host to start the game ...", myLblStyle);
+        var myLabel = new Label("Waiting for host to start the game ...", myLblStyle);
         myLabel.setScale(3.0f * scalingFactor);
         myLabel.setPosition(Gdx.graphics.getWidth()/2f - myLabel.getWidth()/2.0f, Gdx.graphics.getHeight()/2f - myLabel.getHeight()/2.0f);
 
@@ -77,7 +71,7 @@ public class WaitingScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         backButton.addListener(new ClickListener(){
-
+            @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.client.leaveSession(game.getPlayer(), game.getSessionKey());
                 game.setScreen(game.mainMenuScreen);
