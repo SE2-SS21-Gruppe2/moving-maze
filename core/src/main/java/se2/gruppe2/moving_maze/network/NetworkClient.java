@@ -7,6 +7,7 @@ import se2.gruppe2.moving_maze.network.listeners.*;
 import se2.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
+import se2.gruppe2.moving_maze.network.messages.out.LeaveSessionRequest;
 import se2.gruppe2.moving_maze.player.Player;
 
 import java.io.IOException;
@@ -90,4 +91,8 @@ public class NetworkClient {
         Gdx.app.log("NetworkClient/closeSession", "Submitted request to close session '" + sessionKey + "'");
     }
 
+    public void leaveSession(Player player, String sessionKey) {
+        kryoClient.sendTCP(new LeaveSessionRequest(player, sessionKey));
+        Gdx.app.log("NetworkClient/leaveSession", "Submitted request to leave session '" + sessionKey + "'");
+    }
 }

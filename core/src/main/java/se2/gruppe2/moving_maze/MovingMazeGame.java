@@ -40,6 +40,8 @@ public class MovingMazeGame extends Game {
 	public GameScreen gameScreen;
 	public OptionScreen optionScreen;
 	public RuleScreen ruleScreen;
+	public WaitingScreen waitingScreen;
+
 	// new
 	public LoadingScreen loadingScreen;
 	public SplashScreen splashScreen;
@@ -85,6 +87,7 @@ public class MovingMazeGame extends Game {
 		ruleScreen = new RuleScreen(this);
 		loadingScreen = new LoadingScreen(this);
 		splashScreen = new SplashScreen(this);
+		waitingScreen = new WaitingScreen(this);
 
 		sessionKey = "------";
 		connectedPlayers = new ArrayList<>();
@@ -117,6 +120,7 @@ public class MovingMazeGame extends Game {
 		loadingScreen.dispose();
 		splashScreen.dispose();
 		mainMenuScreen.dispose();
+		waitingScreen.dispose();
 
 	}
 
@@ -167,4 +171,12 @@ public class MovingMazeGame extends Game {
     public void setConnectedPlayers(ArrayList<String> connectedPlayers) {
 		this.connectedPlayers = connectedPlayers;
     }
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 }

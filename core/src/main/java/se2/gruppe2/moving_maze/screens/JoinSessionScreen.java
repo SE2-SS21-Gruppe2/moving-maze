@@ -110,11 +110,13 @@ public class JoinSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Player player = new Player(playerName.getText());
-                String sessionCode = gameCode.getText();
+                game.setPlayer(new Player(playerName.getText()));
+                if (!gameCode.getText().equals("") && !gameCode.getText().equals("Game Code")){
+                    game.setSessionKey(gameCode.getText());
+                    game.client.joinSession(game.getPlayer(), game.getSessionKey());
+                    game.setScreen(game.waitingScreen);
+                }
 
-                game.client.joinSession(player, sessionCode);
-                game.setScreen(game.loadingScreen);
             }
         });
 
@@ -122,7 +124,9 @@ public class JoinSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameCode.setText("");
+                if (gameCode.getText().equals("Game Code")){
+                    gameCode.setText("");
+                }
             }
         });
 
@@ -130,7 +134,9 @@ public class JoinSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                playerName.setText("");
+                if (playerName.getText().equals("Name")){
+                    playerName.setText("");
+                }
             }
         });
 

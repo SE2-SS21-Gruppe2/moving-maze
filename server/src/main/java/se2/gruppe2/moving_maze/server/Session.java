@@ -8,6 +8,7 @@ import se2.gruppe2.moving_maze.player.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Session {
@@ -106,5 +107,20 @@ public class Session {
 
     public void setLobbyHost(Player player, Connection con) {
         lobbyHost.put(player, con);
+    }
+
+    public void removePlayer(Player player, Connection con) {
+
+
+        Player p;
+        Iterator itr = players.keySet().iterator();
+        while (itr.hasNext()){
+            p = (Player)itr.next();
+            if (p.getName().equals(player.getName()) && con.equals(players.get(p))){
+                itr.remove();
+                break;
+            }
+        }
+        sendConnectedPlayersToHost();
     }
 }
