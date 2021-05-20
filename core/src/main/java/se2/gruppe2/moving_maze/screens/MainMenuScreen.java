@@ -1,14 +1,14 @@
 package se2.gruppe2.moving_maze.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,7 +19,6 @@ import se2.gruppe2.moving_maze.gameBoard.GameBoardFactory;
 import se2.gruppe2.moving_maze.player.Player;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MainMenuScreen implements Screen {
 
@@ -208,8 +207,8 @@ public class MainMenuScreen implements Screen {
                 // in developer mode, all players join the same (static) session
                 game.getGameState().setSessionCode("DEVGME");
                 game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
-                game.player = new Player("Developer " + new Random().nextInt(10));
-                game.client.joinSession(game.player, "DEVGME");
+                game.setPlayer(new Player("Developer 1"));
+                game.client.joinSession(game.getPlayer(), "DEVGME");
                 game.setScreen(game.gameScreen);
             }
         });
