@@ -6,6 +6,8 @@ import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
 public class MovePlayer implements TurnAction {
+
+
     @Override
     public void execute() {
 
@@ -16,7 +18,9 @@ public class MovePlayer implements TurnAction {
         return false;
     }
 
-    public static ArrayList<Position> possibleMoves(Position position, Tile[][] tiles, ArrayList<Position> positions){
+
+
+    private static ArrayList<Position> possibleMoves(Position position, Tile[][] tiles, ArrayList<Position> positions){
         for (Position pos: positions) {
             if(position.getX()==pos.getX() && position.getY()== pos.getY()){
                 return positions;
@@ -47,4 +51,9 @@ public class MovePlayer implements TurnAction {
         }
         return positions;
     }
+
+
+
+
+
 }
