@@ -34,13 +34,6 @@ public class RuleScreen implements Screen {
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
 
-    //Texts
-    private String txtAblauf;
-    private String txtSpielende;
-    private String txtSpielfigurZiehen;
-    private String txtVerschieben;
-    private String txtZiel;
-
     public RuleScreen(final MovingMazeGame game) {
         this.game = game;
         camera = MovingMazeGame.getStandardizedCamera();
@@ -57,12 +50,17 @@ public class RuleScreen implements Screen {
         textureRegion = new TextureRegion(backTexture);
         textureRegionDrawable = new TextureRegionDrawable(textureRegion);
         backButton = new ImageButton(textureRegionDrawable);
-        backButton.setPosition(20f, camera.viewportHeight - 20f - backButton.getHeight()/2f, Align.left);
-
-        stage = new Stage(new ScreenViewport());
-        stage.addActor(backButton);
+        backButton.setPosition(20f, camera.viewportHeight + camera.viewportHeight/2f + 60f, Align.left);
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
+        stage = new Stage(new ScreenViewport());
+        setUpTable();
+        scrollPane = new ScrollPane(table, skin);
+        scrollPane.setWidth(Gdx.graphics.getWidth());
+        scrollPane.setHeight(Gdx.graphics.getHeight());
+        stage.addActor(scrollPane);
+
+        stage.addActor(backButton);
         Gdx.input.setInputProcessor(stage);
 
         backButton.addListener(new ChangeListener() {
@@ -73,11 +71,7 @@ public class RuleScreen implements Screen {
             }
         });
 
-        setUpTable();
-        scrollPane = new ScrollPane(table, skin);
-        scrollPane.setWidth(Gdx.graphics.getWidth());
-        scrollPane.setHeight(Gdx.graphics.getHeight()-Gdx.graphics.getHeight()/5f);
-        stage.addActor(scrollPane);
+
     }
 
     public void setUpTable() {
@@ -87,64 +81,65 @@ public class RuleScreen implements Screen {
 
         var lblZiel = new Label("Ziel:", skin);
         lblZiel.setAlignment(Align.left);
-        lblZiel.setFontScale(2.5f);
-        table.add(lblZiel).width(Gdx.graphics.getWidth()/2f).height(25f).align(Align.left).row();
+        lblZiel.setFontScale(3f);
+        table.add(lblZiel).width(Gdx.graphics.getWidth() - 50).height(25f).align(Align.left).padTop(300f).padLeft(25f).row();
 
-        txtZiel = Gdx.files.internal("rules/ziel.txt").readString();
+        String txtZiel = Gdx.files.internal("rules/ziel.txt").readString();
         var ziel = new Label(txtZiel, skin);
         ziel.setAlignment(Align.left);
-        ziel.setFontScale(1f);
-        table.add(ziel).width(Gdx.graphics.getWidth()/2f).height(150f).row();
+        ziel.setFontScale(2f);
+        table.add(ziel).width(Gdx.graphics.getWidth() - 50).height(400f).padLeft(25f).row();
 
         var lblAblauf = new Label("Ablauf:", skin);
         lblAblauf.setAlignment(Align.left);
-        lblAblauf.setFontScale(2.5f);
-        table.add(lblAblauf).width(Gdx.graphics.getWidth()/2f).height(25f).row();
+        lblAblauf.setFontScale(3f);
+        table.add(lblAblauf).width(Gdx.graphics.getWidth() - 50).height(25f).padLeft(25f).row();
 
-        txtAblauf = Gdx.files.internal("rules/ablauf.txt").readString();
+        //Texts
+        String txtAblauf = Gdx.files.internal("rules/ablauf.txt").readString();
         var ablauf = new Label(txtAblauf, skin);
         ablauf.setAlignment(Align.left);
-        ablauf.setFontScale(1f);
-        table.add(ablauf).width(Gdx.graphics.getWidth()/2f).height(250f).row();
+        ablauf.setFontScale(2f);
+        table.add(ablauf).width(Gdx.graphics.getWidth() - 50).height(500f).padLeft(25f).row();
 
-        var lblVerschieben = new Label("1. Gaenge verschieben:", skin);
+        var lblVerschieben = new Label("2. Gaenge verschieben:", skin);
         lblVerschieben.setAlignment(Align.left);
-        lblVerschieben.setFontScale(2.5f);
-        table.add(lblVerschieben).width(Gdx.graphics.getWidth()/2f).height(25f).row();
+        lblVerschieben.setFontScale(3f);
+        table.add(lblVerschieben).width(Gdx.graphics.getWidth() - 50).height(25f).padLeft(25f).row();
 
-        txtVerschieben = Gdx.files.internal("rules/verschieben.txt").readString();
+        String txtVerschieben = Gdx.files.internal("rules/verschieben.txt").readString();
         var verschieben = new Label(txtVerschieben, skin);
         verschieben.setAlignment(Align.left);
-        verschieben.setFontScale(1f);
-        table.add(verschieben).width(Gdx.graphics.getWidth()/2f).height(250f).row();
+        verschieben.setFontScale(2f);
+        table.add(verschieben).width(Gdx.graphics.getWidth() - 50).height(500f).padLeft(25f).row();
 
         var lblSpielfigurZiehen = new Label("2. Spielfigur ziehen:", skin);
         lblSpielfigurZiehen.setAlignment(Align.left);
-        lblSpielfigurZiehen.setFontScale(2.5f);
-        table.add(lblSpielfigurZiehen).width(Gdx.graphics.getWidth()/2f).height(25f).row();
+        lblSpielfigurZiehen.setFontScale(3f);
+        table.add(lblSpielfigurZiehen).width(Gdx.graphics.getWidth() - 50).height(25f).padLeft(25f).row();
 
-        txtSpielfigurZiehen = Gdx.files.internal("rules/spielfigur_ziehen.txt").readString();
+        String txtSpielfigurZiehen = Gdx.files.internal("rules/spielfigur_ziehen.txt").readString();
         var spielfigurZiehen = new Label(txtSpielfigurZiehen, skin);
         spielfigurZiehen.setAlignment(Align.left);
-        spielfigurZiehen.setFontScale(1f);
-        table.add(spielfigurZiehen).width(Gdx.graphics.getWidth()/2f).height(250f).row();
+        spielfigurZiehen.setFontScale(2f);
+        table.add(spielfigurZiehen).width(Gdx.graphics.getWidth() - 50).height(550f).padLeft(25f).row();
 
         var lblSpielende = new Label("Spielende:", skin);
         lblSpielende.setAlignment(Align.left);
-        lblSpielende.setFontScale(2.5f);
-        table.add(lblSpielende).width(Gdx.graphics.getWidth()/2f).height(25f).row();
+        lblSpielende.setFontScale(3f);
+        table.add(lblSpielende).width(Gdx.graphics.getWidth() - 50).height(25f).padLeft(25f).row();
 
-        txtSpielende = Gdx.files.internal("rules/spielende.txt").readString();
+        String txtSpielende = Gdx.files.internal("rules/spielende.txt").readString();
         var spielende = new Label(txtSpielende, skin);
         spielende.setAlignment(Align.left);
-        spielende.setFontScale(1f);
-        table.add(spielende).width(Gdx.graphics.getWidth()/2f).height(150f).row();
+        spielende.setFontScale(2f);
+        table.add(spielende).width(Gdx.graphics.getWidth() - 50).height(500f).padLeft(25f).row();
 
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0,0,0,1);
+        ScreenUtils.clear(0, 0, 0, 2);
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
