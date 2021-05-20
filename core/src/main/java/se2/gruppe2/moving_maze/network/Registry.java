@@ -11,6 +11,7 @@ import se2.gruppe2.moving_maze.item.Position;
 import se2.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se2.gruppe2.moving_maze.network.messages.in.RequestProcessError;
+import se2.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
 import se2.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
 import se2.gruppe2.moving_maze.network.messages.out.JoinRequest;
@@ -21,6 +22,7 @@ import se2.gruppe2.moving_maze.tile.LTile;
 import se2.gruppe2.moving_maze.tile.TTile;
 import se2.gruppe2.moving_maze.tile.Tile;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Registry {
@@ -30,6 +32,7 @@ public class Registry {
      */
     public static void registerClassesOnKryo(Kryo kryo) {
         kryo.register(String.class);
+        kryo.register(ArrayList.class);
         kryo.register(Stack.class);
         kryo.register(JoinRequest.class);
         kryo.register(Player.class);
@@ -52,6 +55,7 @@ public class Registry {
         kryo.register(CreateSessionRequest.class);
         kryo.register(CreateSessionRequestConfirmation.class);
         kryo.register(CloseSessionRequest.class);
+        kryo.register(UpdateConnectedPlayersConfirmation.class);
     }
 
 }

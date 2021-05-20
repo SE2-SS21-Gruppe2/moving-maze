@@ -58,6 +58,7 @@ public class NetworkClient {
         kryoClient.addListener(new GameStateUpdateListener());
         kryoClient.addListener(new JoinConfirmationListener());
         kryoClient.addListener(new CreateSessionConfirmationListener());
+        kryoClient.addListener(new UpdateConnectedPlayersListener());
     }
 
     /**

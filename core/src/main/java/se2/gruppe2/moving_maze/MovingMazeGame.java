@@ -11,6 +11,8 @@ import se2.gruppe2.moving_maze.network.NetworkClient;
 import se2.gruppe2.moving_maze.player.Player;
 import se2.gruppe2.moving_maze.screens.*;
 
+import java.util.ArrayList;
+
 public class MovingMazeGame extends Game {
 
 	// Constants
@@ -26,6 +28,7 @@ public class MovingMazeGame extends Game {
 
 	public Player player;
 	public String sessionKey;
+	public ArrayList<String> connectedPlayers;
 
 	public SpriteBatch batch;
 	public BitmapFont font;
@@ -84,6 +87,7 @@ public class MovingMazeGame extends Game {
 		splashScreen = new SplashScreen(this);
 
 		sessionKey = "------";
+		connectedPlayers = new ArrayList<>();
 
 
 		// display main-menu when the game is started
@@ -160,4 +164,7 @@ public class MovingMazeGame extends Game {
 		this.sessionKey = sessionKey;
 	}
 
+    public void setConnectedPlayers(ArrayList<String> connectedPlayers) {
+		this.connectedPlayers = connectedPlayers;
+    }
 }

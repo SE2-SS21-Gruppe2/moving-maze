@@ -8,18 +8,14 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import org.w3c.dom.Text;
 import se2.gruppe2.moving_maze.MovingMazeGame;
 import se2.gruppe2.moving_maze.player.Player;
-
-import java.util.ArrayList;
 
 public class JoinSessionScreen implements Screen {
 
@@ -54,7 +50,7 @@ public class JoinSessionScreen implements Screen {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        float scalingFactor = Gdx.graphics.getWidth()/1280;
+        float scalingFactor = Gdx.graphics.getWidth()/1280.0f;
         Texture myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
         myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         BitmapFont myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
@@ -82,7 +78,7 @@ public class JoinSessionScreen implements Screen {
 
         float offsetTop = 100f;
         tableLayout = new Table();
-        tableLayout.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f - offsetTop);
+        tableLayout.setPosition(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f - offsetTop);
         tableLayout.add(playerName).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
         tableLayout.row();
         tableLayout.add(gameCode).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
@@ -90,7 +86,7 @@ public class JoinSessionScreen implements Screen {
         tableLayout.add(joinGame).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);;
 
         stage.addActor(tableLayout);
-        stage.getCamera().position.set(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f, 0);
+        stage.getCamera().position.set(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f, 0);
 
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));

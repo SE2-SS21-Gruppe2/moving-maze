@@ -28,6 +28,7 @@ public class CreateSessionHandler extends Listener {
 
             if (newSession != null) {
                 Log.info("New session created with session key '" + newSession.getKey() + "'");
+                newSession.setLobbyHost(csr.getPlayer(), con);
                 con.sendTCP(new CreateSessionRequestConfirmation(newSession.getKey()));
 
                 boolean joinSuccess = processJoinRequest(csr.getPlayer(), con, newSession.getKey());

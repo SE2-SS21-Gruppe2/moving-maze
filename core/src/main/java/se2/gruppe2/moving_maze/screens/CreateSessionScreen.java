@@ -32,7 +32,6 @@ public class CreateSessionScreen implements Screen {
     private Stage stage;
     private Skin skin;
 
-    private String headingText;
     private TextField txfName;
 
     // textures and views
@@ -144,8 +143,7 @@ public class CreateSessionScreen implements Screen {
 
         // Debugging
         stage.setDebugAll(false);
-        //System.out.println("Y: "+ myScreenHeight + ", X: " + myScreenWidth);
-        //System.out.println("Scaling Factor "+ scalingFactor);
+
     }
 
     public void setUpTables(){
@@ -340,6 +338,8 @@ public class CreateSessionScreen implements Screen {
     private void setUpActorListeners() {
 
         difficultySlider.addListener(new ChangeListener(){
+
+            @Override
             public void changed (ChangeEvent event, Actor actor) {
                 difficulty = (int) difficultySlider.getValue();
                 difficultyValueLabel.setText(difficulty);
@@ -347,6 +347,8 @@ public class CreateSessionScreen implements Screen {
         });
 
         numberOfCardsSlider.addListener(new ChangeListener(){
+
+            @Override
             public void changed (ChangeEvent event, Actor actor) {
                 numOfCards = (int) numberOfCardsSlider.getValue();
                 numOfCardsValueLabel.setText(numOfCards);
@@ -357,7 +359,7 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (gameReady){
+                if (gameReady == true){
                     System.out.println("GAME STARTED");
                     // TODO: update playerName on server
                     // TODO: create and start game
@@ -367,9 +369,11 @@ public class CreateSessionScreen implements Screen {
         });
 
         cheatingAllowedButton.addListener(new ClickListener() {
+
+            @Override
             public void clicked(InputEvent event, float x, float y) {
                 cheatingAllowed ^= true;
-                if (cheatingAllowed) {
+                if (cheatingAllowed == true) {
                     cheatingAllowedButton.setText("Allowed");
                 } else {
                     cheatingAllowedButton.setText("Not Allowed");
@@ -378,20 +382,23 @@ public class CreateSessionScreen implements Screen {
         });
 
         themeButton.addListener(new ClickListener() {
+
+            @Override
             public void clicked(InputEvent event, float x, float y) {
                 // code for multiple themes
             }
         });
 
         txfName.addListener(new ChangeListener() {
+
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 player = txfName.getText();
-                System.out.println(player);
             }
         });
 
         backButton.addListener(new ClickListener(){
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.mainMenuScreen);
@@ -432,6 +439,31 @@ public class CreateSessionScreen implements Screen {
 
         gameCode.setText(game.getSessionKey());
 
+
+
+        if (!game.connectedPlayers.isEmpty()){
+            if (game.connectedPlayers.size() > 0){
+                player1Label.setText(game.connectedPlayers.get(0));
+            } else {
+                player1Label.setText("");
+            }
+            if (game.connectedPlayers.size() > 1){
+                player2Label.setText(game.connectedPlayers.get(1));
+            } else {
+                player2Label.setText("");
+            }
+            if (game.connectedPlayers.size() > 2){
+                player3Label.setText(game.connectedPlayers.get(2));
+            } else {
+                player3Label.setText("");
+            }
+        } else {
+            player1Label.setText("");
+            player2Label.setText("");
+            player3Label.setText("");
+        }
+
+
     }
 
     private void drawShapes(){
@@ -452,20 +484,18 @@ public class CreateSessionScreen implements Screen {
 
         myShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         // joining players
-        if(!player1Label.getText().equals("")){
+        if(player1Label.getText().toString() != ""){
             myShapeRenderer.setColor(0.2f, 0.8f, 0.2f, 1);
             myShapeRenderer.roundedRect(rightTable.getX()+0.4f*xWidth, player1Label.getY() + player1Label.getHeight()*0.65f, rightTable.getWidth() - 0.8f*xWidth, player1Label.getHeight()*1.5f, 10);
         }
-        if(!player2Label.getText().equals("")) {
+        if(player2Label.getText().toString() != "") {
             myShapeRenderer.setColor(0.8f, 0.2f, 0.2f, 1);
             myShapeRenderer.roundedRect(rightTable.getX() + 0.4f * xWidth, player2Label.getY() + player1Label.getHeight() * 0.65f, rightTable.getWidth() - 0.8f * xWidth, player1Label.getHeight() * 1.5f, 10);
         }
-        if (!player3Label.getText().equals("")) {
+        if (player3Label.getText().toString() != "") {
             myShapeRenderer.setColor(0.2f, 0.2f, 0.8f, 1);
             myShapeRenderer.roundedRect(rightTable.getX() + 0.4f * xWidth, player3Label.getY() + player1Label.getHeight() * 0.65f, rightTable.getWidth() - 0.8f * xWidth, player1Label.getHeight() * 1.5f, 10);
         }
-        //myShapeRenderer.setColor(0.8f, 0.8f, 0.2f, 1);
-        //myShapeRenderer.circle(10.75f* xWidth, 10.25f* yHeight, 2* xWidth /3);
         myShapeRenderer.end();
     }
 

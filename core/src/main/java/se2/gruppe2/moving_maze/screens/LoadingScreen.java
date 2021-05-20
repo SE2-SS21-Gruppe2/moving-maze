@@ -71,9 +71,9 @@ public class LoadingScreen implements Screen {
         table = new Table();
         table.setWidth(stage.getWidth());
         table.align(Align.center|Align.top);
-        table.setPosition(0, Gdx.graphics.getHeight()/2 + 70f);
+        table.setPosition(0, Gdx.graphics.getHeight()/2.0f + 70f);
         table.padBottom(500);
-        table.add(loadingImg).size(Gdx.graphics.getWidth()/2,100).center();
+        table.add(loadingImg).size(Gdx.graphics.getWidth()/2.0f,100f).center();
 
 
         stage.addActor(table);
@@ -81,7 +81,7 @@ public class LoadingScreen implements Screen {
     }
 
     private void update(float delta) {
-        progress = MathUtils.lerp(progress, game.assets.getProgress(), .1f);
+        progress = MathUtils.lerp(progress, game.assets.getProgress(), 0.1f);
         if (game.assets.update() && progress >= game.assets.getProgress() - 0.01f) {
             game.setScreen(game.splashScreen);
         }
