@@ -1,4 +1,4 @@
-package se2.gruppe2.moving_maze.screens;
+package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.*;
@@ -19,11 +20,11 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
-import se_ii.gruppe2.moving_maze.player.Player;
 
 public class CreateSessionScreen implements Screen {
 
-    final MovingMazeGame game;
+    private final MovingMazeGame game;
+    private final SpriteBatch batch;
     private OrthographicCamera camera;
 
     private MyShapeRenderer myShapeRenderer;
@@ -79,6 +80,7 @@ public class CreateSessionScreen implements Screen {
 
     public CreateSessionScreen(final MovingMazeGame game) {
         this.game = game;
+        this.batch = game.getBatch();
     }
 
     @Override
@@ -369,17 +371,17 @@ public class CreateSessionScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
-        game.batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
-        game.batch.draw(bgTextureRegion, 0, 0);
-        game.batch.end();
+        batch.begin();
+        batch.draw(bgTextureRegion, 0, 0);
+        batch.end();
 
         drawShapes();
 
-        game.batch.begin();
+        batch.begin();
         stage.draw();
-        game.batch.end();
+        batch.end();
 
 
     }
@@ -416,30 +418,26 @@ public class CreateSessionScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // lifecycle method
     }
 
     @Override
     public void pause() {
-
+        // lifecycle method
     }
 
     @Override
     public void resume() {
-
+        // lifecycle method
     }
 
     @Override
     public void hide() {
-        dispose();
+        // lifecycle method
     }
 
     @Override
     public void dispose() {
-        bgImageTexture.dispose();
-        myFontTexture.dispose();
-        stage.dispose();
-        skin.dispose();
-        startImageTexture.dispose();
+        // lifecycle method
     }
 }
