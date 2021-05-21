@@ -19,9 +19,9 @@ public class GameBoardFactory {
      * itemPathCounter: counter to iterate
      */
     private static final float[] possibleRotationAngles = {0, 90, 270, 180};
-    private static final String[] itemPaths = getFileList();
+    //private static final String[] itemPaths = getFileList();
     private static int itemPathCounter= 0;
-    private static final SecureRandom random= new SecureRandom();
+    private static final SecureRandom  random= new SecureRandom();
     private static int amountOfLTiles;
     private static int amountOfTTiles;
     private static int amountOfITiles;
@@ -43,7 +43,7 @@ public class GameBoardFactory {
         amountOfLTiles =16;
         amountOfTTiles =17;
         amountOfITiles =12;
-        shuffleArray();
+        //shuffleArray();
         buildBoard(board);
         return gb;
     }
@@ -54,7 +54,7 @@ public class GameBoardFactory {
         amountOfLTiles =10;
         amountOfTTiles =25;
         amountOfITiles =10;
-        shuffleArray();
+        //shuffleArray();
         buildBoard(board);
         return gb;
     }
@@ -76,8 +76,7 @@ public class GameBoardFactory {
                     board[i][j]= getRandomTile();
                 }
                 if(itemOnTile){
-                    //board[i][j].setItem(ItemFactory.buildItem(i,j));
-                    board[i][j].setItem(buildItem(i,j));
+                    board[i][j].setItem(ItemFactory.buildItem(i,j));
                     itemOnTile=false;
                 }
                 else itemOnTile=true;
@@ -105,12 +104,16 @@ public class GameBoardFactory {
     /**
      *Gets all components to create an item
      */
+
+    /*
     private static ItemLogical buildItem(int x, int y){
         var position = new Position();
         position.setPosition(x, y);
         String path= itemPaths[itemPathCounter++];
         return new ItemLogical(path, position,false);
     }
+
+     */
 
     /**
      *LibGDX has the FileHandel Class. With this class you can give a Pathname. When u call then the
@@ -120,6 +123,8 @@ public class GameBoardFactory {
      *
      * The second for makes the item instances game per game random.
      */
+
+    /*
     private static String[] getFileList(){
         FileHandle handle;
         if(Gdx.app.getType() == Application.ApplicationType.Android){
@@ -138,6 +143,10 @@ public class GameBoardFactory {
         return fileNames;
     }
 
+     */
+
+
+    /*
     private static void shuffleArray(){
         for (var j = 0; j < itemPaths.length; j++) {
             var swapIndex= random.nextInt(itemPaths.length);
@@ -147,13 +156,15 @@ public class GameBoardFactory {
         }
     }
 
+     */
+
 
     /**
      *L, T, I: Tells how many Tiles  are left.
      * When a Tile is empty, it can't be placed on the board anymore.
      * Therefore a new Random number is needed (while)
      */
-    private static Tile getRandomTile(){
+   private static Tile getRandomTile(){
         while (true){
             var randomTile= random.nextInt(3);
             if(randomTile==0 && amountOfLTiles !=0){
@@ -171,5 +182,7 @@ public class GameBoardFactory {
             }
         }
     }
+
+
 
 }

@@ -19,7 +19,7 @@ public class ItemFactory {
     /**
             *Gets all components to create an item
      */
-    private static ItemLogical buildItem(int x, int y){
+    public static ItemLogical buildItem(int x, int y){
         var position = new Position();
         position.setPosition(x, y);
         String path= itemPaths[itemPathCounter++];
