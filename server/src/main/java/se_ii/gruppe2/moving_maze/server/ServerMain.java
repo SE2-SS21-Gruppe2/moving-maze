@@ -1,9 +1,8 @@
-package se_ii.gruppe2.moving_maze.server;
+package se2.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.kryonet.Server;
 import se_ii.gruppe2.moving_maze.network.Registry;
-import se_ii.gruppe2.moving_maze.server.handlers.GameStateUpdateHandler;
-import se_ii.gruppe2.moving_maze.server.handlers.JoinSessionHandler;
+import se_ii.gruppe2.moving_maze.server.handlers.*;
 
 import java.io.IOException;
 

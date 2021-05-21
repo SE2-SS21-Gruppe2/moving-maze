@@ -1,4 +1,4 @@
-package se_ii.gruppe2.moving_maze;
+package se2.gruppe2.moving_maze;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
@@ -6,16 +6,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
-import se_ii.gruppe2.moving_maze.network.NetworkClient;
-import se_ii.gruppe2.moving_maze.player.Player;
-import se_ii.gruppe2.moving_maze.screens.*;
+import se2.gruppe2.moving_maze.gameState.GameStateHandler;
+import se2.gruppe2.moving_maze.network.NetworkClient;
+import se2.gruppe2.moving_maze.player.Player;
+import se2.gruppe2.moving_maze.screens.*;
 
 public class MovingMazeGame extends Game {
 
 	// Constants
-	public static final int HEIGHT = 600;
-	public static final int WIDTH = 1100;
+	public static int HEIGHT;
+	public static int WIDTH;
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
@@ -23,9 +23,11 @@ public class MovingMazeGame extends Game {
 	private GameStateHandler state;
 
 	private Player player;
+	private String sessionKey;
+	private ArrayList<String> connectedPlayers;
 
-	private SpriteBatch batch;
-	private BitmapFont font;
+	public SpriteBatch batch;
+	public BitmapFont font;
 
 	// Pre-instantiate screens to re-use
 	private JoinSessionScreen joinSessionScreen;
@@ -34,14 +36,16 @@ public class MovingMazeGame extends Game {
 	private GameScreen gameScreen;
 	private OptionScreen optionScreen;
 	private RuleScreen ruleScreen;
+	private WaitingScreen waitingScreen;
+
 	// new
-	private LoadingScreen loadingScreen;
-	private SplashScreen splashScreen;
-	private AssetManager assets;
-	private OrthographicCamera camera;
+	public LoadingScreen loadingScreen;
+	public SplashScreen splashScreen;
+	public AssetManager assets;
+	public OrthographicCamera camera;
 
 	// Network
-	private NetworkClient client;
+	public NetworkClient client;
 
     /**
 	 * Private constructor to avoid accidental instantiation
@@ -56,6 +60,8 @@ public class MovingMazeGame extends Game {
 
 		assets = new AssetManager();
 		// set game-reliant constants
+		MovingMazeGame.WIDTH = Gdx.graphics.getWidth();
+		MovingMazeGame.HEIGHT = Gdx.graphics.getHeight();
 
 		client = NetworkClient.getInstance();
 		state = new GameStateHandler();
@@ -76,8 +82,21 @@ public class MovingMazeGame extends Game {
 		loadingScreen = new LoadingScreen(this);
 		splashScreen = new SplashScreen(this);
 
-		// when started, show loading screen (which then transitions to the MainMenuScreen)
+
+		// display main-menu when the game is started
+
+		//setScreen(mainMenuScreen);
+    
+    // try loading screen
 		setScreen(loadingScreen);
+	}
+
+	/**
+	 * Lifecycle method called to render each frame
+	 */
+	@Override
+	public void render () {
+		super.render();
 	}
 
 	/**
@@ -110,13 +129,18 @@ public class MovingMazeGame extends Game {
 	 * Mostly used by screens to get the same virtual resolution.
 	 * @return OrthographicCamera with standardized height and width
 	 */
-	public static OrthographicCamera getStandardizedCamera(){
-		var camera= new OrthographicCamera();
+	public static OrthographicCamera getStandardizedCamera() {
+		OrthographicCamera camera = new OrthographicCamera();
+		camera.setToOrtho(false, MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT);
+		return camera;
+	}
+
+	public static OrthographicCamera gameboardCamera(){
+		OrthographicCamera camera= new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		return camera;
 	}
 
-	// GETTER & SETTER
 	public GameStateHandler getGameState() {
 		return state;
 	}
@@ -184,4 +208,20 @@ public class MovingMazeGame extends Game {
 	public AssetManager getAssets() {
 		return assets;
 	}
+	public String getSessionKey() {
+		return sessionKey;
+	}
+
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
+	}
+
+    public void setConnectedPlayers(ArrayList<String> connectedPlayers) {
+		this.connectedPlayers = connectedPlayers;
+    }
+
+	public ArrayList<String> getConnectedPlayers() {
+		return connectedPlayers;
+	}
+
 }

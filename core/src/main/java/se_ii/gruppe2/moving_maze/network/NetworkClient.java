@@ -1,4 +1,4 @@
-package se_ii.gruppe2.moving_maze.network;
+package se2.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
@@ -8,6 +8,9 @@ import se_ii.gruppe2.moving_maze.network.listeners.GameStateUpdateListener;
 import se_ii.gruppe2.moving_maze.network.listeners.JoinConfirmationListener;
 import se_ii.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.network.messages.out.LeaveSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
 
 import java.io.IOException;
 
@@ -29,9 +32,9 @@ public class NetworkClient {
             singleton = new NetworkClient();
             try {
             singleton.initKryoClient(
-                    NetworkConfig.TIMEOUT,
-                    NetworkConfig.HOST,
-                    NetworkConfig.PORT
+                    NetworkConfig.timeout,
+                    NetworkConfig.host,
+                    NetworkConfig.port
             );
             Gdx.app.log("moving-maze/NetworkClient", "Connection to gameserver established");
             } catch(IOException ioe) {

@@ -1,4 +1,4 @@
-package se_ii.gruppe2.moving_maze.network;
+package se2.gruppe2.moving_maze.network;
 
 import com.esotericsoftware.kryo.Kryo;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
@@ -17,14 +17,16 @@ import se_ii.gruppe2.moving_maze.tile.ITile;
 import se_ii.gruppe2.moving_maze.tile.LTile;
 import se_ii.gruppe2.moving_maze.tile.TTile;
 import se_ii.gruppe2.moving_maze.tile.Tile;
+import se_ii.gruppe2.moving_maze.network.messages.out.LeaveSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
+import se_ii.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
+
 
 import java.util.Stack;
 
 public class Registry {
-
-    // utility class - prevent instantiation
-    private Registry() {}
-
     /**
      * Registers all classes that are known to the registry
      * @param kryo to registrate the classes on
