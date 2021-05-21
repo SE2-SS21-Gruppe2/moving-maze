@@ -1,4 +1,4 @@
-package se2.gruppe2.moving_maze.screens;
+package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import se2.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.MovingMazeGame;
 
 public class LoadingScreen implements Screen {
 
@@ -26,20 +26,17 @@ public class LoadingScreen implements Screen {
     private Image loadingImg;
     private Table table;
 
-
-
-
     public LoadingScreen(MovingMazeGame game){
         this.game = game;
-        this.stage = new Stage(new FitViewport(MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT, game.camera));
+        this.stage = new Stage(new FitViewport(MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT, game.getCamera()));
 
     }
 
     private void queueAssets() {
 
-        game.assets.load("ui/splash.png", Texture.class);
-        game.assets.load("ui/uiskin.atlas", TextureAtlas.class);
-        game.assets.load("ui/loadingBar.png",Texture.class);
+        game.getAssets().load("ui/splash.png", Texture.class);
+        game.getAssets().load("ui/uiskin.atlas", TextureAtlas.class);
+        game.getAssets().load("ui/loadingBar.png",Texture.class);
 
     }
 
@@ -53,7 +50,7 @@ public class LoadingScreen implements Screen {
         stage = new Stage();
 
         this.shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setProjectionMatrix(game.camera.combined);
+        shapeRenderer.setProjectionMatrix(game.getCamera().combined);
 
 
         this.progress = 0f;
@@ -96,11 +93,11 @@ public class LoadingScreen implements Screen {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.rect(game.camera.viewportWidth/4 + 15, game.camera.viewportHeight / 2 , game.camera.viewportWidth/2f -33 , 16);
+        shapeRenderer.rect(game.getCamera().viewportWidth/4 + 15, game.getCamera().viewportHeight / 2 , game.getCamera().viewportWidth/2f -33 , 16);
 
 
         shapeRenderer.setColor(Color.TEAL);
-        shapeRenderer.rect(game.camera.viewportWidth/4 + 15, game.camera.viewportHeight / 2 , progress * (game.camera.viewportWidth/2f -33), 16);
+        shapeRenderer.rect(game.getCamera().viewportWidth/4 + 15, game.getCamera().viewportHeight / 2 , progress * (game.getCamera().viewportWidth/2f -33), 16);
         shapeRenderer.end();
 
         stage.draw();
@@ -111,27 +108,26 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // lifecycle function
     }
 
     @Override
     public void pause() {
-
+        // lifecycle function
     }
 
     @Override
     public void resume() {
-
+        // lifecycle function
     }
 
     @Override
     public void hide() {
-
+        // lifecycle function
     }
 
     @Override
     public void dispose() {
-
         shapeRenderer.dispose();
         stage.dispose();
     }
