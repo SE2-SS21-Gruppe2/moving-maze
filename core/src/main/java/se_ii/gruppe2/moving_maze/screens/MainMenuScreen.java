@@ -209,7 +209,7 @@ public class MainMenuScreen implements Screen {
                 game.getGameState().setSessionCode("devgame");
                 game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
                 game.setPlayer(new Player("Developer " + new SecureRandom().nextInt(10)));
-                game.getClient().joinSession(game.getPlayer(), "devgame");
+                game.getClient().joinSession(game.getPlayer(), "DEVGME");
                 game.setScreen(game.getGameScreen());
             }
         });
