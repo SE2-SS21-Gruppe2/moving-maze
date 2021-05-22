@@ -33,6 +33,15 @@ public abstract class Tile {
      * @return
      */
     public Tile applyRotation(float rotationDegrees) {
+        float rotationShifts= rotationDegrees/90f;
+        while (rotationShifts>0.0){
+            boolean help = openTop;
+            openTop= openLeft;
+            openLeft=openBottom;
+            openBottom=openRight;
+            openRight=help;
+            rotationShifts--;
+        }
         this.setRotationDegrees(rotationDegrees);
         return this;
     }

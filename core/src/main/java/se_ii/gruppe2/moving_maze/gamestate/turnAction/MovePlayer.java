@@ -49,6 +49,10 @@ public class MovePlayer implements TurnAction {
                 possibleMoves(new Position(x,y-1),tiles,positions);
             }
         }
+        if(positions.isEmpty()){
+            positions.add(position);
+            return positions;
+        }
         return positions;
     }
 
