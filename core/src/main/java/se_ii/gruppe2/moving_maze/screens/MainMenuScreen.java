@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.player.PlayerColor;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -209,6 +210,7 @@ public class MainMenuScreen implements Screen {
                 game.getGameState().setSessionCode("devgame");
                 game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
                 game.setPlayer(new Player("Developer " + new SecureRandom().nextInt(10)));
+                game.getPlayer().setColor(PlayerColor.YELLOW);
                 game.getClient().joinSession(game.getPlayer(), "DEVGME");
                 game.setScreen(game.getGameScreen());
             }

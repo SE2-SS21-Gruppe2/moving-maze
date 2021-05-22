@@ -30,4 +30,20 @@ public class TileFactory {
         }
     }
 
+    public static Tile getYellowStartTile() {
+        return new StartTile("gameboard/yellowtile.png");
+    }
+
+    public static Tile getBlueStartTile() {
+        return new StartTile("gameboard/bluetile.png");
+    }
+
+    public static Tile getRedStartTile() {
+        return new StartTile("gameboard/redtile.png");
+    }
+
+    public static Tile getGreenStartTile() {
+        return new StartTile("gameboard/greentile.png");
+    }
+
 }

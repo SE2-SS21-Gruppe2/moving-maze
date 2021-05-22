@@ -3,19 +3,25 @@ package se_ii.gruppe2.moving_maze.player;
 import se_ii.gruppe2.moving_maze.item.Card;
 import se_ii.gruppe2.moving_maze.item.Position;
 
+import java.security.SecureRandom;
 import java.util.Stack;
 
 public class Player {
+    private long id;
     private String name;
+    private String texturePath;
     private Position pos;
     private Stack<Card> cardsToFind;
     private Stack<Card> cardsFound;
     private Card currentCard;
     private PlayerRole role;
 
+    private PlayerColor color;
+
     public Player() {
         cardsToFind = new Stack<>();
         cardsFound = new Stack<>();
+        id = generateId();
     }
 
     public Player(String name) {
@@ -29,6 +35,10 @@ public class Player {
                 this.pos.getX()+dX,
                 this.pos.getY()+dY
         );
+    }
+
+    public static void getTexturePathByColor(PlayerColor color) {
+
     }
 
     /**
@@ -45,6 +55,18 @@ public class Player {
         }
 
         return currentCard;
+    }
+
+    /**
+     * Creates a semi-random id for a player object.
+     * currentTimeMillis on creation and a randomly generated number are taken into consideration.
+     * @return the id
+     */
+    public long generateId() {
+        long currentMillis = System.currentTimeMillis();
+        long salt = new SecureRandom().nextInt(99);
+
+        return currentMillis + salt;
     }
 
     // GETTER & SETTER
@@ -71,5 +93,24 @@ public class Player {
     public Position getPos() {
         return this.pos;
     }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public PlayerColor getColor() {
+        return color;
+    }
+
+    public void setColor(PlayerColor color) {
+        this.color = color;
+        this.texturePath = PlayerColorMapper.getTexturePathByPlayerColor(this.color);
+        this.pos = PlayerColorMapper.getInitialPositionByColor(this.color);
+    }
+
+    public String getTexturePath() {
+        return this.texturePath;
+    }
+
 
 }

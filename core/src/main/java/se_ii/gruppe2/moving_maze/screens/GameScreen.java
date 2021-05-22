@@ -15,6 +15,7 @@ import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
+import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
 public class GameScreen implements Screen {
@@ -22,6 +23,7 @@ public class GameScreen implements Screen {
     private final MovingMazeGame game;
     private final SpriteBatch batch;
     private OrthographicCamera camera;
+    private Player player;
 
     // background
     private Texture bgImageTexture;
@@ -41,6 +43,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         game.getClient().sendGameStateUpdate(game.getGameState());
+        player = game.getPlayer();
     }
 
     @Override
@@ -54,9 +57,9 @@ public class GameScreen implements Screen {
         }
 
         batch.begin();
-            batch.draw(bgTextureRegion, 0, 0);
-            drawGameBoard(batch);
-            game.getFont().draw(batch, "Game screen (DEV MODE)", 100, 100);
+        batch.draw(bgTextureRegion, 0, 0);
+        drawGameBoard(batch);
+        game.getFont().draw(batch, "Game screen (DEV MODE)", 100, 100);
         batch.end();
     }
 
@@ -112,10 +115,13 @@ public class GameScreen implements Screen {
     /**
      * Draws a visual representation of a logical gameboard onto the screen.
      * @param batch
+     * TODO: refactor
      */
     private void drawGameBoard(SpriteBatch batch) {
         Tile[][] tl = game.getGameState().getBoard().getBoard();
         Position initPos = getStartCoordinates();
+
+        Position playerPos = player.getPos(); // i and j of the tile the player is onto
 
         float curX = initPos.getX();
         float curY = initPos.getY();
@@ -123,9 +129,9 @@ public class GameScreen implements Screen {
         Sprite currentSprite;
         Tile currentTile;
         ItemLogical currentItem;
-        for(var i = 0; i < tl.length; i++) {
-            for(var j = 0; j < tl[i].length; j++) {
-                currentTile = tl[i][j];
+        for(var y = 0; y < tl.length; y++) {
+            for(var x = 0; x < tl[y].length; x++) {
+                currentTile = tl[y][x];
                 currentSprite = TextureLoader.getSpriteByTexturePath(currentTile.getTexturePath(), TextureType.TILE);
                 currentItem = currentTile.getItem();
 
@@ -133,9 +139,18 @@ public class GameScreen implements Screen {
                 currentSprite.setRotation(currentTile.getRotationDegrees());
                 currentSprite.draw(batch);
 
+                // render item
                 if(currentItem != null) {
                     currentSprite = TextureLoader.getSpriteByTexturePath(currentItem.getTexturePath(), TextureType.ITEM);
                     currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE /4f, curY + TextureLoader.TILE_EDGE_SIZE /4f);
+                    currentSprite.draw(batch);
+                }
+
+                // render local player
+                // TODO: make this "global" for all players and not just the local one
+                if(x == playerPos.getX() && y == playerPos.getY()) {
+                    currentSprite = TextureLoader.getSpriteByTexturePath(player.getTexturePath(), TextureType.PLAYER);
+                    currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE/4f, curY+TextureLoader.TILE_EDGE_SIZE/4f);
                     currentSprite.draw(batch);
                 }
 
