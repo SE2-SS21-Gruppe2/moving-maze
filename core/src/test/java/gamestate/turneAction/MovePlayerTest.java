@@ -15,7 +15,7 @@ import se_ii.gruppe2.moving_maze.tile.LTile;
 import se_ii.gruppe2.moving_maze.tile.TTile;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
-public class MovePlayerTest {
+class MovePlayerTest {
 
     public static Tile[][] gameBoard;
     public static MovePlayer movePlayer;
@@ -94,6 +94,33 @@ public class MovePlayerTest {
         assertEquals(1,moves.size());
         assertEquals(0,moves.get(0).getX());
         assertEquals(0,moves.get(0).getY());
+    }
+
+    @Test
+    public void statementCover () throws Exception{
+        gameBoard= new Tile[2][2];
+        gameBoard[1][1]= new ITile();
+        gameBoard[1][0]=new ITile().applyRotation(90f);
+        gameBoard[0][1]=new ITile().applyRotation(90f);
+        gameBoard[0][0]=  new ITile();
+        moves=new ArrayList<>();
+        position.setPosition(0,1);
+        moves=(ArrayList<Position>) possibleMoves.invoke(movePlayer,position,gameBoard,moves);
+        assertEquals(1,moves.size());
+        assertEquals(0,moves.get(0).getX());
+        assertEquals(1,moves.get(0).getY());
+
+        position.setPosition(1,1);
+        moves=(ArrayList<Position>) possibleMoves.invoke(movePlayer,position,gameBoard,moves);
+        assertEquals(1,moves.get(1).getX());
+        assertEquals(1,moves.get(1).getY());
+
+        position.setPosition(1,0);
+        moves=(ArrayList<Position>) possibleMoves.invoke(movePlayer,position,gameBoard,moves);
+        assertEquals(1,moves.get(2).getX());
+        assertEquals(0,moves.get(2).getY());
+
+
     }
 
 }

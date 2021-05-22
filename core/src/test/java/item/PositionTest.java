@@ -6,7 +6,7 @@ import se_ii.gruppe2.moving_maze.item.Position;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PositionTest {
+class PositionTest {
     Position position;
 
     @BeforeEach

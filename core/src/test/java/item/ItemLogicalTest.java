@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 
-
-public class ItemLogicalTest {
+class ItemLogicalTest {
 
     Position position = new Position();
     ItemLogical itemLogical;

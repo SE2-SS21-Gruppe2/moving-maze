@@ -10,7 +10,7 @@ import se_ii.gruppe2.moving_maze.tile.Tile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TileTest {
+class TileTest {
 
     Tile tileLogical;
     @Mock

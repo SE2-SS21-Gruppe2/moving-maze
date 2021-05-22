@@ -29,33 +29,35 @@ public class MovePlayer implements TurnAction {
         int x= position.getX();
         int y= position.getY();
         positions.add(new Position(x,y));
-        if(tiles[x][y].isOpenTop() && x+1<tiles.length){
-            if(tiles[x+1][y].isOpenBottom()){
-                possibleMoves(new Position(x+1,y),tiles,positions);
-            }
+        if(canMoveTop(tiles,x,y)){
+            possibleMoves(new Position(x+1,y),tiles,positions);
         }
-        if(tiles[x][y].isOpenRight() && y+1<tiles[x].length) {
-            if (tiles[x][y+1].isOpenLeft()){
-                possibleMoves(new Position(x,y+1),tiles,positions);
-            }
+        if(canMoveRight(tiles,x,y)) {
+            possibleMoves(new Position(x,y+1),tiles,positions);
         }
-        if(tiles[x][y].isOpenBottom() && x-1>=0){
-            if(tiles[x-1][y].isOpenTop()){
-                possibleMoves(new Position(x-1,y),tiles,positions);
-            }
+        if(canMoveBottom(tiles,x,y)){
+            possibleMoves(new Position(x-1,y),tiles,positions);
         }
-        if(tiles[x][y].isOpenLeft() && y-1>=0){
-            if(tiles[x][y-1].isOpenRight()) {
-                possibleMoves(new Position(x,y-1),tiles,positions);
-            }
+        if(canMoveLeft(tiles,x,y)){
+            possibleMoves(new Position(x,y-1),tiles,positions);
         }
-        if(positions.isEmpty()){
-            positions.add(position);
-            return positions;
-        }
+
         return positions;
     }
 
+
+    private static boolean canMoveTop(Tile[][] tiles, int x,int y){
+        return tiles[x][y].isOpenTop() && x+1<tiles.length && tiles[x+1][y].isOpenBottom();
+    }
+    private static boolean canMoveRight(Tile[][] tiles, int x,int y){
+        return tiles[x][y].isOpenRight() && y+1<tiles[x].length && tiles[x][y+1].isOpenLeft();
+    }
+    private static boolean canMoveBottom(Tile[][] tiles, int x,int y){
+        return tiles[x][y].isOpenBottom() && x-1>=0 && tiles[x-1][y].isOpenTop();
+    }
+    private static boolean canMoveLeft(Tile[][] tiles, int x,int y){
+        return tiles[x][y].isOpenLeft() && y-1>=0 && tiles[x][y-1].isOpenRight();
+    }
 
 
 
