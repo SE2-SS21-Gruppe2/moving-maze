@@ -24,14 +24,14 @@ class MovePlayerTest {
     public static Position position;
 
     @BeforeEach
-    public  void setup() throws Exception{
+    void setup() throws Exception{
         possibleMoves= MovePlayer.class.getDeclaredMethod("possibleMoves", Position.class, Tile[][].class, ArrayList.class);
         possibleMoves.setAccessible(true);
         position= new Position();
     }
 
     @Test
-    public  void openBorderTest() throws Exception{
+    void openBorderTest() throws Exception{
         gameBoard= new Tile[2][2];
         gameBoard[0][0]= new LTile();
         gameBoard[0][1]=new TTile().applyRotation(180f);
@@ -54,7 +54,7 @@ class MovePlayerTest {
     }
 
     @Test
-    public  void circle () throws Exception{
+    void circle () throws Exception{
         gameBoard= new Tile[2][2];
         gameBoard[0][0]= new LTile();
         gameBoard[0][1]=new TTile().applyRotation(270f);
@@ -82,7 +82,7 @@ class MovePlayerTest {
     }
 
     @Test
-    public void noFieldToGo() throws Exception{
+    void noFieldToGo() throws Exception{
         gameBoard= new Tile[2][2];
         gameBoard[1][1]= new LTile();
         gameBoard[1][0]=new TTile().applyRotation(270f);
@@ -97,7 +97,7 @@ class MovePlayerTest {
     }
 
     @Test
-    public void statementCover () throws Exception{
+    void statementCover () throws Exception{
         gameBoard= new Tile[2][2];
         gameBoard[1][1]= new ITile();
         gameBoard[1][0]=new ITile().applyRotation(90f);
