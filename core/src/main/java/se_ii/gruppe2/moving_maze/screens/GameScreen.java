@@ -27,6 +27,12 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private Player player;
 
+    // Buffer-variables used for rendering
+    Sprite currentSprite;
+    Tile currentTile;
+    ItemLogical currentItem;
+    ArrayList<Player> currentPlayersOnTile = new ArrayList<>();
+
     // background
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
@@ -126,10 +132,6 @@ public class GameScreen implements Screen {
         float curX = initPos.getX();
         float curY = initPos.getY();
 
-        Sprite currentSprite;
-        Tile currentTile;
-        ItemLogical currentItem;
-
         for(var y = 0; y < tl.length; y++) {
             for(var x = 0; x < tl[y].length; x++) {
                 currentTile = tl[y][x];
@@ -148,10 +150,14 @@ public class GameScreen implements Screen {
                 }
 
                 // render players
-                if(false) {
-                    currentSprite = TextureLoader.getSpriteByTexturePath(player.getTexturePath(), TextureType.PLAYER);
-                    currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE/4f, curY+TextureLoader.TILE_EDGE_SIZE/4f);
-                    currentSprite.draw(batch);
+                currentPlayersOnTile = game.getGameState().playersOnTile(y, x);
+
+                if(currentPlayersOnTile.size() != 0) {
+                    for(Player p : currentPlayersOnTile) {
+                        currentSprite = TextureLoader.getSpriteByTexturePath(p.getTexturePath(), TextureType.PLAYER);
+                        currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE/4f, curY+TextureLoader.TILE_EDGE_SIZE/4f);
+                        currentSprite.draw(batch);
+                    }
                 }
 
                 curX += TextureLoader.TILE_EDGE_SIZE;
@@ -160,5 +166,6 @@ public class GameScreen implements Screen {
             curY += TextureLoader.TILE_EDGE_SIZE;
         }
     }
+
 
 }
