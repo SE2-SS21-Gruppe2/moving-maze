@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class LTITileTest {
     Tile tile;
 
+    //TODO: Test Rotation when issue/#24 is in the main branch
+
     @Test
     public void openTestL(){
         tile = new LTile();
