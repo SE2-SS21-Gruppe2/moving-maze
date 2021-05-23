@@ -5,4 +5,6 @@ public class StartTile extends LTile {
     public StartTile(String texturePath) {
         super(texturePath);
     }
+
+    public StartTile() {}
 }
