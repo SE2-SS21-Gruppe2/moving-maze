@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.NetworkClient;
 import se_ii.gruppe2.moving_maze.player.Player;
-import se_ii.gruppe2.moving_maze.player.PlayerRole;
 import se_ii.gruppe2.moving_maze.screens.*;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class MovingMazeGame extends Game {
 
 	private GameStateHandler state;
 
-	private Player player;
+	private Player localPlayer;
 
 	private SpriteBatch batch;
 	private BitmapFont font;
@@ -143,12 +142,12 @@ public class MovingMazeGame extends Game {
 		return this.font;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public Player getLocalPlayer() {
+		return localPlayer;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
+	public void setLocalPlayer(Player localPlayer) {
+		this.localPlayer = localPlayer;
 	}
 
 	public SpriteBatch getBatch() {

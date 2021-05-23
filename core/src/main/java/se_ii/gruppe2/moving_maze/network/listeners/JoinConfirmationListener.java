@@ -14,7 +14,7 @@ public class JoinConfirmationListener extends Listener {
             JoinRequestConfirmation jrc = (JoinRequestConfirmation) obj;
             var game = MovingMazeGame.getGameInstance();
             game.setSessionKey(jrc.getSessionKey());
-            game.getPlayer().setColor(jrc.getAssignedColor());
+            game.getLocalPlayer().setColor(jrc.getAssignedColor());
             Gdx.app.log("NetworkClient/JoinConfirmation", "Received join confirmation for session '" + jrc.getSessionKey() +
                     "', assigned color: " + jrc.getAssignedColor());
         }

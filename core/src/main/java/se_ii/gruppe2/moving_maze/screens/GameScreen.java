@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         game.getClient().sendGameStateUpdate(game.getGameState());
-        player = game.getPlayer();
+        player = game.getLocalPlayer();
     }
 
     @Override

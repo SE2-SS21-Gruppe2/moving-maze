@@ -76,7 +76,7 @@ public class WaitingScreen implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.getClient().leaveSession(game.getPlayer(), game.getSessionKey());
+                game.getClient().leaveSession(game.getLocalPlayer(), game.getSessionKey());
                 game.setScreen(game.getMainMenuScreen());
             }
         });
