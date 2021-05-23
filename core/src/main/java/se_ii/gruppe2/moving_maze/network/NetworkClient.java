@@ -2,6 +2,11 @@ package se_ii.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
+import se_ii.gruppe2.moving_maze.network.listeners.CreateSessionConfirmationListener;
+import se_ii.gruppe2.moving_maze.network.listeners.UpdateConnectedPlayersListener;
+import se_ii.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.out.LeaveSessionRequest;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.listeners.ErrorResponseListener;
 import se_ii.gruppe2.moving_maze.network.listeners.GameStateUpdateListener;
@@ -57,6 +62,8 @@ public class NetworkClient {
         kryoClient.addListener(new ErrorResponseListener());
         kryoClient.addListener(new GameStateUpdateListener());
         kryoClient.addListener(new JoinConfirmationListener());
+        kryoClient.addListener(new CreateSessionConfirmationListener());
+        kryoClient.addListener(new UpdateConnectedPlayersListener());
     }
 
     /**
@@ -75,6 +82,22 @@ public class NetworkClient {
     public void sendGameStateUpdate(GameStateHandler state) {
         kryoClient.sendTCP(state);
         Gdx.app.log("NetworkClient/sendGameStateUpdate", "Sent gamestate-update to server");
+    }
+
+    public void createNewSession(Player player) {
+        kryoClient.sendTCP(new CreateSessionRequest(player));
+        Gdx.app.log("NetworkClient/createNewSession", "Submitted request to create new session");
+
+    }
+
+    public void closeSession(String sessionKey) {
+        kryoClient.sendTCP(new CloseSessionRequest(sessionKey));
+        Gdx.app.log("NetworkClient/closeSession", "Submitted request to close session '" + sessionKey + "'");
+    }
+
+    public void leaveSession(Player player, String sessionKey) {
+        kryoClient.sendTCP(new LeaveSessionRequest(player, sessionKey));
+        Gdx.app.log("NetworkClient/leaveSession", "Submitted request to leave session '" + sessionKey + "'");
     }
 
 }
