@@ -27,4 +27,8 @@ public class GameStateHandler {
     public void setSessionCode(String sessionCode) {
         this.sessionCode = sessionCode;
     }
+
+    public Player getCurrentPlayerOnTurn() {
+        return currentPlayerOnTurn;
+    }
 }

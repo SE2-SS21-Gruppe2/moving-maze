@@ -2,14 +2,34 @@ package se_ii.gruppe2.moving_maze.gamestate.turnAction;
 
 import java.util.ArrayList;
 
+import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
+import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.item.Position;
+import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
 public class MovePlayer implements TurnAction {
 
+    private static GameStateHandler gameStateHandler;
+    private static GameBoard gameBoard;
+    private static Position currentPosition;
+    private static Player player;
+    private static Tile[][] gb;
+    private static ArrayList<Position> positionsToGO;
+
+
 
     @Override
     public void execute() {
+        gameBoard=gameStateHandler.getBoard();
+        gb=gameBoard.getBoard();
+        player=gameStateHandler.getCurrentPlayerOnTurn();
+        currentPosition=player.getPos();
+        positionsToGO=new ArrayList<>();
+        positionsToGO=possibleMoves(currentPosition,gb, positionsToGO);
+
+
+
 
     }
 
@@ -41,7 +61,6 @@ public class MovePlayer implements TurnAction {
         if(canMoveLeft(tiles,x,y)){
             possibleMoves(new Position(x,y-1),tiles,positions);
         }
-
         return positions;
     }
 
