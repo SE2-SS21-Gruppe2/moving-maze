@@ -14,6 +14,10 @@ public class TextureLoader {
     public static final float TILE_EDGE_SIZE_NO_PADDING = TILE_EDGE_SIZE - 2.0f* TILE_PADDING;
     public static final float TIME_EDGE_SIZE = (Gdx.graphics.getHeight()*1f / GameBoard.TILES_PER_EDGE - 20f);
 
+    public static final float CARD_Height = (float) Gdx.graphics.getHeight() / 4f;
+    public static final float CARD_Width = (float) Gdx.graphics.getWidth() / 8f;
+
+
     private static HashMap<String, Sprite> textures = new HashMap<>();
 
     // prevent instantiation - static utility class
@@ -97,5 +101,23 @@ public class TextureLoader {
         scaledPicture.dispose();
 
         return scaledTileTexture;
+    }
+
+    private static Texture getScaledCardTexture(String texturePath) { /**  NEW METHOD */
+
+        var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+
+        var scaledPicture = new Pixmap((int) CARD_Width, (int) CARD_Height, originalPicture.getFormat());
+
+        scaledPicture.drawPixmap(originalPicture,
+                0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
+                0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
+
+        var scaledCardTexture = new Texture(scaledPicture);
+
+        originalPicture.dispose();
+        scaledPicture.dispose();
+
+        return scaledCardTexture;
     }
 }

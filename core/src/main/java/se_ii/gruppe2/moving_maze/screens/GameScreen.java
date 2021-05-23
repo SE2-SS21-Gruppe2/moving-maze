@@ -56,7 +56,8 @@ public class GameScreen implements Screen {
         batch.begin();
             batch.draw(bgTextureRegion, 0, 0);
             drawGameBoard(batch);
-            game.getFont().draw(batch, "Game screen (DEV MODE)", 100, 100);
+            drawCard(batch);
+            //game.getFont().draw(batch, "Game screen (DEV MODE)", 100, 100);
         batch.end();
     }
 
@@ -143,6 +144,40 @@ public class GameScreen implements Screen {
             }
             curX = initPos.getX();
             curY += TextureLoader.TILE_EDGE_SIZE;
+        }
+    }
+
+    public void drawCard(SpriteBatch batch){  /**  NEW METHOD */
+
+        String path = "assets/card/card.png";
+
+        Position position = getStartCoordinatesCard();
+        Sprite currentSprite;
+
+        float curX = position.getX();
+        float curY = position.getY();
+
+
+        currentSprite = TextureLoader.getSpriteByTexturePath(path, TextureType.ITEM);
+
+        currentSprite.setPosition(curX, curY);
+
+
+    }
+
+    private Position getStartCoordinatesCard() { /**  NEW METHOD */
+
+        float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
+        if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
+            return new Position(Gdx.graphics.getWidth()/100 * 25, Gdx.graphics.getHeight()/100);
+        }
+        else if(aspectRatio==4f/3f){
+            return new Position(Gdx.graphics.getWidth()/100 * 15, Gdx.graphics.getHeight()/100*10);
+        }
+        else if(aspectRatio==1f){
+            return new Position(Gdx.graphics.getWidth()/100, Gdx.graphics.getHeight()/100);
+        } else {
+            return new Position(0,0);
         }
     }
 
