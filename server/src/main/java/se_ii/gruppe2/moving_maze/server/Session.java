@@ -35,6 +35,7 @@ public class Session {
         if(players.size() < MAX_PLAYERS) {
             player.setColor(availableColors.pop());
             players.put(player, con);
+            state.addPlayer(player);
             sendConnectedPlayersToHost();
             Log.info("Assigned player the color " + player.getColor().toString());
             return player.getColor();
@@ -90,6 +91,17 @@ public class Session {
         availableColors.add(PlayerColor.BLUE);
         availableColors.add(PlayerColor.RED);
         availableColors.add(PlayerColor.GREEN);
+    }
+
+    /**
+     * Resets and synchronizes the players in the managed state with the player stored on session-level.
+     */
+    public void syncSessionPlayersWithState() {
+        this.state.getPlayers().clear();
+
+        for(Map.Entry<Player, Connection> entry : players.entrySet()) {
+            state.addPlayer(entry.getKey());
+        }
     }
 
     // GETTER & SETTER

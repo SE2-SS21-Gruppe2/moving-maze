@@ -18,6 +18,8 @@ import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
+import java.util.ArrayList;
+
 public class GameScreen implements Screen {
 
     private final MovingMazeGame game;
@@ -121,14 +123,13 @@ public class GameScreen implements Screen {
         Tile[][] tl = game.getGameState().getBoard().getBoard();
         Position initPos = getStartCoordinates();
 
-        Position playerPos = player.getPos(); // i and j of the tile the player is onto
-
         float curX = initPos.getX();
         float curY = initPos.getY();
 
         Sprite currentSprite;
         Tile currentTile;
         ItemLogical currentItem;
+
         for(var y = 0; y < tl.length; y++) {
             for(var x = 0; x < tl[y].length; x++) {
                 currentTile = tl[y][x];
@@ -146,9 +147,8 @@ public class GameScreen implements Screen {
                     currentSprite.draw(batch);
                 }
 
-                // render local player
-                // TODO: make this "global" for all players and not just the local one
-                if(x == playerPos.getX() && y == playerPos.getY()) {
+                // render players
+                if(false) {
                     currentSprite = TextureLoader.getSpriteByTexturePath(player.getTexturePath(), TextureType.PLAYER);
                     currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE/4f, curY+TextureLoader.TILE_EDGE_SIZE/4f);
                     currentSprite.draw(batch);
