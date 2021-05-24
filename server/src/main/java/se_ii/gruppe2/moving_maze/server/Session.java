@@ -3,35 +3,59 @@ package se_ii.gruppe2.moving_maze.server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
+import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
 import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.player.PlayerColor;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Session {
     private static final int MAX_PLAYERS = 4;
     private String key;
     private HashMap<Player, Connection> players;
+    private HashMap<Player, Connection> lobbyHost;
     private GameStateHandler state;
+    private Stack<PlayerColor> availableColors;
 
     public Session(String key) {
         this.key = key;
         players = new HashMap<>();
-        // TODO: use a static INIT function to initialize the game-state
+        lobbyHost = new HashMap<>();
         state = new GameStateHandler();
         state.setSessionCode(this.key);
+        initColors();
     }
 
     /**
-     * Add player to session
+     * Add player to session and return the color that has been assigned
      * @param player to add
      * @throws IllegalStateException in case the amount of players is already maxed out
      */
-    public void addPlayer(Player player, Connection con) {
+    public PlayerColor addPlayer(Player player, Connection con) {
         if(players.size() < MAX_PLAYERS) {
+            player.setColor(availableColors.pop());
             players.put(player, con);
+            state.addPlayer(player);
+            sendConnectedPlayersToHost();
+            Log.info("Assigned player the color " + player.getColor().toString());
+            return player.getColor();
         } else {
             throw new IllegalStateException();
+        }
+    }
+
+    /**
+     * Update the host with all players that have been added to the session.
+     */
+    private void sendConnectedPlayersToHost() {
+        ArrayList<String> connectedPlayers = new ArrayList<>();
+        if (!players.isEmpty() && !lobbyHost.isEmpty()){
+            for (Map.Entry<Player,Connection> entry : players.entrySet()){
+                if ( !lobbyHost.containsKey(entry.getKey())){
+                    connectedPlayers.add(entry.getKey().getName());
+                }
+            }
+            lobbyHost.entrySet().iterator().next().getValue().sendTCP(new UpdateConnectedPlayersConfirmation(connectedPlayers));
         }
     }
 
@@ -58,6 +82,28 @@ public class Session {
         Log.info("(" + key + ") State update finished");
     }
 
+    /**
+     * Initialize the available colors
+     */
+    private void initColors() {
+        availableColors = new Stack<>();
+        availableColors.add(PlayerColor.YELLOW);
+        availableColors.add(PlayerColor.BLUE);
+        availableColors.add(PlayerColor.RED);
+        availableColors.add(PlayerColor.GREEN);
+    }
+
+    /**
+     * Resets and synchronizes the players in the managed state with the player stored on session-level.
+     */
+    public void syncSessionPlayersWithState() {
+        this.state.getPlayers().clear();
+
+        for(Map.Entry<Player, Connection> entry : players.entrySet()) {
+            state.addPlayer(entry.getKey());
+        }
+    }
+
     // GETTER & SETTER
     public String getKey() {
         return key;
@@ -73,6 +119,36 @@ public class Session {
 
     public void setState(GameStateHandler state) {
         this.state = state;
+    }
+
+    public int getNumberOfPlayersInSession() {
+        int num = 0;
+        for (Map.Entry<Player, Connection> p : players.entrySet()) {
+            num++;
+        }
+        return num;
+    }
+
+    public HashMap<Player, Connection> getLobbyHost() {
+        return lobbyHost;
+    }
+
+    public void setLobbyHost(Player player, Connection con) {
+        lobbyHost.put(player, con);
+    }
+
+    public void removePlayer(Player player, Connection con) {
+
+        Player p;
+        Iterator itr = players.keySet().iterator();
+        while (itr.hasNext()){
+            p = (Player)itr.next();
+            if (p.getName().equals(player.getName()) && con.equals(players.get(p))){
+                itr.remove();
+                break;
+            }
+        }
+        sendConnectedPlayersToHost();
     }
 
 }

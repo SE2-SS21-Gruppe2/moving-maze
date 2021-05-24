@@ -44,6 +44,10 @@ public class TextureLoader {
                 sprite = new Sprite(getScaledItemTexture(path, false));
                 break;
 
+            case PLAYER:
+                sprite = new Sprite(getScaledPlayerTexture(path));
+                break;
+
             default:
                 sprite = null;
         }
@@ -103,21 +107,34 @@ public class TextureLoader {
         return scaledTileTexture;
     }
 
-    private static Texture getScaledCardTexture(String texturePath) { /**  NEW METHOD */
+        /**
+         * Scales a player-texture to the desired size relative to a tile by PlayerColor-enum attribute
+         * @param texturePath path to the texture
+         * @return the scaled texture
+         */
+        private static Texture getScaledPlayerTexture (String texturePath){
+            var percentageOfTile = 0.7; // height should fill 70% of tile height
 
-        var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+            var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+            Pixmap scaledPicture;
 
-        var scaledPicture = new Pixmap((int) CARD_Width, (int) CARD_Height, originalPicture.getFormat());
+            var scalingFactor = originalPicture.getHeight() / TILE_EDGE_SIZE;
+            var scaledHeight = (int) (originalPicture.getHeight() / scalingFactor * percentageOfTile);
+            var scaledWidth = (int) (originalPicture.getWidth() / scalingFactor * percentageOfTile);
 
-        scaledPicture.drawPixmap(originalPicture,
-                0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
-                0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
+            scaledPicture = new Pixmap(scaledWidth, scaledHeight, originalPicture.getFormat());
 
-        var scaledCardTexture = new Texture(scaledPicture);
+            scaledPicture.drawPixmap(originalPicture,
+                    0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
+                    0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
 
-        originalPicture.dispose();
-        scaledPicture.dispose();
 
-        return scaledCardTexture;
+            var scaledTileTexture = new Texture(scaledPicture);
+
+            originalPicture.dispose();
+            scaledPicture.dispose();
+
+            return scaledTileTexture;
+        }
     }
-}
+

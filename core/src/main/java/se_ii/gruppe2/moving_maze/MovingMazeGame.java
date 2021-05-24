@@ -11,18 +11,20 @@ import se_ii.gruppe2.moving_maze.network.NetworkClient;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.screens.*;
 
+import java.util.ArrayList;
+
 public class MovingMazeGame extends Game {
 
 	// Constants
-	public static final int HEIGHT = 600;
-	public static final int WIDTH = 1100;
+	public static int HEIGHT;
+	public static int WIDTH;
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
 
 	private GameStateHandler state;
 
-	private Player player;
+	private Player localPlayer;
 
 	private SpriteBatch batch;
 	private BitmapFont font;
@@ -37,8 +39,12 @@ public class MovingMazeGame extends Game {
 	// new
 	private LoadingScreen loadingScreen;
 	private SplashScreen splashScreen;
+	private WaitingScreen waitingScreen;
 	private AssetManager assets;
 	private OrthographicCamera camera;
+
+	private String sessionKey;
+	private ArrayList<String> connectedPlayers;
 
 	// Network
 	private NetworkClient client;
@@ -56,9 +62,14 @@ public class MovingMazeGame extends Game {
 
 		assets = new AssetManager();
 		// set game-reliant constants
+		MovingMazeGame.WIDTH = Gdx.graphics.getWidth();
+		MovingMazeGame.HEIGHT = Gdx.graphics.getHeight();
 
 		client = NetworkClient.getInstance();
 		state = new GameStateHandler();
+
+		sessionKey = "------";
+		connectedPlayers = new ArrayList<>();
 
 		batch = new SpriteBatch();
 		font = new BitmapFont();
@@ -75,6 +86,7 @@ public class MovingMazeGame extends Game {
 		ruleScreen = new RuleScreen(this);
 		loadingScreen = new LoadingScreen(this);
 		splashScreen = new SplashScreen(this);
+		waitingScreen = new WaitingScreen(this);
 
 		// when started, show loading screen (which then transitions to the MainMenuScreen)
 		setScreen(loadingScreen);
@@ -91,6 +103,7 @@ public class MovingMazeGame extends Game {
 		loadingScreen.dispose();
 		splashScreen.dispose();
 		mainMenuScreen.dispose();
+		waitingScreen.dispose();
 
 	}
 
@@ -129,12 +142,12 @@ public class MovingMazeGame extends Game {
 		return this.font;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public Player getLocalPlayer() {
+		return localPlayer;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
+	public void setLocalPlayer(Player localPlayer) {
+		this.localPlayer = localPlayer;
 	}
 
 	public SpriteBatch getBatch() {
@@ -183,5 +196,29 @@ public class MovingMazeGame extends Game {
 
 	public AssetManager getAssets() {
 		return assets;
+	}
+
+	public WaitingScreen getWaitingScreen() {
+		return waitingScreen;
+	}
+
+	public void setWaitingScreen(WaitingScreen waitingScreen) {
+		this.waitingScreen = waitingScreen;
+	}
+
+	public String getSessionKey() {
+		return sessionKey;
+	}
+
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
+	}
+
+	public ArrayList<String> getConnectedPlayers() {
+		return connectedPlayers;
+	}
+
+	public void setConnectedPlayers(ArrayList<String> connectedPlayers) {
+		this.connectedPlayers = connectedPlayers;
 	}
 }

@@ -6,4 +6,8 @@ public class LTile extends Tile {
         super(true, true, false, false, "gameboard/ltile.png");
     }
 
+    public LTile(String texturePath) {
+        super(true, true, false, false, texturePath);
+    }
+
 }

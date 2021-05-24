@@ -19,10 +19,6 @@ public class ItemLogicalTest {
     String texturePath;
     boolean onCard;
 
-    @Mock
-    Position positionMock;
-
-
 
     @BeforeEach
     public void setup(){
@@ -32,7 +28,7 @@ public class ItemLogicalTest {
         itemLogical= new ItemLogical(texturePath,position,onCard);
     }
 
-    //TODO: Moking of Position if needed!!
+
     @Test
     public void getPositionTest(){
         Position pos = new Position();
