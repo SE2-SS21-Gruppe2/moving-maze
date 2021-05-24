@@ -9,7 +9,6 @@ import java.util.Random;
 public class ItemFactory {
 
     private static final String[] itemPaths = getFileList();
-    private static int itemPathCounter= 0;
     private static Random random;
     public static ItemLogical[] items;
 
@@ -58,13 +57,11 @@ public class ItemFactory {
             fileNames[i]=file.toString();
             i++;
         }
-        fileNames=shuffleArray(fileNames);
 
-        return fileNames;
+        return shuffleArray(fileNames);
     }
 
     private static String[] shuffleArray(String[] shuffleA){
-        System.out.println(shuffleA.length);
         random=new Random();
         for (int j = 0; j < shuffleA.length; j++) {
             int swapIndex= random.nextInt(shuffleA.length);

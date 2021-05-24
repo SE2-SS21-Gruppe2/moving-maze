@@ -43,7 +43,6 @@ public class GameBoardFactory {
         amountOfLTiles =16;
         amountOfTTiles =17;
         amountOfITiles =12;
-        //shuffleArray();
         buildBoard(board);
         return gb;
     }
@@ -54,7 +53,6 @@ public class GameBoardFactory {
         amountOfLTiles =10;
         amountOfTTiles =25;
         amountOfITiles =10;
-        //shuffleArray();
         buildBoard(board);
         return gb;
     }
@@ -102,63 +100,6 @@ public class GameBoardFactory {
     private static float getRandomRotationAngle() {
         return possibleRotationAngles[random.nextInt(possibleRotationAngles.length)];
     }
-
-    /**
-     *Gets all components to create an item
-     */
-
-    /*
-    private static ItemLogical buildItem(int x, int y){
-        var position = new Position();
-        position.setPosition(x, y);
-        String path= itemPaths[itemPathCounter++];
-        return new ItemLogical(path, position,false);
-    }
-
-     */
-
-    /**
-     *LibGDX has the FileHandel Class. With this class you can give a Pathname. When u call then the
-     *.list function, you get a List off all Files in the Folder, that were selectet.
-     * List element if android:I/System.out: items/(image Element)
-     * List element if desktop: android/assets/items/(image Element)
-     *
-     * The second for makes the item instances game per game random.
-     */
-
-    /*
-    private static String[] getFileList(){
-        FileHandle handle;
-        if(Gdx.app.getType() == Application.ApplicationType.Android){
-            handle= Gdx.files.internal("items");
-        }
-        else{
-            handle= Gdx.files.internal("android/assets/items");
-        }
-        var fileNames= new String[handle.list().length];
-        var i = 0;
-        for (FileHandle file : handle.list()) {
-            fileNames[i]=file.toString();
-            i++;
-        }
-
-        return fileNames;
-    }
-
-     */
-
-
-    /*
-    private static void shuffleArray(){
-        for (var j = 0; j < itemPaths.length; j++) {
-            var swapIndex= random.nextInt(itemPaths.length);
-            String temp = itemPaths[swapIndex];
-            itemPaths[swapIndex]= itemPaths[j];
-            itemPaths[j]=temp;
-        }
-    }
-
-     */
 
 
     /**
