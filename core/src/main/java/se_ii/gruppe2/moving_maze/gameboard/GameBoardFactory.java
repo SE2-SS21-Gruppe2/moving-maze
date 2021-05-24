@@ -84,6 +84,9 @@ public class GameBoardFactory {
         }
 
         itemPathCounter = 0;
+
+        // Overwrite the corner-tiles with the corresponding start-tiles
+        setStartTiles(board);
     }
 
 
@@ -127,5 +130,23 @@ public class GameBoardFactory {
     }
 
 
+    /**
+     * Set start-tiles on the giveb gameboard.
+     */
+    private static void setStartTiles(Tile[][] boardTiles) {
+
+        // upper left
+        boardTiles[GameBoard.TILES_PER_EDGE-1][0] = TileFactory.getYellowStartTile().applyRotation(270f);
+
+        // upper right
+        boardTiles[GameBoard.TILES_PER_EDGE-1][GameBoard.TILES_PER_EDGE-1] = TileFactory.getGreenStartTile().applyRotation(180f);
+
+        // lower right
+        boardTiles[0][GameBoard.TILES_PER_EDGE-1] = TileFactory.getRedStartTile().applyRotation(90f);
+
+        // lower left
+        boardTiles[0][0] = TileFactory.getBlueStartTile();
+
+    }
 
 }

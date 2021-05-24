@@ -111,10 +111,10 @@ public class JoinSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setPlayer(new Player(playerName.getText()));
+                game.setLocalPlayer(new Player(playerName.getText()));
                 if (!gameCode.getText().equals("") && !gameCode.getText().equals("Game Code")){
                     game.setSessionKey(gameCode.getText());
-                    game.getClient().joinSession(game.getPlayer(), game.getSessionKey());
+                    game.getClient().joinSession(game.getLocalPlayer(), game.getSessionKey());
                     game.setScreen(game.getWaitingScreen());
                 }
 

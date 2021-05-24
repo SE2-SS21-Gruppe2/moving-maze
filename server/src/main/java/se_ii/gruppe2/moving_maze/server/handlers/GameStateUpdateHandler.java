@@ -5,8 +5,11 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.messages.in.RequestProcessError;
+import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.server.Session;
 import se_ii.gruppe2.moving_maze.server.SessionManager;
+
+import java.util.ArrayList;
 
 /**
  * Distributes gamestate-updates amongst all clients in a certain session.
@@ -20,7 +23,7 @@ public class GameStateUpdateHandler extends Listener {
             GameStateHandler state = (GameStateHandler) obj;
             Log.info("Received updated gamestate from " + con.getRemoteAddressTCP().getAddress().toString());
 
-            Session affectedSession = updateSessionByState(state );
+            Session affectedSession = updateSessionByState(state);
 
             if(affectedSession != null) {
                 affectedSession.sendStateToPlayers();
@@ -44,6 +47,11 @@ public class GameStateUpdateHandler extends Listener {
 
         if(se != null) {
             se.setState(gsh);
+        }
+
+        // preserve player-data if in devmode for proper testing
+        if(se != null && se.getKey().equals("DEVGME")) {
+            se.syncSessionPlayersWithState();
         }
 
         return se;
