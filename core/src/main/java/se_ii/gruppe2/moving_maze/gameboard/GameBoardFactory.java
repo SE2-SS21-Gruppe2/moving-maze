@@ -19,7 +19,7 @@ public class GameBoardFactory {
      * itemPathCounter: counter to iterate
      */
     private static final float[] possibleRotationAngles = {0, 90, 270, 180};
-    //private static final String[] itemPaths = getFileList();
+    private static final ItemLogical[] items = ItemFactory.itemArray();
     private static int itemPathCounter= 0;
     private static final SecureRandom  random= new SecureRandom();
     private static int amountOfLTiles;
@@ -76,7 +76,9 @@ public class GameBoardFactory {
                     board[i][j]= getRandomTile();
                 }
                 if(itemOnTile){
-                    board[i][j].setItem(ItemFactory.buildItem(i,j));
+                    Position position= new Position(i,j);
+                    items[itemPathCounter].setPosition(position);
+                    board[i][j].setItem(items[itemPathCounter++]);
                     itemOnTile=false;
                 }
                 else itemOnTile=true;
