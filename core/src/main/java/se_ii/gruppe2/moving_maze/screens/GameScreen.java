@@ -66,7 +66,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        game.getClient().sendGameStateUpdate(game.getGameState());
         player = game.getLocalPlayer();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -88,7 +87,7 @@ public class GameScreen implements Screen {
         batch.draw(bgTextureRegion, 0, 0);
         drawGameBoard(batch);
         stage.draw();
-        game.getFont().draw(batch, "Game screen (DEV MODE)", 100, 100);
+        game.getFont().draw(batch, player.getName() + " | " + player.getColor().toString(), 70f, 70f);
         batch.end();
     }
 

@@ -2,16 +2,14 @@ package se_ii.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.network.listeners.CreateSessionConfirmationListener;
 import se_ii.gruppe2.moving_maze.network.listeners.UpdateConnectedPlayersListener;
-import se_ii.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
-import se_ii.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
-import se_ii.gruppe2.moving_maze.network.messages.out.LeaveSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.out.*;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.listeners.ErrorResponseListener;
 import se_ii.gruppe2.moving_maze.network.listeners.GameStateUpdateListener;
 import se_ii.gruppe2.moving_maze.network.listeners.JoinConfirmationListener;
-import se_ii.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se_ii.gruppe2.moving_maze.player.Player;
 
 import java.io.IOException;
@@ -72,11 +70,9 @@ public class NetworkClient {
      * @param sessionKey that should be joined
      * @return true if the join was successful, false if session could not be joined
      */
-    public boolean joinSession(Player player, String sessionKey) {
+    public void joinSession(Player player, String sessionKey) {
         kryoClient.sendTCP(new JoinRequest(sessionKey, player));
         Gdx.app.log("NetworkClient/joinSession", "Submitted request to join session '" + sessionKey + "'");
-        // TODO: actually implement receiving logic
-        return true;
     }
 
     public void sendGameStateUpdate(GameStateHandler state) {
@@ -87,7 +83,6 @@ public class NetworkClient {
     public void createNewSession(Player player) {
         kryoClient.sendTCP(new CreateSessionRequest(player));
         Gdx.app.log("NetworkClient/createNewSession", "Submitted request to create new session");
-
     }
 
     public void closeSession(String sessionKey) {
@@ -98,6 +93,11 @@ public class NetworkClient {
     public void leaveSession(Player player, String sessionKey) {
         kryoClient.sendTCP(new LeaveSessionRequest(player, sessionKey));
         Gdx.app.log("NetworkClient/leaveSession", "Submitted request to leave session '" + sessionKey + "'");
+    }
+
+    public void initGame(String key, GameBoard board, String finalHostName) {
+        kryoClient.sendTCP(new InitGameStart(key, board, finalHostName));
+        Gdx.app.log("NetworkClient/initGame", "Sent request to initialize game '" + key + "'");
     }
 
 }

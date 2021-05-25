@@ -4,9 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import se_ii.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
-import se_ii.gruppe2.moving_maze.network.messages.out.CloseSessionRequest;
-import se_ii.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
-import se_ii.gruppe2.moving_maze.network.messages.out.LeaveSessionRequest;
+import se_ii.gruppe2.moving_maze.network.messages.out.*;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.gamestate.ChatMessage;
 import se_ii.gruppe2.moving_maze.gamestate.GameState;
@@ -16,7 +14,6 @@ import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.RequestProcessError;
-import se_ii.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.player.PlayerColor;
 import se_ii.gruppe2.moving_maze.player.PlayerRole;
@@ -64,6 +61,7 @@ public class Registry {
         kryo.register(PlayerColor.class);
         kryo.register(PlayerColor[].class);
         kryo.register(StartTile.class);
+        kryo.register(InitGameStart.class);
         kryo.register(Vector2.class);
     }
 
