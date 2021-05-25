@@ -59,10 +59,6 @@ public class MainMenuScreen implements Screen {
         buttons.add(generateStandardButton("Options", game.getOptionScreen(), true));
         buttons.add(generateStandardButton("Rules", game.getRuleScreen(), true));
 
-        TextButton devMode = generateStandardButton("Dev Mode", game.getGameScreen(), false);
-        buttons.add(devMode);
-        setupDevMode(devMode);
-
         tableLayout = get2ColLayout(buttons, headerLogoScaled.getHeight()/2f);
 
         stage.addActor(tableLayout);
@@ -197,21 +193,4 @@ public class MainMenuScreen implements Screen {
         return tbl;
     }
 
-    /**
-     * Setup non-standard behavior for the dev-mode.
-     * @param devModeButton The button to bind behavior on.
-     */
-    private void setupDevMode(TextButton devModeButton) {
-        devModeButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // in developer mode, all players join the same (static) session
-                game.getGameState().setSessionCode("DEVGME");
-                game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
-                game.setLocalPlayer(new Player("Developer " + new SecureRandom().nextInt(10)));
-                game.getClient().joinSession(game.getLocalPlayer(), "DEVGME");
-                game.setScreen(game.getGameScreen());
-            }
-        });
-    }
 }

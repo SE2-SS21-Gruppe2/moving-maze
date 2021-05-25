@@ -66,7 +66,6 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.draw(bgTextureRegion, 0, 0);
         drawGameBoard(batch);
-        game.getFont().draw(batch, "Game screen (DEV MODE)", 100, 100);
         batch.end();
     }
 
