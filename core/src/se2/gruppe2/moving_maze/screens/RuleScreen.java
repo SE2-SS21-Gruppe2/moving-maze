@@ -47,7 +47,7 @@ public class RuleScreen implements Screen {
         bgTextureRegion = new TextureRegion(bgImageTexture);
         background = new Texture(Gdx.files.internal("rules/background.png"));
 
-        //Buttons
+        //Button
         backTexture = new Texture(Gdx.files.internal("ui/buttons/backButton.png"));
         textureRegion = new TextureRegion(backTexture);
         textureRegionDrawable = new TextureRegionDrawable(textureRegion);
