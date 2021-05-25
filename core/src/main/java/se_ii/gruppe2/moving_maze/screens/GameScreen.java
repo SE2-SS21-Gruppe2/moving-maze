@@ -57,6 +57,9 @@ public class GameScreen implements Screen {
         this.game = game;
         this.batch = game.getBatch();
 
+        stage = new Stage();
+
+
         camera = MovingMazeGame.getStandardizedCamera();
 
         // instantiate textures for background
@@ -67,10 +70,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         player = game.getLocalPlayer();
-        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        updateExtraTile();
-        newExtraTile = false;
     }
 
     @Override
@@ -196,7 +196,7 @@ public class GameScreen implements Screen {
         currentExtraTile = game.getGameState().getBoard().getExtraTile();
         Texture layeredTexture;
 
-        if (TextureLoader.getSpriteByTexturePath(currentExtraTile.getTexturePath(), TextureType.TILE) != null){
+        if (currentExtraTile != null){
 
             layeredTexture = TextureLoader.getLayeredTexture(currentExtraTile.getTexturePath(), null);
 
@@ -265,7 +265,7 @@ public class GameScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y){
                     img.rotateBy(90);
-                    currentExtraTile.rotateCounterClockwise();
+                    currentExtraTile.setRotationDegrees((currentExtraTile.getRotationDegrees()+90)%360);
                 }
             });
 
