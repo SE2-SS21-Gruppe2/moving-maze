@@ -38,6 +38,7 @@ public class GameScreen implements Screen {
     // Buffer-variables used for rendering
     Sprite currentSprite;
     Sprite currentExtraTileSprite;
+    Sprite extraTileItemSprite;
     Tile currentTile;
     Tile currentExtraTile;
     ItemLogical currentItem;
@@ -45,6 +46,7 @@ public class GameScreen implements Screen {
     ArrayList<Player> currentPlayersOnTile = new ArrayList<>();
 
     Image img;
+    Image img1;
 
 
     // background
@@ -193,10 +195,18 @@ public class GameScreen implements Screen {
     public void updateExtraTile(){
         stage.clear();
         currentExtraTile = game.getGameState().getBoard().getExtraTile();
-        if (TextureLoader.getSpriteByTexturePath(currentExtraTile.getTexturePath(), TextureType.TILE) != null){
-            currentExtraTileSprite = TextureLoader.getSpriteByTexturePath(currentExtraTile.getTexturePath(), TextureType.TILE);
+        Texture layeredTexture;
 
-            img = new Image(currentExtraTileSprite);
+        if (TextureLoader.getSpriteByTexturePath(currentExtraTile.getTexturePath(), TextureType.TILE) != null){
+
+            layeredTexture = TextureLoader.getLayeredTexture(currentExtraTile.getTexturePath(), null);
+
+            if (currentExtraTile.getItem() != null){
+                currentExtraTileItem = currentExtraTile.getItem();
+                layeredTexture = TextureLoader.getLayeredTexture(currentExtraTile.getTexturePath(), currentExtraTileItem.getTexturePath());
+            }
+
+            img = new Image(layeredTexture);
             img.setOrigin(img.getWidth()/2f, img.getHeight()/2f);
             img.setPosition(300,500);
             img.setRotation(currentExtraTile.getRotationDegrees());
@@ -239,11 +249,7 @@ public class GameScreen implements Screen {
                     inputPosition.x = (int) Math.floor((Gdx.input.getX() - initPos.getX())/TextureLoader.TILE_EDGE_SIZE);
                     inputPosition.y = (int) Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY() - initPos.getY())/TextureLoader.TILE_EDGE_SIZE);
 
-                    System.out.println("X: "+ inputPosition.x + ", Y: " + inputPosition.y);
-
                     InsertTile insert = new InsertTile(inputPosition);
-
-                    System.out.println(inputPosition.x);
 
                     insertSuccess = insert.validate();
 
@@ -260,10 +266,9 @@ public class GameScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y){
                     img.rotateBy(90);
-                    currentExtraTile.rotateClockwise();
+                    currentExtraTile.rotateCounterClockwise();
                 }
             });
-
 
             stage.addActor(img);
             setNewExtraTile(false);
