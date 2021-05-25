@@ -4,7 +4,6 @@ package se_ii.gruppe2.moving_maze.gamestate.turnAction;
 import com.badlogic.gdx.math.Vector2;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
-import se_ii.gruppe2.moving_maze.tile.Tile;
 
 public class InsertTile implements TurnAction {
 
@@ -77,7 +76,7 @@ public class InsertTile implements TurnAction {
     public boolean validate() {
 
 
-        if (lastInsertPosition != null && insertPosition == lastInsertPosition) {
+        if (lastInsertPosition != null && insertPosition.x == lastInsertPosition.x && insertPosition.y == lastInsertPosition.y) {
             return false;
         }
 
