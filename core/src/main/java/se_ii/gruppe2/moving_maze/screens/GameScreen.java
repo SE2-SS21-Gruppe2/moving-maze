@@ -3,11 +3,14 @@ package se_ii.gruppe2.moving_maze.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
@@ -33,7 +36,7 @@ public class GameScreen implements Screen {
     ItemLogical currentItem;
     ArrayList<Player> currentPlayersOnTile = new ArrayList<>();
 
-    // background
+    // background & ui elements
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
 
@@ -64,8 +67,9 @@ public class GameScreen implements Screen {
         }
 
         batch.begin();
-        batch.draw(bgTextureRegion, 0, 0);
-        drawGameBoard(batch);
+            batch.draw(bgTextureRegion, 0, 0);
+            drawGameBoard(batch);
+            game.getFont().draw(batch, player.getName() + " | " + player.getColor().toString(), 70f, 70f);
         batch.end();
     }
 
