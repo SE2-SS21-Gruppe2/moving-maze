@@ -55,7 +55,7 @@ public class RuleScreen implements Screen {
         textureRegion = new TextureRegion(backTexture);
         textureRegionDrawable = new TextureRegionDrawable(textureRegion);
         backButton = new ImageButton(textureRegionDrawable);
-        backButton.setPosition(20f, camera.viewportHeight + camera.viewportHeight/2f + 60f, Align.left);
+        backButton.setPosition(20f, camera.viewportHeight - 100f, Align.left);
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         stage = new Stage(new ScreenViewport());

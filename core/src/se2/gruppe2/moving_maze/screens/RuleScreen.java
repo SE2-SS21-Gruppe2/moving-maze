@@ -1,4 +1,4 @@
-package se2.gruppe2.moving_maze.screens;
+package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import se2.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.MovingMazeGame;
 
 public class RuleScreen implements Screen {
 
