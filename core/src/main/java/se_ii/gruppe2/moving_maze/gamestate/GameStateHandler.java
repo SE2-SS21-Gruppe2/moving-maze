@@ -9,6 +9,7 @@ public class GameStateHandler {
     private String sessionCode;
     private ArrayList<Player> players;
     private Player currentPlayerOnTurn;
+    private int playerOnTurnIndex;
     private GameBoard board;
     private GameState gameState;
     private ChatMessage[] chat;
@@ -36,6 +37,23 @@ public class GameStateHandler {
         return  foundPlayers;
     }
 
+    /**
+     * Can be called when a player finished its turn and the next player should be chosen.
+     * @return the chosen player
+     */
+    public Player updatePlayerOnTurn() {
+        if(players.size() == 0) throw new IllegalStateException("Cannot update next player if no players are in the session");
+
+        if(currentPlayerOnTurn == null) {
+            playerOnTurnIndex = 0;
+            currentPlayerOnTurn = players.get(playerOnTurnIndex);
+        } else {
+            currentPlayerOnTurn = players.get(++playerOnTurnIndex % (players.size()-1));
+        }
+
+        return currentPlayerOnTurn;
+    }
+
     // GETTER & SETTER
     public GameBoard getBoard() {
         return board;
@@ -59,5 +77,9 @@ public class GameStateHandler {
 
     public ArrayList<Player> getPlayers() {
         return this.players;
+    }
+
+    public Player getCurrentPlayerOnTurn() {
+        return this.currentPlayerOnTurn;
     }
 }

@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
@@ -353,7 +354,8 @@ public class CreateSessionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (Boolean.TRUE.equals(gameReady)){
                     // TODO: update playerName on server
-                    // TODO: create and start game
+                    // createAndStartGame()
+                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard());
                 }
             }
         });
