@@ -87,10 +87,10 @@ public class Session {
      */
     private void initColors() {
         availableColors = new Stack<>();
-        availableColors.add(PlayerColor.YELLOW);
-        availableColors.add(PlayerColor.BLUE);
-        availableColors.add(PlayerColor.RED);
         availableColors.add(PlayerColor.GREEN);
+        availableColors.add(PlayerColor.RED);
+        availableColors.add(PlayerColor.BLUE);
+        availableColors.add(PlayerColor.YELLOW);
     }
 
     /**
