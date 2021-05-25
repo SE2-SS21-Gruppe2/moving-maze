@@ -1,23 +1,23 @@
-package se2.gruppe2.moving_maze.screens;
+package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import se2.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.MovingMazeGame;
 
 public class RuleScreen implements Screen {
 
-    final MovingMazeGame game;
-    OrthographicCamera camera;
+    private final MovingMazeGame game;
+    private final SpriteBatch batch;
+    private OrthographicCamera camera;
 
     //ui stuff
     private Stage stage;
@@ -32,6 +32,7 @@ public class RuleScreen implements Screen {
 
     public RuleScreen(final MovingMazeGame game) {
         this.game = game;
+        this.batch = game.getBatch();
         camera = MovingMazeGame.getStandardizedCamera();
     }
 
@@ -53,51 +54,48 @@ public class RuleScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
-        backButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(game.mainMenuScreen);
-
-            }
+        backButton.addListener(event -> {
+            game.setScreen(game.getMainMenuScreen());
+            return true;
         });
 
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 2);
+        ScreenUtils.clear(0,0,0,1);
         batch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
-        game.batch.draw(bgTextureRegion, 0, 0);
-        game.batch.end();
+        batch.begin();
+        batch.draw(bgTextureRegion, 0, 0);
+        batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        // lifecycle function
     }
 
     @Override
     public void pause() {
-
+        // lifecycle function
     }
 
     @Override
     public void resume() {
-
+        // lifecycle function
     }
 
     @Override
     public void hide() {
-
+        // lifecycle function
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
+        // lifecycle function
     }
 
 }
