@@ -1,7 +1,10 @@
 package se_ii.gruppe2.moving_maze.gamestate;
 
+import com.badlogic.gdx.math.Vector2;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
+import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.tile.Tile;
 
 import java.util.ArrayList;
 
@@ -12,6 +15,7 @@ public class GameStateHandler {
     private GameBoard board;
     private GameState gameState;
     private ChatMessage[] chat;
+    private Vector2 lastInsertPosition;
 
     public GameStateHandler() {
         players = new ArrayList<>();
@@ -59,5 +63,21 @@ public class GameStateHandler {
 
     public ArrayList<Player> getPlayers() {
         return this.players;
+    }
+
+    public Tile getExtraTile() {
+        return board.getExtraTile();
+    }
+
+    public void setExtraTile(Tile extraTile) {
+        board.setExtraTile(extraTile);
+    }
+
+    public Vector2 getLastInsertPosition() {
+        return lastInsertPosition;
+    }
+
+    public void setLastInsertPosition(Vector2 lastInsertPosition) {
+        this.lastInsertPosition = lastInsertPosition;
     }
 }

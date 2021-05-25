@@ -17,6 +17,7 @@ public class GameStateUpdateListener extends Listener {
             Gdx.app.log(logTag, "Gamestate update received!");
             if(isValidState(gsh)) {
                 game.setGameState(gsh);
+                game.getGameScreen().setNewExtraTile(true);
                 Gdx.app.log(logTag, "Amount of players: " + gsh.getPlayers().size());
                 Gdx.app.log(logTag, "Received gamestate set and representation updated");
             } else {
