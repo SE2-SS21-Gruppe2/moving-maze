@@ -69,6 +69,17 @@ public class Player {
         return currentMillis + salt;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if(object instanceof  Player) {
+            Player pl = (Player) object;
+
+            return pl.getId() == this.getId();
+        } else {
+            return false;
+        }
+    }
+
     // GETTER & SETTER
     public String getName() {
         return name;
