@@ -10,7 +10,7 @@ import se_ii.gruppe2.moving_maze.player.PlayerColor;
 import java.util.*;
 
 public class Session {
-    private static final int MAX_PLAYERS = 4;
+    public static final int MAX_PLAYERS = 4;
     private String key;
     private HashMap<Player, Connection> players;
     private HashMap<Player, Connection> lobbyHost;

@@ -23,7 +23,6 @@ public class SessionTests {
     @Test
     public void playerAdded() {
         Player p = new Player("John Doe");
-        // TODO: mock connection
         se.addPlayer(p, null);
 
         assertEquals(1, se.getPlayers().size());
