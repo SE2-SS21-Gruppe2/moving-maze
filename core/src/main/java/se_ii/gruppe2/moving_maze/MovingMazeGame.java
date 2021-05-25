@@ -45,6 +45,7 @@ public class MovingMazeGame extends Game {
 
 	private String sessionKey;
 	private ArrayList<String> connectedPlayers;
+	private boolean inGame;
 
 	// Network
 	private NetworkClient client;
@@ -220,5 +221,13 @@ public class MovingMazeGame extends Game {
 
 	public void setConnectedPlayers(ArrayList<String> connectedPlayers) {
 		this.connectedPlayers = connectedPlayers;
+	}
+
+	public boolean isInGame() {
+		return inGame;
+	}
+
+	public void setInGame(boolean inGame) {
+		this.inGame = inGame;
 	}
 }

@@ -24,7 +24,7 @@ android {
     }
     defaultConfig {
         applicationId "se_ii.gruppe2.labyrinth"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
