@@ -11,6 +11,7 @@ sourceSets.test.java.srcDirs = [ "src/test/java" ]
 
 dependencies {
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation 'junit:junit:4.12'
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
     implementation 'com.esotericsoftware:kryonet:2.22.0-RC1'
     testImplementation "org.mockito:mockito-core:1.+"

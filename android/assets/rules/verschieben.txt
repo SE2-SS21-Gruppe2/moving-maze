@@ -1,0 +1,14 @@
+Am Spielplanrand befinden sich 12 Pfeile.
+Sie markierendie Reihen, in welche die freie Gaengekarte eingeschoben werden kann.
+Bist du am Zug, entscheidest du dich für eine Reihe und schiebst die Gaengekarte soweit ein, dass auf der
+gegenueberliegenden Seite wieder genau eine Gaengekarte herausgeschoben wird.
+
+Einzige Einschraenkung: Die Gaengekarte darf nicht an die Stelle zurückgeschoben werden, aus der sie im vorherigen
+Zug herausgeschoben wurde.
+
+Wird beim Verschieben die eigene oder eine fremde Spielfigur aus dem Labyrinth herausgeschoben?
+Dann wird sie sofort auf der gegenüberliegenden Seite auf die neu eingeschobene Gaengekarte gestellt.
+Dieses Versetzen gilt nicht als Zug!
+
+Achtung: Die freie Gaengekarte muss in jedem Fall ein-geschoben werden.
+Das gilt auch, wenn der Schatz ohne Verschieben der Gaenge erreichbar waere.
