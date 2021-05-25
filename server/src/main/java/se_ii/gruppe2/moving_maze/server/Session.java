@@ -17,6 +17,8 @@ public class Session {
     private GameStateHandler state;
     private Stack<PlayerColor> availableColors;
 
+    public static final String LOBBY_HOST_TMP_NAME = "temp_SessionCreator";
+
     public Session(String key) {
         this.key = key;
         players = new HashMap<>();
@@ -42,6 +44,21 @@ public class Session {
         } else {
             throw new IllegalStateException();
         }
+    }
+
+    /**
+     * Updates the name of the lobby-host in the respective gamestate object.
+     * @param name
+     */
+    public void updateLobbyHostName(String name) {
+
+        for(Player p : state.getPlayers()) {
+            if(p.getName().equals(LOBBY_HOST_TMP_NAME)) {
+                p.setName(name);
+                Log.info("Updated player-name of lobbyhost to '" + name + "'");
+            }
+        }
+
     }
 
     /**

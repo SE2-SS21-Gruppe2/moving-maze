@@ -353,9 +353,8 @@ public class CreateSessionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (Boolean.TRUE.equals(gameReady)){
-                    // TODO: update playerName on server
-                    // createAndStartGame()
-                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard());
+                    game.getLocalPlayer().setName(txfName.getText());
+                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
                 }
             }
         });
