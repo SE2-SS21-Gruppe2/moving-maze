@@ -215,8 +215,8 @@ public class GameScreen implements Screen {
 
                 @Override
                 public void drag(InputEvent event, float x, float y, int pointer) {
-                    Vector2 dir = new Vector2();
-                    Vector2 offset = new Vector2();
+                    var dir = new Vector2();
+                    var offset = new Vector2();
                     if (img.getRotation() == 0){
                         dir.x = x;
                         dir.y = y;
@@ -243,13 +243,13 @@ public class GameScreen implements Screen {
 
                 @Override
                 public void dragStop(InputEvent event, float x, float y, int pointer) {
-                    boolean insertSuccess = false;
+                    var insertSuccess = false;
                     Position initPos = getStartCoordinates();
-                    Vector2 inputPosition = new Vector2(0,0);
+                    var inputPosition = new Vector2(0,0);
                     inputPosition.x = (int) Math.floor((Gdx.input.getX() - initPos.getX())/TextureLoader.TILE_EDGE_SIZE);
                     inputPosition.y = (int) Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY() - initPos.getY())/TextureLoader.TILE_EDGE_SIZE);
 
-                    InsertTile insert = new InsertTile(inputPosition);
+                    var insert = new InsertTile(inputPosition);
 
                     insertSuccess = insert.validate();
 
