@@ -131,4 +131,40 @@ public class TextureLoader {
 
         return scaledTileTexture;
     }
+
+    public static Texture getLayeredTexture(String tileTexturePath, String itemTexturePath){
+
+        var tilePictureOriginal = new Pixmap(Gdx.files.internal(tileTexturePath));
+
+        var tilePictureScaled = new Pixmap((int) TILE_EDGE_SIZE_NO_PADDING, (int) TILE_EDGE_SIZE_NO_PADDING, tilePictureOriginal.getFormat());
+
+        tilePictureScaled.drawPixmap(tilePictureOriginal,
+                0, 0, tilePictureOriginal.getWidth(), tilePictureOriginal.getHeight(),
+                0, 0, tilePictureScaled.getWidth(), tilePictureScaled.getHeight());
+
+        if (itemTexturePath != null){
+            var itemPictureOriginal = new Pixmap(Gdx.files.internal(itemTexturePath));
+
+            var itemPictureScaled = new Pixmap((int) TILE_EDGE_SIZE/2,(int) TILE_EDGE_SIZE/2, itemPictureOriginal.getFormat());
+
+            itemPictureScaled.drawPixmap(itemPictureOriginal,
+                    0, 0, itemPictureOriginal.getWidth(), itemPictureOriginal.getHeight(),
+                    0, 0, itemPictureScaled.getWidth(), itemPictureScaled.getHeight());
+
+            tilePictureScaled.drawPixmap(itemPictureScaled,
+                    0,0, tilePictureScaled.getWidth(), tilePictureScaled.getHeight(),
+                    tilePictureScaled.getWidth()/2 - itemPictureScaled.getWidth()/2,tilePictureScaled.getHeight()/2 - itemPictureScaled.getHeight()/2, itemPictureScaled.getWidth()*2, itemPictureScaled.getHeight()*2);
+
+            itemPictureOriginal.dispose();
+            itemPictureScaled.dispose();
+        }
+
+        var scaledTileTexture = new Texture(tilePictureScaled);
+
+        tilePictureOriginal.dispose();
+        tilePictureScaled.dispose();
+
+        return scaledTileTexture;
+
+    }
 }

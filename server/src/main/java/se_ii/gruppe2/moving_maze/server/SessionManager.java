@@ -55,7 +55,7 @@ public class SessionManager {
             sessionRegistry.put(key, session);
             return session;
         } else {
-            Log.warn("SessionManager", "Session with key '" + key +"' cannot be created because it already exists!");
+            Log.warn("SessionManager", "Session with key '" + key + "' cannot be created because it already exists!");
             return null;
         }
     }

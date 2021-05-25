@@ -31,8 +31,9 @@ public class GameBoardFactory {
 
     /**
      * Int L,T,I are responsible for how many Tile of a
-     * Type are on the Board. The sum of I,T,L = 45. The
-     * corner Parts are note included, because they are always
+     * Type are on the Board. The sum of I,T,L = 46
+     * (7x7=49 - 4 corners + 1 extra tile).
+     * The corner Parts are note included, because they are always
      * L Tiles.
      *
      * shuffleArray shuffles the itemPath, so every game items are newly organized.
@@ -41,9 +42,10 @@ public class GameBoardFactory {
         var gb = new GameBoard();
         Tile[][] board = gb.getBoard();
         amountOfLTiles =16;
-        amountOfTTiles =17;
+        amountOfTTiles =18;
         amountOfITiles =12;
         buildBoard(board);
+        gb.setExtraTile(getRandomTile());
         return gb;
     }
 
@@ -51,9 +53,10 @@ public class GameBoardFactory {
         var gb = new GameBoard();
         Tile[][] board = gb.getBoard();
         amountOfLTiles =10;
-        amountOfTTiles =25;
+        amountOfTTiles =26;
         amountOfITiles =10;
         buildBoard(board);
+        gb.setExtraTile(getRandomTile());
         return gb;
     }
 
