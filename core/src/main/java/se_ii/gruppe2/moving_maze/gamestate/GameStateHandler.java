@@ -13,7 +13,7 @@ public class GameStateHandler {
     private Player currentPlayerOnTurn;
     private int playerOnTurnIndex;
     private GameBoard board;
-    private GameState gameState;
+    private GamePhase gamePhase;
     private ChatMessage[] chat;
     private Vector2 lastInsertPosition;
 
@@ -51,11 +51,29 @@ public class GameStateHandler {
             playerOnTurnIndex = 0;
             currentPlayerOnTurn = players.get(playerOnTurnIndex);
         } else {
-            currentPlayerOnTurn = players.get(++playerOnTurnIndex % (players.size()-1));
+            currentPlayerOnTurn = players.get(++playerOnTurnIndex % (players.size()));
         }
 
         return currentPlayerOnTurn;
     }
+
+
+    /**
+     * Initializes the game phase when the game is started
+     */
+    public void initGamePhase(){
+        gamePhase = new GamePhase();
+    }
+
+    public void completePhase(){
+        GamePhaseType nextPhase = gamePhase.nextPhase();
+        if (nextPhase == GamePhaseType.END_TURN){
+            updatePlayerOnTurn();
+            gamePhase.nextPhase();
+        }
+
+    }
+
 
     // GETTER & SETTER
     public GameBoard getBoard() {
@@ -100,5 +118,17 @@ public class GameStateHandler {
 
     public Player getCurrentPlayerOnTurn() {
         return this.currentPlayerOnTurn;
+    }
+
+    public GamePhaseType getGamePhase() {
+        return gamePhase.getPhaseType();
+    }
+
+    public boolean isMyTurn(Player player){
+        if (players.get(playerOnTurnIndex).getId() == player.getId()){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

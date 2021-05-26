@@ -9,14 +9,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.player.Player;
 
 public class JoinSessionScreen implements Screen {
 
@@ -107,6 +109,13 @@ public class JoinSessionScreen implements Screen {
 
     private void setUpActorListeners() {
 
+        stage.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stage.unfocusAll();
+            }
+        });
+
         joinGame.addListener(new ClickListener() {
 
             @Override
@@ -128,6 +137,14 @@ public class JoinSessionScreen implements Screen {
                 if (gameCode.getText().equals("Game Code")){
                     gameCode.setText("");
                 }
+            }
+        });
+
+        gameCode.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameCode.setText(gameCode.getText().toUpperCase());
+                gameCode.setCursorPosition(gameCode.getText().length());
             }
         });
 

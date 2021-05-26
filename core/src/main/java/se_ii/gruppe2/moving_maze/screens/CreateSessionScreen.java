@@ -131,7 +131,9 @@ public class CreateSessionScreen implements Screen {
         setUpActorListeners();
 
         game.setLocalPlayer(new Player("temp_SessionCreator"));
+        System.out.println("----------------------------------------------------------------" + game.getLocalPlayer());
         game.getClient().createNewSession(game.getLocalPlayer());
+
 
 
         // Debugging
@@ -354,7 +356,9 @@ public class CreateSessionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (Boolean.TRUE.equals(gameReady)){
                     game.getLocalPlayer().setName(txfName.getText());
+                    System.out.println("--------------------------------2--------------------------------" + game.getLocalPlayer());
                     game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
+                    System.out.println("---------------------------------3-------------------------------" + game.getLocalPlayer());
                 }
             }
         });

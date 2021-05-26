@@ -68,6 +68,8 @@ public class InsertTile implements TurnAction {
 
         game.getGameState().setLastInsertPosition(lastInsertPosition);
         game.getGameState().setBoard(newGameBoard);
+        game.getGameState().completePhase();
+
         game.getClient().sendGameStateUpdate(game.getGameState());
 
     }
