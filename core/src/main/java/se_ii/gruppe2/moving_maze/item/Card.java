@@ -9,11 +9,6 @@ public class Card {
     //TODO: render Item in bigger, then on GameBoard, on Card.
 
 
-    /**
-     *
-     * */
-
-
     public Card(ItemLogical item){
         this.item=item;
         this.item.setOnCard(true);
@@ -22,6 +17,7 @@ public class Card {
     public ItemLogical getItem() {
         return item;
     }
+
 
 
 

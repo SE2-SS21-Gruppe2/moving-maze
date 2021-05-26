@@ -9,12 +9,23 @@ public class ItemLogical {
 
     public ItemLogical(String texturePath, Position position, boolean onCard){
         this.position=position;
-        this.name= texturePath.substring(6,texturePath.length()-4);
+        this.name= getItemName(texturePath);
         this.texturePath = texturePath;
         this.onCard = onCard;
+
     }
 
     public ItemLogical() {}
+
+    /** method that gets the name of the item */
+
+
+
+    private static String getItemName(String path){
+
+        String[] split = path.split("[/\\.]");
+        return split[split.length-2];
+    }
 
     // GETTER & SETTER
 

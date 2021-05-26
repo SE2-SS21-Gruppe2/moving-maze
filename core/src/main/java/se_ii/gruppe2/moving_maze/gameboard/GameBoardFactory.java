@@ -1,9 +1,5 @@
 package se_ii.gruppe2.moving_maze.gameboard;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-
 import se_ii.gruppe2.moving_maze.item.ItemFactory;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
@@ -88,6 +84,9 @@ public class GameBoardFactory {
         // Overwrite the corner-tiles with the corresponding start-tiles
         setStartTiles(board);
     }
+
+
+
 
 
     /**
