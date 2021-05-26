@@ -46,6 +46,8 @@ public class GameBoardFactory {
         amountOfITiles =12;
         buildBoard(board);
         gb.setExtraTile(getRandomTile());
+        System.out.println(board[6][1].isOpenLeft()+" "+board[6][1].isOpenBottom()+" "+board[6][1].isOpenTop() +" " +board[6][1].isOpenRight());
+        System.out.println(board[5][0].isOpenLeft()+" "+board[5][0].isOpenBottom()+" "+board[5][0].isOpenTop() +" " +board[5][0].isOpenRight());
         return gb;
     }
 

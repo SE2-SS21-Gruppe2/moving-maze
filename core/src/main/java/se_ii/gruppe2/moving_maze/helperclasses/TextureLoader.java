@@ -132,6 +132,23 @@ public class TextureLoader {
         return scaledTileTexture;
     }
 
+    public static Texture getTileTextureOverlay(){
+        var originalPicture = new Pixmap(Gdx.files.internal("gameboard/yellow_tile.png"));
+
+        var scaledPicture = new Pixmap((int) TILE_EDGE_SIZE_NO_PADDING, (int) TILE_EDGE_SIZE_NO_PADDING, originalPicture.getFormat());
+
+        scaledPicture.drawPixmap(originalPicture,
+                0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
+                0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
+
+        var scaledTileTexture = new Texture(scaledPicture);
+
+        originalPicture.dispose();
+        scaledPicture.dispose();
+
+        return scaledTileTexture;
+    }
+
     public static Texture getLayeredTexture(String tileTexturePath, String itemTexturePath){
 
         var tilePictureOriginal = new Pixmap(Gdx.files.internal(tileTexturePath));
