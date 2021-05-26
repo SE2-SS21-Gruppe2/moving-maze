@@ -8,10 +8,12 @@ import org.junit.jupiter.api.Test;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
+import se_ii.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se_ii.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.server.Session;
 import se_ii.gruppe2.moving_maze.server.SessionManager;
+import se_ii.gruppe2.moving_maze.server.handlers.GameStateUpdateHandler;
 import se_ii.gruppe2.moving_maze.server.handlers.JoinSessionHandler;
 import se_ii.gruppe2.moving_maze.tile.LTile;
 
@@ -31,6 +33,7 @@ public class GameStateUpdateTests {
         cnt = ServerTestUtilities.getConfiguredClient(PORT);
 
         srv.addListener(new JoinSessionHandler());
+        srv.addListener(new GameStateUpdateHandler());
 
         pl1 = new Player();
         pl1.setName("JohnDoe95");
@@ -58,6 +61,7 @@ public class GameStateUpdateTests {
     }
 
     @Test
+    // Expected: The board is updated and the update is sent out to every player in the session.
     void testUpdateOnValidSession() throws InterruptedException {
         GameStateHandler gsh = new GameStateHandler();
         gsh.setSessionCode(TEST_SESSION_NAME);
@@ -69,8 +73,30 @@ public class GameStateUpdateTests {
 
         Session se = SessionManager.getSessionByKey(TEST_SESSION_NAME);
 
+
+        int gameStateUpdateCounter = 0;
+        // verify that there a gamestate update has been sent to each player
+        for(int i = 0; i < SessionManager.getLogStack().size(); i++) {
+            if(SessionManager.getLogStack().pop() instanceof GameStateHandler) {
+                gameStateUpdateCounter++;
+            }
+        }
+
+        assertEquals(se.getPlayers().size(), gameStateUpdateCounter);
         assertEquals(testBoard, se.getState().getBoard());
-        assertEquals(SessionManager.getLogStack().size(), se.getPlayers().size());
+    }
+
+    @Test
+    // Expected: An error-response is sent to the updater.
+    void testUpdateOnInvalidSession() throws InterruptedException {
+        GameStateHandler gsh = new GameStateHandler();
+        gsh.setSessionCode("foobar");
+
+        cnt.sendTCP(gsh);
+
+        Thread.sleep(3000);
+
+        assertTrue(SessionManager.getLastResponse() instanceof RequestProcessError);
     }
 
 }
