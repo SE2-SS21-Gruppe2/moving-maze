@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="GameStateUpdateTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-05-26T08:37:35" hostname="ricebowl" time="4.039">
+<testsuite name="GameStateUpdateTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-05-26T09:35:47" hostname="ricebowl" time="8.015">
   <properties/>
-  <testcase name="testUpdateOnInvalidSession()" classname="GameStateUpdateTests" time="4.039"/>
+  <testcase name="testUpdateOnInvalidSession()" classname="GameStateUpdateTests" time="4.007"/>
+  <testcase name="testUpdateOnValidSession()" classname="GameStateUpdateTests" time="4.007"/>
   <system-out><![CDATA[00:00  INFO: [kryonet] Server opened.
 00:00  INFO: Connecting: localhost/127.0.0.1:54321
 00:00  INFO: [kryonet] Connection 1 connected: /127.0.0.1
@@ -15,6 +16,17 @@
 00:00  INFO: Player 'MaxMustermann22' added to 'TESTSN'
 00:01  INFO: Received updated gamestate from /127.0.0.1
 00:01  WARN: Not able to process gamestate update; session 'foobar' not found
+00:04  INFO: [SessionManager] Creating new session with key 'TESTSN'
+00:04  INFO: Received request to join session 'TESTSN' from /127.0.0.1
+00:04  INFO: Assigned player the color YELLOW
+00:04  INFO: Player 'JohnDoe95' added to 'TESTSN'
+00:04  INFO: Received request to join session 'TESTSN' from /127.0.0.1
+00:04  INFO: Assigned player the color BLUE
+00:04  INFO: Player 'MaxMustermann22' added to 'TESTSN'
+00:05  INFO: Received updated gamestate from /127.0.0.1
+00:05  INFO: (TESTSN) Sending gamestate update to player 'MaxMustermann22'
+00:05  INFO: (TESTSN) Sending gamestate update to player 'JohnDoe95'
+00:05  INFO: (TESTSN) State update finished
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

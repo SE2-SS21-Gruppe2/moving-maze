@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SessionManagerTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2021-05-26T09:35:47" hostname="ricebowl" time="0.085">
+  <properties/>
+  <testcase name="randomSessionCreation()" classname="SessionManagerTests" time="0.07"/>
+  <testcase name="addDuplicateSessionByKey()" classname="SessionManagerTests" time="0.003"/>
+  <testcase name="sessionCount()" classname="SessionManagerTests" time="0.004"/>
+  <testcase name="randomKeysWithinBounds()" classname="SessionManagerTests" time="0.002"/>
+  <testcase name="resetSessions()" classname="SessionManagerTests" time="0.001"/>
+  <testcase name="createAndFindSessionByKey()" classname="SessionManagerTests" time="0.001"/>
+  <system-out><![CDATA[00:00  INFO: Generated session-key 'MHCZJC'
+00:00  INFO: [SessionManager] Creating new session with key 'MHCZJC'
+00:00  INFO: [SessionManager] Creating new session with key 'testsession'
+00:00  WARN: [SessionManager] Session with key 'testsession' cannot be created because it already exists!
+00:00  INFO: Generated session-key 'AXOKEA'
+00:00  INFO: [SessionManager] Creating new session with key 'AXOKEA'
+00:00  INFO: Generated session-key 'PJXIRX'
+00:00  INFO: [SessionManager] Creating new session with key 'PJXIRX'
+00:00  INFO: Generated session-key 'XROHJI'
+00:00  INFO: [SessionManager] Creating new session with key 'XROHJI'
+00:00  INFO: Generated session-key 'FVRTQG'
+00:00  INFO: [SessionManager] Creating new session with key 'FVRTQG'
+00:00  INFO: Generated session-key 'HAIEVE'
+00:00  INFO: [SessionManager] Creating new session with key 'HAIEVE'
+00:00  INFO: Generated session-key 'WUGXFG'
+00:00  INFO: [SessionManager] Creating new session with key 'WUGXFG'
+00:00  INFO: Generated session-key 'JYQJUV'
+00:00  INFO: [SessionManager] Creating new session with key 'JYQJUV'
+00:00  INFO: Generated session-key 'IETHZP'
+00:00  INFO: [SessionManager] Creating new session with key 'IETHZP'
+00:00  INFO: Generated session-key 'GDNAIJ'
+00:00  INFO: [SessionManager] Creating new session with key 'GDNAIJ'
+00:00  INFO: Generated session-key 'HZXJOX'
+00:00  INFO: [SessionManager] Creating new session with key 'HZXJOX'
+00:00  INFO: Generated session-key 'IYSBGV'
+00:00  INFO: [SessionManager] Creating new session with key 'IYSBGV'
+00:00  INFO: [SessionManager] Creating new session with key 'testsession'
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

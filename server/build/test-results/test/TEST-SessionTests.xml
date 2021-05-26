@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SessionTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-05-26T09:35:47" hostname="ricebowl" time="0.014">
+  <properties/>
+  <testcase name="correctKeyOnNewSession()" classname="SessionTests" time="0.004"/>
+  <testcase name="playerAdded()" classname="SessionTests" time="0.008"/>
+  <testcase name="gameStateSet()" classname="SessionTests" time="0.0"/>
+  <system-out><![CDATA[00:00  INFO: Assigned player the color YELLOW
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

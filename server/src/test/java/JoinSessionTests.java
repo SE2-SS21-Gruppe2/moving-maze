@@ -52,9 +52,12 @@ public class JoinSessionTests {
     }
 
     @AfterAll
-    void destroy() {
+    static void destroy() {
         srv.close();
         cnt.close();
+
+        srv = null;
+        cnt = null;
     }
 
     @Test
