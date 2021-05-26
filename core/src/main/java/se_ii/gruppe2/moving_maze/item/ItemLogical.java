@@ -1,5 +1,7 @@
 package se_ii.gruppe2.moving_maze.item;
 
+import java.util.Objects;
+
 public class ItemLogical {
 
     private String name;
@@ -48,5 +50,18 @@ public class ItemLogical {
 
     public void setOnCard(boolean onCard) {
         this.onCard = onCard;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemLogical that = (ItemLogical) o;
+        return name.equals(that.name) && texturePath.equals(that.texturePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, texturePath);
     }
 }

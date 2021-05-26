@@ -2,6 +2,8 @@ package se_ii.gruppe2.moving_maze.tile;
 
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 
+import java.util.Objects;
+
 public abstract class Tile {
 
     private boolean openTop;
@@ -88,5 +90,20 @@ public abstract class Tile {
 
     public void setTexturePath(String texturePath) {
         this.texturePath = texturePath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return openTop == tile.openTop && openRight == tile.openRight && openBottom == tile.openBottom && openLeft == tile.openLeft
+                && Float.compare(tile.rotationDegrees, rotationDegrees) == 0
+                && Objects.equals(item, tile.item) && texturePath.equals(tile.texturePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(openTop, openRight, openBottom, openLeft, item, rotationDegrees, texturePath);
     }
 }

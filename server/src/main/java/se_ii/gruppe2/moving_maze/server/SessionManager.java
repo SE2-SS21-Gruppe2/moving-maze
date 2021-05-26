@@ -99,7 +99,15 @@ public class SessionManager {
         clientResponses.push(o);
     }
 
+    public static Stack<Object> getLogStack() {
+        return clientResponses;
+    }
+
     public static Object getLastResponse() {
         return clientResponses.peek();
+    }
+
+    public static Object removeFromLogStack() {
+        return clientResponses.pop();
     }
 }

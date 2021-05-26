@@ -29,7 +29,9 @@ public class GameStateUpdateHandler extends Listener {
                 affectedSession.sendStateToPlayers();
             } else {
                 Log.warn("Not able to process gamestate update; session '" + state.getSessionCode() + "' not found");
-                con.sendTCP(new RequestProcessError("GameState update", "Failed to process gamestate update because the session could not be found"));
+                RequestProcessError rpe = new RequestProcessError("GameState update", "Failed to process gamestate update because the session could not be found");
+                con.sendTCP(rpe);
+                SessionManager.logResponse(rpe);
             }
 
         }
@@ -47,11 +49,6 @@ public class GameStateUpdateHandler extends Listener {
 
         if(se != null) {
             se.setState(gsh);
-        }
-
-        // preserve player-data if in devmode for proper testing
-        if(se != null && se.getKey().equals("DEVGME")) {
-            se.syncSessionPlayersWithState();
         }
 
         return se;

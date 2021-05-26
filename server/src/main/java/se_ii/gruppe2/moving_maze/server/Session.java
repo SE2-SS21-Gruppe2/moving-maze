@@ -91,6 +91,7 @@ public class Session {
             if(currentPlayer != null && currentConnection != null) {
                 Log.info("(" + key + ") Sending gamestate update to player '" + currentPlayer.getName() + "'");
                 currentConnection.sendTCP(state);
+                SessionManager.logResponse(state);
             } else {
                 Log.info("(" + key + ") Player or connection == NULL; not distributing gamestate update");
             }
