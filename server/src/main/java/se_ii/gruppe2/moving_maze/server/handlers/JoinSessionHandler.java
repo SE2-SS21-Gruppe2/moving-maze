@@ -7,6 +7,7 @@ import se_ii.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se_ii.gruppe2.moving_maze.network.messages.out.JoinRequest;
 import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.player.PlayerColor;
 import se_ii.gruppe2.moving_maze.server.Session;
 import se_ii.gruppe2.moving_maze.server.SessionManager;
 
@@ -23,32 +24,37 @@ public class JoinSessionHandler extends Listener {
             Log.info("Received request to join session '" + jr.getSessionKey() + "' from " + con.getRemoteAddressTCP().getAddress().toString());
 
             if(SessionManager.sessionExists(jr.getSessionKey())) {
-                boolean joinSuccess = processJoinRequest(jr.getPlayer(), con, jr.getSessionKey());
+                PlayerColor assignedColor = processJoinRequest(jr.getPlayer(), con, jr.getSessionKey());
 
-                if(joinSuccess) {
+                if(assignedColor != null) {
                     Log.info("Player '" + jr.getPlayer().getName() + "' added to '" + jr.getSessionKey() + "'");
-                    con.sendTCP(new JoinRequestConfirmation(jr.getSessionKey()));
+                    JoinRequestConfirmation jrc = new JoinRequestConfirmation(jr.getSessionKey(), assignedColor);
+                    con.sendTCP(jrc);
+                    SessionManager.logResponse(jrc);
                 } else {
                     String message = "Unable to join session '" + jr.getSessionKey() + "' because MAX_PLAYER count reached. Rejecting player '" + jr.getPlayer().getName() + "'";
                     Log.info(message);
-                    con.sendTCP(new RequestProcessError("JoinSessionHandler", message));
+                    RequestProcessError rpe = new RequestProcessError("JoinSessionHandler", message);
+                    con.sendTCP(rpe);
+                    SessionManager.logResponse(rpe);
                 }
 
             } else {
                 Log.info("Session not found: " + jr.getSessionKey());
-                con.sendTCP(new RequestProcessError("JoinSessionHandler", "Session '" + jr.getSessionKey() + "' could not be found"));
+                RequestProcessError rpe = new RequestProcessError("JoinSessionHandler", "Session '" + jr.getSessionKey() + "' could not be found");
+                con.sendTCP(rpe);
+                SessionManager.logResponse(rpe);
             }
         }
     }
 
-    public boolean processJoinRequest(Player pl, Connection con, String key) {
+    public PlayerColor processJoinRequest(Player pl, Connection con, String key) {
         try {
             Session se = SessionManager.getSessionByKey(key);
-            se.addPlayer(pl, con);
-            return true;
+            return se.addPlayer(pl, con);
         } catch(IllegalStateException ise) {
             Log.error("Failed to join session '" + key + "': MAX_PLAYER limit reached");
-            return false;
+            return null;
         }
     }
 

@@ -4,6 +4,7 @@ import com.esotericsoftware.minlog.Log;
 
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.Stack;
 
 public class SessionManager {
     private static int lastKey = 0;
@@ -11,6 +12,8 @@ public class SessionManager {
     public static final int rand_max_key = 99999;
     private static HashMap<String, Session> sessionRegistry = new HashMap<>();
     private static final SecureRandom random = new SecureRandom();
+
+    private static Stack<Object> clientResponses = new Stack<>();
 
     // utility class
     private SessionManager() {}
@@ -55,7 +58,7 @@ public class SessionManager {
             sessionRegistry.put(key, session);
             return session;
         } else {
-            Log.warn("SessionManager", "Session with key '" + key +"' cannot be created because it already exists!");
+            Log.warn("SessionManager", "Session with key '" + key + "' cannot be created because it already exists!");
             return null;
         }
     }
@@ -76,6 +79,7 @@ public class SessionManager {
 
     public static void reset() {
         sessionRegistry = new HashMap<>();
+        clientResponses = new Stack<>();
     }
 
     public static int getLastKey() {
@@ -89,5 +93,13 @@ public class SessionManager {
     public static void closeSession(String sessionKey) {
         sessionRegistry.remove(sessionKey);
         Log.info("Session '" + sessionKey + "' closed.");
+    }
+
+    public static void logResponse(Object o) {
+        clientResponses.push(o);
+    }
+
+    public static Object getLastResponse() {
+        return clientResponses.peek();
     }
 }

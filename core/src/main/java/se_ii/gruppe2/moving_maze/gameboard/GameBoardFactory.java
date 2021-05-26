@@ -3,6 +3,8 @@ package se_ii.gruppe2.moving_maze.gameboard;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+
+import se_ii.gruppe2.moving_maze.item.ItemFactory;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.tile.Tile;
@@ -17,9 +19,9 @@ public class GameBoardFactory {
      * itemPathCounter: counter to iterate
      */
     private static final float[] possibleRotationAngles = {0, 90, 270, 180};
-    private static final String[] itemPaths = getFileList();
+    private static final ItemLogical[] items = ItemFactory.itemArray();
     private static int itemPathCounter= 0;
-    private static final SecureRandom random= new SecureRandom();
+    private static final SecureRandom  random= new SecureRandom();
     private static int amountOfLTiles;
     private static int amountOfTTiles;
     private static int amountOfITiles;
@@ -29,8 +31,9 @@ public class GameBoardFactory {
 
     /**
      * Int L,T,I are responsible for how many Tile of a
-     * Type are on the Board. The sum of I,T,L = 45. The
-     * corner Parts are note included, because they are always
+     * Type are on the Board. The sum of I,T,L = 46
+     * (7x7=49 - 4 corners + 1 extra tile).
+     * The corner Parts are note included, because they are always
      * L Tiles.
      *
      * shuffleArray shuffles the itemPath, so every game items are newly organized.
@@ -39,10 +42,10 @@ public class GameBoardFactory {
         var gb = new GameBoard();
         Tile[][] board = gb.getBoard();
         amountOfLTiles =16;
-        amountOfTTiles =17;
+        amountOfTTiles =18;
         amountOfITiles =12;
-        shuffleArray();
         buildBoard(board);
+        gb.setExtraTile(getRandomTile());
         return gb;
     }
 
@@ -50,10 +53,10 @@ public class GameBoardFactory {
         var gb = new GameBoard();
         Tile[][] board = gb.getBoard();
         amountOfLTiles =10;
-        amountOfTTiles =25;
+        amountOfTTiles =26;
         amountOfITiles =10;
-        shuffleArray();
         buildBoard(board);
+        gb.setExtraTile(getRandomTile());
         return gb;
     }
 
@@ -74,7 +77,9 @@ public class GameBoardFactory {
                     board[i][j]= getRandomTile();
                 }
                 if(itemOnTile){
-                    board[i][j].setItem(buildItem(i,j));
+                    Position position= new Position(i,j);
+                    items[itemPathCounter].setPosition(position);
+                    board[i][j].setItem(items[itemPathCounter++]);
                     itemOnTile=false;
                 }
                 else itemOnTile=true;
@@ -82,6 +87,9 @@ public class GameBoardFactory {
         }
 
         itemPathCounter = 0;
+
+        // Overwrite the corner-tiles with the corresponding start-tiles
+        setStartTiles(board);
     }
 
 
@@ -99,58 +107,13 @@ public class GameBoardFactory {
         return possibleRotationAngles[random.nextInt(possibleRotationAngles.length)];
     }
 
-    /**
-     *Gets all components to create an item
-     */
-    private static ItemLogical buildItem(int x, int y){
-        var position = new Position();
-        position.setPosition(x, y);
-        String path= itemPaths[itemPathCounter++];
-        return new ItemLogical(path, position,false);
-    }
-
-    /**
-     *LibGDX has the FileHandel Class. With this class you can give a Pathname. When u call then the
-     *.list function, you get a List off all Files in the Folder, that were selectet.
-     * List element if android:I/System.out: items/(image Element)
-     * List element if desktop: android/assets/items/(image Element)
-     *
-     * The second for makes the item instances game per game random.
-     */
-    private static String[] getFileList(){
-        FileHandle handle;
-        if(Gdx.app.getType() == Application.ApplicationType.Android){
-            handle= Gdx.files.internal("items");
-        }
-        else{
-            handle= Gdx.files.internal("android/assets/items");
-        }
-        var fileNames= new String[handle.list().length];
-        var i = 0;
-        for (FileHandle file : handle.list()) {
-            fileNames[i]=file.toString();
-            i++;
-        }
-
-        return fileNames;
-    }
-
-    private static void shuffleArray(){
-        for (var j = 0; j < itemPaths.length; j++) {
-            var swapIndex= random.nextInt(itemPaths.length);
-            String temp = itemPaths[swapIndex];
-            itemPaths[swapIndex]= itemPaths[j];
-            itemPaths[j]=temp;
-        }
-    }
-
 
     /**
      *L, T, I: Tells how many Tiles  are left.
      * When a Tile is empty, it can't be placed on the board anymore.
      * Therefore a new Random number is needed (while)
      */
-    private static Tile getRandomTile(){
+   private static Tile getRandomTile(){
         while (true){
             var randomTile= random.nextInt(3);
             if(randomTile==0 && amountOfLTiles !=0){
@@ -167,6 +130,26 @@ public class GameBoardFactory {
 
             }
         }
+    }
+
+
+    /**
+     * Set start-tiles on the giveb gameboard.
+     */
+    private static void setStartTiles(Tile[][] boardTiles) {
+
+        // upper left
+        boardTiles[GameBoard.TILES_PER_EDGE-1][0] = TileFactory.getYellowStartTile().applyRotation(270f);
+
+        // upper right
+        boardTiles[GameBoard.TILES_PER_EDGE-1][GameBoard.TILES_PER_EDGE-1] = TileFactory.getGreenStartTile().applyRotation(180f);
+
+        // lower right
+        boardTiles[0][GameBoard.TILES_PER_EDGE-1] = TileFactory.getRedStartTile().applyRotation(90f);
+
+        // lower left
+        boardTiles[0][0] = TileFactory.getBlueStartTile();
+
     }
 
 }

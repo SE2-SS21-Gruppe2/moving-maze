@@ -8,6 +8,7 @@ import se_ii.gruppe2.moving_maze.network.messages.in.JoinRequestConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se_ii.gruppe2.moving_maze.network.messages.out.CreateSessionRequest;
 import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.player.PlayerColor;
 import se_ii.gruppe2.moving_maze.server.Session;
 import se_ii.gruppe2.moving_maze.server.SessionManager;
 
@@ -31,11 +32,11 @@ public class CreateSessionHandler extends Listener {
                 newSession.setLobbyHost(csr.getPlayer(), con);
                 con.sendTCP(new CreateSessionRequestConfirmation(newSession.getKey()));
 
-                boolean joinSuccess = processJoinRequest(csr.getPlayer(), con, newSession.getKey());
+                PlayerColor assignedColor = processJoinRequest(csr.getPlayer(), con, newSession.getKey());
 
-                if(joinSuccess) {
+                if(assignedColor != null) {
                     Log.info("Player '" + csr.getPlayer().getName() + "' added to '" + newSession.getKey() + "'. This session now has " + SessionManager.getSessionByKey(newSession.getKey()).getNumberOfPlayersInSession() + " connected players.");
-                    con.sendTCP(new JoinRequestConfirmation(newSession.getKey()));
+                    con.sendTCP(new JoinRequestConfirmation(newSession.getKey(), assignedColor));
                 } else {
                     String message = "Unable to join session '" + newSession.getKey() + "' because MAX_PLAYER count reached. Rejecting player '" + csr.getPlayer().getName() + "'";
                     Log.info(message);
@@ -51,14 +52,13 @@ public class CreateSessionHandler extends Listener {
 
         }
     }
-    public boolean processJoinRequest(Player pl, Connection con, String key) {
+    public PlayerColor processJoinRequest(Player pl, Connection con, String key) {
         try {
             Session se = SessionManager.getSessionByKey(key);
-            se.addPlayer(pl, con);
-            return true;
+            return se.addPlayer(pl, con);
         } catch(IllegalStateException ise) {
             Log.error("Failed to join session '" + key + "': MAX_PLAYER limit reached");
-            return false;
+            return null;
         }
     }
 }

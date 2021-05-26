@@ -5,42 +5,65 @@ import com.esotericsoftware.minlog.Log;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
 import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.player.PlayerColor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class Session {
-    private static final int MAX_PLAYERS = 4;
+    public static final int MAX_PLAYERS = 4;
     private String key;
     private HashMap<Player, Connection> players;
     private HashMap<Player, Connection> lobbyHost;
     private GameStateHandler state;
+    private Stack<PlayerColor> availableColors;
+
+    public static final String LOBBY_HOST_TMP_NAME = "temp_SessionCreator";
 
     public Session(String key) {
         this.key = key;
         players = new HashMap<>();
         lobbyHost = new HashMap<>();
-        // TODO: use a static INIT function to initialize the game-state
         state = new GameStateHandler();
         state.setSessionCode(this.key);
+        initColors();
     }
 
     /**
-     * Add player to session
+     * Add player to session and return the color that has been assigned
      * @param player to add
      * @throws IllegalStateException in case the amount of players is already maxed out
      */
-    public void addPlayer(Player player, Connection con) {
+    public PlayerColor addPlayer(Player player, Connection con) {
         if(players.size() < MAX_PLAYERS) {
+            player.setColor(availableColors.pop());
             players.put(player, con);
+            state.addPlayer(player);
             sendConnectedPlayersToHost();
+            Log.info("Assigned player the color " + player.getColor().toString());
+            return player.getColor();
         } else {
             throw new IllegalStateException();
         }
     }
 
+    /**
+     * Updates the name of the lobby-host in the respective gamestate object.
+     * @param name
+     */
+    public void updateLobbyHostName(String name) {
+
+        for(Player p : state.getPlayers()) {
+            if(p.getName().equals(LOBBY_HOST_TMP_NAME)) {
+                p.setName(name);
+                Log.info("Updated player-name of lobbyhost to '" + name + "'");
+            }
+        }
+
+    }
+
+    /**
+     * Update the host with all players that have been added to the session.
+     */
     private void sendConnectedPlayersToHost() {
         ArrayList<String> connectedPlayers = new ArrayList<>();
         if (!players.isEmpty() && !lobbyHost.isEmpty()){
@@ -74,6 +97,28 @@ public class Session {
         }
 
         Log.info("(" + key + ") State update finished");
+    }
+
+    /**
+     * Initialize the available colors
+     */
+    private void initColors() {
+        availableColors = new Stack<>();
+        availableColors.add(PlayerColor.GREEN);
+        availableColors.add(PlayerColor.RED);
+        availableColors.add(PlayerColor.BLUE);
+        availableColors.add(PlayerColor.YELLOW);
+    }
+
+    /**
+     * Resets and synchronizes the players in the managed state with the player stored on session-level.
+     */
+    public void syncSessionPlayersWithState() {
+        this.state.getPlayers().clear();
+
+        for(Map.Entry<Player, Connection> entry : players.entrySet()) {
+            state.addPlayer(entry.getKey());
+        }
     }
 
     // GETTER & SETTER
@@ -110,7 +155,6 @@ public class Session {
     }
 
     public void removePlayer(Player player, Connection con) {
-
 
         Player p;
         Iterator itr = players.keySet().iterator();

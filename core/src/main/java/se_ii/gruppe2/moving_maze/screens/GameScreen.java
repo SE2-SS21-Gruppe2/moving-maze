@@ -8,20 +8,46 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
+import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
+import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
+
+import java.util.ArrayList;
 
 public class GameScreen implements Screen {
 
     private final MovingMazeGame game;
     private final SpriteBatch batch;
+    private boolean newExtraTile;
     private OrthographicCamera camera;
+    private Player player;
+    private Stage stage;
+
+    // Buffer-variables used for rendering
+    Sprite currentSprite;
+    Sprite currentExtraTileSprite;
+    Sprite extraTileItemSprite;
+    Tile currentTile;
+    Tile currentExtraTile;
+    ItemLogical currentItem;
+    ItemLogical currentExtraTileItem;
+    ArrayList<Player> currentPlayersOnTile = new ArrayList<>();
+
+    Image img;
+    Image img1;
+
 
     // background
     private Texture bgImageTexture;
@@ -30,6 +56,9 @@ public class GameScreen implements Screen {
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
         this.batch = game.getBatch();
+
+        stage = new Stage();
+
 
         camera = MovingMazeGame.getStandardizedCamera();
 
@@ -40,7 +69,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        game.getClient().sendGameStateUpdate(game.getGameState());
+        player = game.getLocalPlayer();
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -54,9 +84,10 @@ public class GameScreen implements Screen {
         }
 
         batch.begin();
-            batch.draw(bgTextureRegion, 0, 0);
-            drawGameBoard(batch);
-            game.getFont().draw(batch, "Game screen (DEV MODE)", 100, 100);
+        batch.draw(bgTextureRegion, 0, 0);
+        drawGameBoard(batch);
+        stage.draw();
+        game.getFont().draw(batch, player.getName() + " | " + player.getColor().toString(), 70f, 70f);
         batch.end();
     }
 
@@ -112,6 +143,7 @@ public class GameScreen implements Screen {
     /**
      * Draws a visual representation of a logical gameboard onto the screen.
      * @param batch
+     * TODO: refactor
      */
     private void drawGameBoard(SpriteBatch batch) {
         Tile[][] tl = game.getGameState().getBoard().getBoard();
@@ -120,12 +152,9 @@ public class GameScreen implements Screen {
         float curX = initPos.getX();
         float curY = initPos.getY();
 
-        Sprite currentSprite;
-        Tile currentTile;
-        ItemLogical currentItem;
-        for(var i = 0; i < tl.length; i++) {
-            for(var j = 0; j < tl[i].length; j++) {
-                currentTile = tl[i][j];
+        for(var y = 0; y < tl.length; y++) {
+            for(var x = 0; x < tl[y].length; x++) {
+                currentTile = tl[y][x];
                 currentSprite = TextureLoader.getSpriteByTexturePath(currentTile.getTexturePath(), TextureType.TILE);
                 currentItem = currentTile.getItem();
 
@@ -133,17 +162,124 @@ public class GameScreen implements Screen {
                 currentSprite.setRotation(currentTile.getRotationDegrees());
                 currentSprite.draw(batch);
 
+                // render item
                 if(currentItem != null) {
                     currentSprite = TextureLoader.getSpriteByTexturePath(currentItem.getTexturePath(), TextureType.ITEM);
                     currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE /4f, curY + TextureLoader.TILE_EDGE_SIZE /4f);
                     currentSprite.draw(batch);
                 }
 
+                // render players
+                currentPlayersOnTile = game.getGameState().playersOnTile(y, x);
+
+                if(currentPlayersOnTile.size() != 0) {
+                    for(Player p : currentPlayersOnTile) {
+                        currentSprite = TextureLoader.getSpriteByTexturePath(p.getTexturePath(), TextureType.PLAYER);
+                        currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE/4f, curY+TextureLoader.TILE_EDGE_SIZE/4f);
+                        currentSprite.draw(batch);
+                    }
+                }
+
                 curX += TextureLoader.TILE_EDGE_SIZE;
             }
             curX = initPos.getX();
             curY += TextureLoader.TILE_EDGE_SIZE;
+
+            if (isNewExtraTile()){
+                updateExtraTile();
+            }
         }
     }
 
+    public void updateExtraTile(){
+        stage.clear();
+        currentExtraTile = game.getGameState().getBoard().getExtraTile();
+        Texture layeredTexture;
+
+        if (currentExtraTile != null){
+
+            layeredTexture = TextureLoader.getLayeredTexture(currentExtraTile.getTexturePath(), null);
+
+            if (currentExtraTile.getItem() != null){
+                currentExtraTileItem = currentExtraTile.getItem();
+                layeredTexture = TextureLoader.getLayeredTexture(currentExtraTile.getTexturePath(), currentExtraTileItem.getTexturePath());
+            }
+
+            img = new Image(layeredTexture);
+            img.setOrigin(img.getWidth()/2f, img.getHeight()/2f);
+            img.setPosition(300,500);
+            img.setRotation(currentExtraTile.getRotationDegrees());
+
+            img.addListener(new DragListener() {
+
+                @Override
+                public void drag(InputEvent event, float x, float y, int pointer) {
+                    var dir = new Vector2();
+                    var offset = new Vector2();
+                    if (img.getRotation() == 0){
+                        dir.x = x;
+                        dir.y = y;
+                        offset.x = 0 - img.getWidth()/2f;
+                        offset.y = 0 - img.getHeight()/2f;
+                    } else if (img.getRotation() == 90f){
+                        dir.x = -y;
+                        dir.y = x;
+                        offset.x = img.getHeight()/2f;
+                        offset.y = 0 - img.getWidth()/2f;
+                    } else if (img.getRotation() == 180f){
+                        dir.x = -x;
+                        dir.y = -y;
+                        offset.x = img.getWidth()/2f;
+                        offset.y = img.getHeight()/2f;
+                    } else if (img.getRotation() == 270f){
+                        dir.x = y;
+                        dir.y = -x;
+                        offset.x = 0 - img.getHeight()/2f;
+                        offset.y = img.getWidth()/2f;
+                    }
+                    img.moveBy(dir.x + offset.x, dir.y + offset.y);
+                }
+
+                @Override
+                public void dragStop(InputEvent event, float x, float y, int pointer) {
+                    var insertSuccess = false;
+                    Position initPos = getStartCoordinates();
+                    var inputPosition = new Vector2(0,0);
+                    inputPosition.x = (int) Math.floor((Gdx.input.getX() - initPos.getX())/TextureLoader.TILE_EDGE_SIZE);
+                    inputPosition.y = (int) Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY() - initPos.getY())/TextureLoader.TILE_EDGE_SIZE);
+
+                    var insert = new InsertTile(inputPosition);
+
+                    insertSuccess = insert.validate();
+
+                    if (insertSuccess){
+                        insert.execute();
+                    } else {
+                        img.setPosition(300,500);
+                    }
+                }
+            });
+
+            img.addListener(new ClickListener(){
+
+                @Override
+                public void clicked(InputEvent event, float x, float y){
+                    img.rotateBy(90);
+                    currentExtraTile.setRotationDegrees((currentExtraTile.getRotationDegrees()+90)%360);
+                }
+            });
+
+            stage.addActor(img);
+            setNewExtraTile(false);
+        }
+
+    }
+
+    public boolean isNewExtraTile() {
+        return newExtraTile;
+    }
+
+    public void setNewExtraTile(boolean newExtraTile) {
+        this.newExtraTile = newExtraTile;
+    }
 }
