@@ -71,7 +71,6 @@ public class GameStateHandler {
             updatePlayerOnTurn();
             gamePhase.nextPhase();
         }
-
     }
 
 

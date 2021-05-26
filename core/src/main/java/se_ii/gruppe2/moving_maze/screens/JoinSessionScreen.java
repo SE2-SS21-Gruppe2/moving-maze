@@ -109,13 +109,6 @@ public class JoinSessionScreen implements Screen {
 
     private void setUpActorListeners() {
 
-        stage.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                stage.unfocusAll();
-            }
-        });
-
         joinGame.addListener(new ClickListener() {
 
             @Override
@@ -126,7 +119,6 @@ public class JoinSessionScreen implements Screen {
                     game.getClient().joinSession(game.getLocalPlayer(), game.getSessionKey());
                     game.setScreen(game.getWaitingScreen());
                 }
-
             }
         });
 
