@@ -3,6 +3,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ public class JoinSessionTests {
     static Client cnt;
     static Player pl1;
     static Player pl2;
-    public static final int PORT = 54321;
+    public static final int PORT = 55321;
     public static final String TEST_SESSION_NAME = "TESTSN";
 
     @BeforeAll
@@ -48,6 +49,12 @@ public class JoinSessionTests {
     void reset() {
         SessionManager.reset();
         SessionManager.createSessionByKey(TEST_SESSION_NAME);
+    }
+
+    @AfterAll
+    void destroy() {
+        srv.close();
+        cnt.close();
     }
 
     @Test
