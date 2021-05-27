@@ -22,6 +22,7 @@ public class InitGameHandler extends Listener {
                 s.getState().setBoard(igs.getBoard());
                 s.getState().updatePlayerOnTurn();
                 s.getState().initGamePhase();
+                s.initializeItems(igs.getItemsToDistribute());
                 s.sendStateToPlayers();
             } else {
                 Log.error("Error while trying to start game - session not found");

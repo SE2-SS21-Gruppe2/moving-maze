@@ -3,6 +3,7 @@ package se_ii.gruppe2.moving_maze.network;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
+import se_ii.gruppe2.moving_maze.item.ItemFactory;
 import se_ii.gruppe2.moving_maze.network.listeners.CreateSessionConfirmationListener;
 import se_ii.gruppe2.moving_maze.network.listeners.UpdateConnectedPlayersListener;
 import se_ii.gruppe2.moving_maze.network.messages.out.*;
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 public class NetworkClient {
     private static NetworkClient singleton;
-    private int bufferSize = 4096;
+    public static final int BUFFER_SIZE = 8192;
 
     Client kryoClient;
 
@@ -52,7 +53,7 @@ public class NetworkClient {
      * @param port (tcp) to talk exchange data with
      */
     public void initKryoClient(int timeout, String host, int port) throws IOException {
-        kryoClient = new Client(bufferSize, bufferSize);
+        kryoClient = new Client(BUFFER_SIZE, BUFFER_SIZE);
         Registry.registerClassesOnKryo(kryoClient.getKryo());
         kryoClient.start();
         kryoClient.connect(timeout, host, port);
@@ -96,7 +97,7 @@ public class NetworkClient {
     }
 
     public void initGame(String key, GameBoard board, String finalHostName) {
-        kryoClient.sendTCP(new InitGameStart(key, board, finalHostName));
+        kryoClient.sendTCP(new InitGameStart(key, board, finalHostName, ItemFactory.items));
         Gdx.app.log("NetworkClient/initGame", "Sent request to initialize game '" + key + "'");
     }
 
