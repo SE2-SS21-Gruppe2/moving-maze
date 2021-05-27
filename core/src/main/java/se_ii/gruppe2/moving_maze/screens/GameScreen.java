@@ -233,25 +233,17 @@ public class GameScreen implements Screen {
                     Position currentPlayerPos=game.getLocalPlayer().getPos();
                     int row=0;
                     int col=0;
-                    System.out.println("InputX:" +Gdx.input.getX() +" Inputy:"+ Gdx.input.getY());
-                    System.out.println("posX:"+ pos.getX()+" PosY:"+pos.getY());
                     System.out.println(TextureLoader.TILE_EDGE_SIZE);
+                    System.out.println(image.getOriginX()+" "+image.getImageY());
                     for(int i=0; i<7;i++){
-                        if(pos.getX()+(TextureLoader.TILE_EDGE_SIZE*row)<Gdx.input.getX()){
+                        if(pos.getX()+(TextureLoader.TILE_EDGE_SIZE*row)<image.getOriginX()){
                             row++;
                         }
-                        if(pos.getY()+(TextureLoader.TILE_EDGE_SIZE*col)<Gdx.input.getY()){
+                        if(pos.getY()+(TextureLoader.TILE_EDGE_SIZE*col)<image.getOriginY()){
                             col++;
                         }
                     }
-                    row--;
-                    col--;
-                    System.out.println("X:"+pos.getX()+" Y"+pos.getY());
-                    System.out.println("Row:"+row +" Col"+col);
-                    row= currentPlayerPos.getY()-row;
-                    col= currentPlayerPos.getX()-col;
-                    System.out.println("Row:"+row +"Col"+col);
-                    game.getLocalPlayer().move(col,row);
+                    game.getLocalPlayer().setPos(new Position(col,row));
                     canMove=false;
                     stage.clear();
                 }
