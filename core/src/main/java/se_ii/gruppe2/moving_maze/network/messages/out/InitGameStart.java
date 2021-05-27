@@ -1,6 +1,10 @@
 package se_ii.gruppe2.moving_maze.network.messages.out;
 
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
+import se_ii.gruppe2.moving_maze.item.ItemLogical;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Sent to the server by a game host in order to signal that a game can be started.
@@ -10,14 +14,16 @@ public class InitGameStart {
     private String key;
     private GameBoard board;
     private String finalHostName;
+    private ArrayList<ItemLogical> itemsToDistribute;
 
     public InitGameStart() {
     }
 
-    public InitGameStart(String key, GameBoard board, String finalHostName) {
+    public InitGameStart(String key, GameBoard board, String finalHostName, ItemLogical[] availableItems) {
         this.key = key;
         this.board = board;
         this.finalHostName = finalHostName;
+        this.itemsToDistribute = new ArrayList<>(Arrays.asList(availableItems));
     }
 
     // GETTER & SETTER
@@ -43,5 +49,13 @@ public class InitGameStart {
 
     public void setFinalHostName(String finalHostName) {
         this.finalHostName = finalHostName;
+    }
+
+    public ArrayList<ItemLogical> getItemsToDistribute() {
+        return itemsToDistribute;
+    }
+
+    public void setItemsToDistribute(ArrayList<ItemLogical> itemsToDistribute) {
+        this.itemsToDistribute = itemsToDistribute;
     }
 }

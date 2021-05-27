@@ -1,6 +1,7 @@
 package se_ii.gruppe2.moving_maze.player;
 
 import se_ii.gruppe2.moving_maze.item.Card;
+import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 
 import java.security.SecureRandom;
@@ -11,9 +12,9 @@ public class Player {
     private String name;
     private String texturePath;
     private Position pos;
-    private Stack<Card> cardsToFind;
-    private Stack<Card> cardsFound;
-    private Card currentCard;
+    private Stack<ItemLogical> cardsToFind;
+    private Stack<ItemLogical> cardsFound;
+    private ItemLogical currentCard;
     private PlayerRole role;
 
     private PlayerColor color;
@@ -45,7 +46,7 @@ public class Player {
      * Marks the currentCard as found and draws the next card.
      * @return the new currentCard; null if no cards are left
      */
-    public Card currentCardFound() {
+    public ItemLogical currentCardFound() {
         cardsFound.push(currentCard);
 
         if(!cardsToFind.empty()) {
@@ -123,5 +124,27 @@ public class Player {
         return this.texturePath;
     }
 
+    public Stack<ItemLogical> getCardsToFind() {
+        return cardsToFind;
+    }
 
+    public void setCardsToFind(Stack<ItemLogical> cardsToFind) {
+        this.cardsToFind = cardsToFind;
+    }
+
+    public Stack<ItemLogical> getCardsFound() {
+        return cardsFound;
+    }
+
+    public void setCardsFound(Stack<ItemLogical> cardsFound) {
+        this.cardsFound = cardsFound;
+    }
+
+    public ItemLogical getCurrentCard() {
+        return currentCard;
+    }
+
+    public void setCurrentCard(ItemLogical currentCard) {
+        this.currentCard = currentCard;
+    }
 }

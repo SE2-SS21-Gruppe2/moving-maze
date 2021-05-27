@@ -39,8 +39,7 @@ public class GameScreen implements Screen {
 
     // Buffer-variables used for rendering
     Sprite currentSprite;
-    Sprite currentExtraTileSprite;
-    Sprite extraTileItemSprite;
+    Sprite cardSprite;
     Tile currentTile;
     Tile currentExtraTile;
     ItemLogical currentItem;
@@ -48,7 +47,6 @@ public class GameScreen implements Screen {
     ArrayList<Player> currentPlayersOnTile = new ArrayList<>();
 
     Image img;
-    Image img1;
 
 
     // background
@@ -92,10 +90,11 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.draw(bgTextureRegion, 0, 0);
+        drawCardToScreen(batch);
         drawGameBoard(batch);
         stage.draw();
-        game.getFont().draw(batch, player.getName() + " | " + player.getColor().toString(), 70f, 70f);
-        game.getFont().draw(batch, game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName().toString(), 70f, 120f);
+        game.getFont().draw(batch, "LOCAL PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
+        game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-160f);
         batch.end();
     }
 
@@ -199,6 +198,12 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void drawCardToScreen(SpriteBatch batch) {
+        cardSprite = TextureLoader.getSpriteByTexturePath("gameboard/card.png", TextureType.CARD);
+        cardSprite.setPosition(80f, 80f);
+        cardSprite.draw(batch);
+    }
+
     public void updateExtraTile(){
         stage.clear();
         currentExtraTile = game.getGameState().getBoard().getExtraTile();
@@ -215,7 +220,7 @@ public class GameScreen implements Screen {
 
             img = new Image(layeredTexture);
             img.setOrigin(img.getWidth()/2f, img.getHeight()/2f);
-            img.setPosition(300,500);
+            img.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight()/2 - img.getHeight());
             img.setRotation(currentExtraTile.getRotationDegrees());
 
             if (game.getGameState().isMyTurn(game.getLocalPlayer()) && game.getGameState().getGamePhase() == GamePhaseType.INSERT_TILE) {

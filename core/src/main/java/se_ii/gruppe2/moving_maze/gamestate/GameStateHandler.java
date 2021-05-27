@@ -1,7 +1,9 @@
 package se_ii.gruppe2.moving_maze.gamestate;
 
 import com.badlogic.gdx.math.Vector2;
+import com.esotericsoftware.minlog.Log;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
+import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
@@ -72,6 +74,7 @@ public class GameStateHandler {
             gamePhase.nextPhase();
         }
     }
+
 
 
     // GETTER & SETTER

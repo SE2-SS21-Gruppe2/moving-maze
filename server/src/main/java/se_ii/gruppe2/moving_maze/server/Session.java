@@ -3,6 +3,7 @@ package se_ii.gruppe2.moving_maze.server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
+import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.player.PlayerColor;
@@ -62,6 +63,30 @@ public class Session {
     }
 
     /**
+     * Distribute the client-generated list of items to the players
+     * TODO: check if spread evenly
+     * @param items to distribute
+     */
+    public void initializeItems(ArrayList<ItemLogical> items) {
+        Log.info("Assigning " + items.size() + " items to players");
+
+        // distribute items
+        int playerIdx = 0;
+        Player currentPlayer;
+        while(items.size() > 0) {
+            currentPlayer = getState().getPlayers().get(playerIdx);
+            currentPlayer.getCardsToFind().push(items.get(0));
+            items.remove(0);
+            playerIdx = ++playerIdx%getState().getPlayers().size();
+        }
+
+        // set the first item for each player to be the top of the stack
+        for(Player p : getState().getPlayers()) {
+            p.setCurrentCard(p.getCardsToFind().pop());
+        }
+    }
+
+    /**
      * Update the host with all players that have been added to the session.
      */
     private void sendConnectedPlayersToHost() {
@@ -75,6 +100,8 @@ public class Session {
             lobbyHost.entrySet().iterator().next().getValue().sendTCP(new UpdateConnectedPlayersConfirmation(connectedPlayers));
         }
     }
+
+
 
     /**
      * Send the current session state to all stored players.

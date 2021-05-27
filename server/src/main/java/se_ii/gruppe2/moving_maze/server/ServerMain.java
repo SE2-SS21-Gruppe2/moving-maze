@@ -1,6 +1,7 @@
 package se_ii.gruppe2.moving_maze.server;
 
 import com.esotericsoftware.kryonet.Server;
+import se_ii.gruppe2.moving_maze.network.NetworkClient;
 import se_ii.gruppe2.moving_maze.network.Registry;
 import se_ii.gruppe2.moving_maze.server.handlers.*;
 
@@ -10,9 +11,7 @@ public class ServerMain {
 
     public static void main(String[] args) {
 
-        int bufferSize = 4096;
-
-        Server srv = new Server(bufferSize, bufferSize);
+        Server srv = new Server(NetworkClient.BUFFER_SIZE, NetworkClient.BUFFER_SIZE);
 
         Registry.registerClassesOnKryo(srv.getKryo());
         srv.start();
