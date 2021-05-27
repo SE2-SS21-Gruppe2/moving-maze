@@ -57,6 +57,15 @@ public class GameStateHandler {
         return currentPlayerOnTurn;
     }
 
+    public Player getPlayerByName(String name) {
+        for(Player p : players) {
+            if(p.getName().equals(name))
+                return p;
+        }
+
+        return null;
+    }
+
     // GETTER & SETTER
     public GameBoard getBoard() {
         return board;
@@ -73,7 +82,6 @@ public class GameStateHandler {
     public void setSessionCode(String sessionCode) {
         this.sessionCode = sessionCode;
     }
-
 
     public void addPlayer(Player p) {
         this.players.add(p);

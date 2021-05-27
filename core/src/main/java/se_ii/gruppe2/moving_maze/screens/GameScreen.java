@@ -227,10 +227,11 @@ public class GameScreen implements Screen {
             image.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent inputEvent,float x,float y){
+                    Player playerInGameState = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
                     System.out.println("Nice");
                     localPlayerMoves.clear();
                     Position pos= getStartCoordinates();
-                    Position currentPlayerPos=game.getLocalPlayer().getPos();
+                    Position currentPlayerPos=player.getPos();
                     int row=0;
                     int col=0;
                     System.out.println(TextureLoader.TILE_EDGE_SIZE);
@@ -243,7 +244,9 @@ public class GameScreen implements Screen {
                             col++;
                         }
                     }
-                    game.getLocalPlayer().setPos(new Position(col,row));
+                    playerInGameState.setPos(new Position(row, col));
+                    player.setPos(new Position(row, col));
+
                     canMove=false;
                     stage.clear();
                 }
