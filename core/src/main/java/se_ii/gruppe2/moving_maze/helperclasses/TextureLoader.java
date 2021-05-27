@@ -44,6 +44,10 @@ public class TextureLoader {
                 sprite = new Sprite(getScaledPlayerTexture(path));
                 break;
 
+            case CARD:
+                sprite = new Sprite(getCardTexture(path));
+                break;
+
             default:
                 sprite = null;
         }
@@ -165,6 +169,37 @@ public class TextureLoader {
         tilePictureScaled.dispose();
 
         return scaledTileTexture;
+
+    }
+
+    /**
+     * Scales the given texture to match the format of a card.
+     * @param texturePath path to the card texture
+     * @return the card texture
+     */
+    public static Texture getCardTexture(String texturePath) {
+        var targetWidth = Gdx.graphics.getHeight() / 2.2f;
+        var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+
+        var scalingFactor = originalPicture.getHeight() / targetWidth;
+
+        Pixmap scaledPicture;
+
+        var scaledHeight = (int) (originalPicture.getHeight() / scalingFactor);
+        var scaledWidth = (int) (originalPicture.getWidth() / scalingFactor);
+
+        scaledPicture = new Pixmap(scaledWidth, scaledHeight, originalPicture.getFormat());
+
+        scaledPicture.drawPixmap(originalPicture,
+                0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
+                0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
+
+        var scaledCardTexture = new Texture(scaledPicture);
+
+        originalPicture.dispose();
+        scaledPicture.dispose();
+
+        return scaledCardTexture;
 
     }
 }
