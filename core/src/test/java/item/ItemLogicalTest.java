@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 
-
-public class ItemLogicalTest {
+class ItemLogicalTest {
 
     Position position = new Position();
     ItemLogical itemLogical;
@@ -21,7 +20,7 @@ public class ItemLogicalTest {
 
 
     @BeforeEach
-    public void setup(){
+    void setup(){
         onCard=false;
         texturePath="java/item/test.jpg";
         position.setPosition(4,3);
@@ -30,7 +29,7 @@ public class ItemLogicalTest {
 
 
     @Test
-    public void getPositionTest(){
+    void getPositionTest(){
         Position pos = new Position();
         pos.setPosition(4,3);
         assertEquals(pos.getX(),itemLogical.getPosition().getX());
@@ -38,7 +37,7 @@ public class ItemLogicalTest {
     }
 
     @Test
-    public void setPositionTest(){
+    void setPositionTest(){
         Position pos = new Position();
         pos.setPosition(6,0);
         Position newPosition = new Position();
@@ -49,13 +48,13 @@ public class ItemLogicalTest {
     }
 
     @Test
-    public void getTexturePathTest(){
+    void getTexturePathTest(){
         String path="java/item/test.jpg";
         assertEquals(path,itemLogical.getTexturePath());
     }
 
     @Test
-    public void setTexturePathTest(){
+    void setTexturePathTest(){
         String path="item/test.jpg";
         String newPath="item/test.jpg";
         itemLogical.setTexturePath(newPath);
@@ -63,19 +62,19 @@ public class ItemLogicalTest {
     }
 
     @Test
-    public void isOnCard(){
+    void isOnCard(){
         assertFalse(itemLogical.isOnCard());
     }
 
     @Test
-    public void setOnCardTest(){
+    void setOnCardTest(){
         itemLogical.setOnCard(true);
         assertTrue(itemLogical.isOnCard());
     }
 
     //TODO: if name builder is implemented, make better Tests
     @Test
-    public void getNameTest(){
+    void getNameTest(){
         itemLogical.setName("test");
         assertEquals("test",itemLogical.getName());
     }

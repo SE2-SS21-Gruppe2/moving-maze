@@ -20,6 +20,7 @@ import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
+import se_ii.gruppe2.moving_maze.gamestate.turnAction.MovePlayer;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
@@ -37,6 +38,12 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private Player player;
     private Stage stage;
+    private Stage imgStage;
+    private ArrayList<Position> localPlayerMoves;
+    private boolean canMove=false;
+    private Image moveImage;
+
+
 
     // Buffer-variables used for rendering
     Sprite currentSprite;
@@ -48,6 +55,8 @@ public class GameScreen implements Screen {
     ArrayList<Player> currentPlayersOnTile = new ArrayList<>();
     Player playerBuffer;
     ItemLogical itemBuffer;
+
+
 
     Image img;
 
@@ -61,6 +70,7 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
 
         stage = new Stage();
+        imgStage=new Stage();
 
 
         camera = MovingMazeGame.getStandardizedCamera();
@@ -74,6 +84,8 @@ public class GameScreen implements Screen {
     public void show() {
         player = game.getLocalPlayer();
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(stage);
+
     }
 
     @Override
@@ -85,6 +97,10 @@ public class GameScreen implements Screen {
             Gdx.app.log("recreateBoard", "Recreating gameboard");
             recreateGameBoard();
         }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
+            playerMove();
+        }
+
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             game.getGameState().completePhase();
@@ -202,6 +218,68 @@ public class GameScreen implements Screen {
             if (isNewExtraTile()){
                 updateExtraTile();
             }
+        }
+        if(canMove){
+            updatePlayerMovement(initPos.getX(),initPos.getY());
+        }
+    }
+
+
+
+    public void updatePlayerMovement(float curX, float curY){
+        stage.clear();
+        Texture texture;
+        for(Position pos: localPlayerMoves){
+            int col= pos.getX();
+            int row= pos.getY();
+            float xT= curX + (TextureLoader.TILE_EDGE_SIZE*(0+col));
+            float yT= curY+ (TextureLoader.TILE_EDGE_SIZE*(0+row));
+            texture=TextureLoader.getTileTextureOverlay();
+            Image image =new Image(texture);
+            image.setPosition(xT,yT);
+            image.setOrigin(xT,yT);
+            image.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent inputEvent,float x,float y){
+                    Player playerInGameState = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
+                    System.out.println("Nice");
+                    localPlayerMoves.clear();
+                    Position pos= getStartCoordinates();
+                    Position currentPlayerPos=player.getPos();
+                    int row=0;
+                    int col=0;
+                    System.out.println(TextureLoader.TILE_EDGE_SIZE);
+                    System.out.println(image.getOriginX()+" "+image.getImageY());
+                    for(int i=0; i<7;i++){
+                        if(pos.getX()+(TextureLoader.TILE_EDGE_SIZE*row)<image.getOriginX()){
+                            row++;
+                        }
+                        if(pos.getY()+(TextureLoader.TILE_EDGE_SIZE*col)<image.getOriginY()){
+                            col++;
+                        }
+                    }
+                    playerInGameState.setPos(new Position(row, col));
+                    player.setPos(new Position(row, col));
+
+                    canMove=false;
+                    stage.clear();
+                }
+            });
+            canMove=false;
+            image.draw(batch,1f);
+            stage.addActor(image);
+        }
+
+    }
+
+
+    public void playerMove(){
+        imgStage.clear();
+        MovePlayer movePlayer= new MovePlayer();
+        boolean valid=movePlayer.validate();
+        if (valid && movePlayer.getPositionsToGO().size()>1){
+            localPlayerMoves=movePlayer.getPositionsToGO();
+            canMove = true;
         }
     }
 
