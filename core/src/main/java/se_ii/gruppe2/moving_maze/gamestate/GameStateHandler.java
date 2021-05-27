@@ -124,7 +124,7 @@ public class GameStateHandler {
     }
 
     public boolean isMyTurn(Player player){
-        if (players.get(playerOnTurnIndex).getId() == player.getId()){
+        if (players.get(playerOnTurnIndex % players.size()).getId() == player.getId()){
             return true;
         } else {
             return false;
