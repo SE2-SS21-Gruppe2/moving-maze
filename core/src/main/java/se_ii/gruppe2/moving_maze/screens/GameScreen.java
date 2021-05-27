@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import org.w3c.dom.Text;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
@@ -45,6 +46,8 @@ public class GameScreen implements Screen {
     ItemLogical currentItem;
     ItemLogical currentExtraTileItem;
     ArrayList<Player> currentPlayersOnTile = new ArrayList<>();
+    Player playerBuffer;
+    ItemLogical itemBuffer;
 
     Image img;
 
@@ -202,6 +205,15 @@ public class GameScreen implements Screen {
         cardSprite = TextureLoader.getSpriteByTexturePath("gameboard/card.png", TextureType.CARD);
         cardSprite.setPosition(80f, 80f);
         cardSprite.draw(batch);
+
+        playerBuffer = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
+        itemBuffer = playerBuffer != null ? playerBuffer.getCurrentCard() : null;
+        if(itemBuffer != null) {
+            currentSprite = TextureLoader.getSpriteByTexturePath(itemBuffer.getTexturePath(), TextureType.ITEM);
+            currentSprite.setCenterX(cardSprite.getX() + cardSprite.getWidth()/2f);
+            currentSprite.setCenterY(cardSprite.getY() + cardSprite.getHeight()/2f);
+            currentSprite.draw(batch);
+        }
     }
 
     public void updateExtraTile(){

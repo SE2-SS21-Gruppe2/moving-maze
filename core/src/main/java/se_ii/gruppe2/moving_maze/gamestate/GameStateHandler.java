@@ -75,6 +75,16 @@ public class GameStateHandler {
         }
     }
 
+    public Player getPlayerByName(String name) {
+
+        for(Player p : players) {
+            if(p.getName().equals(name))
+                return p;
+        }
+
+        return null;
+    }
+
 
 
     // GETTER & SETTER
