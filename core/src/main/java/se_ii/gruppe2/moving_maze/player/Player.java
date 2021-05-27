@@ -44,9 +44,10 @@ public class Player {
 
     /**
      * Marks the currentCard as found and draws the next card.
+     * TODO: mark player as winner once the stack is empty (==> all cards found)
      * @return the new currentCard; null if no cards are left
      */
-    public ItemLogical currentCardFound() {
+    public ItemLogical nextCard() {
         cardsFound.push(currentCard);
 
         if(!cardsToFind.empty()) {
