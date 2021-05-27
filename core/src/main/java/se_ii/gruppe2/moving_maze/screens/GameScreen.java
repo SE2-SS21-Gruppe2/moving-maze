@@ -9,13 +9,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
+import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
@@ -83,11 +85,17 @@ public class GameScreen implements Screen {
             recreateGameBoard();
         }
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            game.getGameState().completePhase();
+            game.getClient().sendGameStateUpdate(game.getGameState());
+        }
+
         batch.begin();
         batch.draw(bgTextureRegion, 0, 0);
         drawGameBoard(batch);
         stage.draw();
         game.getFont().draw(batch, player.getName() + " | " + player.getColor().toString(), 70f, 70f);
+        game.getFont().draw(batch, game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName().toString(), 70f, 120f);
         batch.end();
     }
 
@@ -210,65 +218,67 @@ public class GameScreen implements Screen {
             img.setPosition(300,500);
             img.setRotation(currentExtraTile.getRotationDegrees());
 
-            img.addListener(new DragListener() {
+            if (game.getGameState().isMyTurn(game.getLocalPlayer()) && game.getGameState().getGamePhase() == GamePhaseType.INSERT_TILE) {
 
-                @Override
-                public void drag(InputEvent event, float x, float y, int pointer) {
-                    var dir = new Vector2();
-                    var offset = new Vector2();
-                    if (img.getRotation() == 0){
-                        dir.x = x;
-                        dir.y = y;
-                        offset.x = 0 - img.getWidth()/2f;
-                        offset.y = 0 - img.getHeight()/2f;
-                    } else if (img.getRotation() == 90f){
-                        dir.x = -y;
-                        dir.y = x;
-                        offset.x = img.getHeight()/2f;
-                        offset.y = 0 - img.getWidth()/2f;
-                    } else if (img.getRotation() == 180f){
-                        dir.x = -x;
-                        dir.y = -y;
-                        offset.x = img.getWidth()/2f;
-                        offset.y = img.getHeight()/2f;
-                    } else if (img.getRotation() == 270f){
-                        dir.x = y;
-                        dir.y = -x;
-                        offset.x = 0 - img.getHeight()/2f;
-                        offset.y = img.getWidth()/2f;
+                img.addListener(new DragListener() {
+
+                    @Override
+                    public void drag(InputEvent event, float x, float y, int pointer) {
+                        var dir = new Vector2();
+                        var offset = new Vector2();
+                        if (img.getRotation() == 0) {
+                            dir.x = x;
+                            dir.y = y;
+                            offset.x = 0 - img.getWidth() / 2f;
+                            offset.y = 0 - img.getHeight() / 2f;
+                        } else if (img.getRotation() == 90f) {
+                            dir.x = -y;
+                            dir.y = x;
+                            offset.x = img.getHeight() / 2f;
+                            offset.y = 0 - img.getWidth() / 2f;
+                        } else if (img.getRotation() == 180f) {
+                            dir.x = -x;
+                            dir.y = -y;
+                            offset.x = img.getWidth() / 2f;
+                            offset.y = img.getHeight() / 2f;
+                        } else if (img.getRotation() == 270f) {
+                            dir.x = y;
+                            dir.y = -x;
+                            offset.x = 0 - img.getHeight() / 2f;
+                            offset.y = img.getWidth() / 2f;
+                        }
+                        img.moveBy(dir.x + offset.x, dir.y + offset.y);
                     }
-                    img.moveBy(dir.x + offset.x, dir.y + offset.y);
-                }
 
-                @Override
-                public void dragStop(InputEvent event, float x, float y, int pointer) {
-                    var insertSuccess = false;
-                    Position initPos = getStartCoordinates();
-                    var inputPosition = new Vector2(0,0);
-                    inputPosition.x = (int) Math.floor((Gdx.input.getX() - initPos.getX())/TextureLoader.TILE_EDGE_SIZE);
-                    inputPosition.y = (int) Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY() - initPos.getY())/TextureLoader.TILE_EDGE_SIZE);
+                    @Override
+                    public void dragStop(InputEvent event, float x, float y, int pointer) {
+                        var insertSuccess = false;
+                        Position initPos = getStartCoordinates();
+                        var inputPosition = new Vector2(0, 0);
+                        inputPosition.x = (int) Math.floor((Gdx.input.getX() - initPos.getX()) / TextureLoader.TILE_EDGE_SIZE);
+                        inputPosition.y = (int) Math.floor((Gdx.graphics.getHeight() - Gdx.input.getY() - initPos.getY()) / TextureLoader.TILE_EDGE_SIZE);
 
-                    var insert = new InsertTile(inputPosition);
+                        var insert = new InsertTile(inputPosition);
 
-                    insertSuccess = insert.validate();
+                        insertSuccess = insert.validate();
 
-                    if (insertSuccess){
-                        insert.execute();
-                    } else {
-                        img.setPosition(300,500);
+                        if (insertSuccess) {
+                            insert.execute();
+                        } else {
+                            img.setPosition(300, 500);
+                        }
                     }
-                }
-            });
+                });
 
-            img.addListener(new ClickListener(){
+                img.addListener(new ClickListener() {
 
-                @Override
-                public void clicked(InputEvent event, float x, float y){
-                    img.rotateBy(90);
-                    currentExtraTile.setRotationDegrees((currentExtraTile.getRotationDegrees()+90)%360);
-                }
-            });
-
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        img.rotateBy(90);
+                        currentExtraTile.setRotationDegrees((currentExtraTile.getRotationDegrees() + 90) % 360);
+                    }
+                });
+            }
             stage.addActor(img);
             setNewExtraTile(false);
         }

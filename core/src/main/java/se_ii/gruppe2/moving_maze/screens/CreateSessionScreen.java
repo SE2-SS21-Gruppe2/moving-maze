@@ -131,7 +131,9 @@ public class CreateSessionScreen implements Screen {
         setUpActorListeners();
 
         game.setLocalPlayer(new Player("temp_SessionCreator"));
+        System.out.println("----------------------------------------------------------------" + game.getLocalPlayer());
         game.getClient().createNewSession(game.getLocalPlayer());
+
 
 
         // Debugging

@@ -2,12 +2,13 @@ package se_ii.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
+import se_ii.gruppe2.moving_maze.gamestate.GamePhase;
 import se_ii.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.out.*;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.gamestate.ChatMessage;
-import se_ii.gruppe2.moving_maze.gamestate.GameState;
+import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.item.Card;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
@@ -42,7 +43,8 @@ public class Registry {
         kryo.register(ItemLogical.class);
         kryo.register(RequestProcessError.class);
         kryo.register(GameStateHandler.class);
-        kryo.register(GameState.class);
+        kryo.register(GamePhaseType.class);
+        kryo.register(GamePhaseType[].class);
         kryo.register(ChatMessage.class);
         kryo.register(GameBoard.class);
         kryo.register(Tile.class);
@@ -63,6 +65,7 @@ public class Registry {
         kryo.register(StartTile.class);
         kryo.register(InitGameStart.class);
         kryo.register(Vector2.class);
+        kryo.register(GamePhase.class);
     }
 
 }
