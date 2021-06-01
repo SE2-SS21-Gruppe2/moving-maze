@@ -30,7 +30,7 @@ public class MovePlayer implements TurnAction {
         positionsToGO=new ArrayList<>();
         gb=new Tile[7][7];
         gb= game.getGameState().getBoard().getBoard();
-        player=game.getLocalPlayer();
+        player=game.getGameState().getPlayerByName((game.getLocalPlayer().getName()));
         if(canMoveTop(gb,player.getPos().getY(), player.getPos().getX())|| canMoveRight(gb,player.getPos().getY(),player.getPos().getX())||canMoveBottom(gb,player.getPos().getY(),player.getPos().getX()) || canMoveLeft(gb,player.getPos().getY(),player.getPos().getX()) ){
             positionsToGO=possibleMoves(player.getPos(), gb,positionsToGO);
             for(Position position: positionsToGO){
@@ -39,7 +39,6 @@ public class MovePlayer implements TurnAction {
             return true;
         }
         else return false;
-
     }
 
 
