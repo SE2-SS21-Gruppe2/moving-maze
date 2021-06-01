@@ -1,5 +1,6 @@
 package se_ii.gruppe2.moving_maze.player;
 
+import com.badlogic.gdx.math.Vector2;
 import se_ii.gruppe2.moving_maze.item.Card;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
@@ -37,6 +38,7 @@ public class Player {
                 this.pos.getY()+dY
         );
     }
+
 
     public static void getTexturePathByColor(PlayerColor color) {
 
@@ -102,6 +104,8 @@ public class Player {
     public void setPos(Position pos) {
         this.pos = pos;
     }
+
+    public void setPos(int x, int y) { this.pos.setPosition(x, y);}
 
     public Position getPos() {
         return this.pos;
