@@ -1,7 +1,5 @@
 package se_ii.gruppe2.moving_maze.player;
 
-import com.badlogic.gdx.math.Vector2;
-import se_ii.gruppe2.moving_maze.item.Card;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 

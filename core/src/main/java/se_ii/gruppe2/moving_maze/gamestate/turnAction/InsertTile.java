@@ -30,8 +30,6 @@ public class InsertTile implements TurnAction {
         newGameBoard.setExtraTile(gameBoard.getExtraTile());
         newGameBoard.setBoard(gameBoard.getBoard());
 
-        List<Player> playersOnTile = null;
-
         int boardLength = game.getGameState().getBoard().getBoard().length;
 
         if (insertPosition.x == 0){
@@ -113,9 +111,9 @@ public class InsertTile implements TurnAction {
     private void movePlayers(int oldY, int oldX, int newX, int newY){
         List<Player> playersOnTile = game.getGameState().playersOnTile(oldX, oldY);
 
-        if (playersOnTile.size() != 0){
+        if (!playersOnTile.isEmpty()){
             for (Player p : playersOnTile){
-                Player p1 = game.getGameState().getPlayerByName(p.getName());
+                var p1 = game.getGameState().getPlayerByName(p.getName());
                 p1.setPos(newX, newY);
             }
         }
