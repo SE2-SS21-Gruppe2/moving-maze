@@ -211,7 +211,7 @@ public class GameScreen implements Screen {
             curX = initPos.getX();
             curY += TextureLoader.TILE_EDGE_SIZE;
         }
-        if (isNewExtraTile() /*&& game.getGameState().getGamePhase()== GamePhaseType.INSERT_TILE*/){
+        if (isNewExtraTile() && game.getGameState().getGamePhase()== GamePhaseType.INSERT_TILE){
             updateExtraTile();
         }
         if(canMove && game.getGameState().getGamePhase()== GamePhaseType.MOVE_PLAYER){
