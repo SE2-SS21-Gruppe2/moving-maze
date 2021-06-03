@@ -18,6 +18,11 @@ public class Position {
         this.y = y;
     }
 
+    public Position(float x, float y) {
+        this.x = (int) x;
+        this.y = (int) y;
+    }
+
     public void setPosition(int x, int y){
         setY(y);
         setX(x);
