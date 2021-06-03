@@ -25,6 +25,7 @@ import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.player.Player;
+import se_ii.gruppe2.moving_maze.player.PlayerColorMapper;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class GameScreen implements Screen {
     ArrayList<Player> currentPlayersOnTile = new ArrayList<>();
     Player playerBuffer;
     ItemLogical itemBuffer;
+    Position positionBuffer;
 
 
 
@@ -197,8 +199,9 @@ public class GameScreen implements Screen {
 
                 if(currentPlayersOnTile.size() != 0) {
                     for(Player p : currentPlayersOnTile) {
+                        positionBuffer = PlayerColorMapper.getOffsetByColor(p.getColor());
                         currentSprite = TextureLoader.getSpriteByTexturePath(p.getTexturePath(), TextureType.PLAYER);
-                        currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE/4f, curY+TextureLoader.TILE_EDGE_SIZE/4f);
+                        currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE/4f + positionBuffer.getX(), curY+TextureLoader.TILE_EDGE_SIZE/4f + positionBuffer.getY());
                         currentSprite.draw(batch);
                     }
                 }
