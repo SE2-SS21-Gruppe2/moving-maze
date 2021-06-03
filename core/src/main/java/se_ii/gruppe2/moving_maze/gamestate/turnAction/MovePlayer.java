@@ -20,10 +20,10 @@ public class MovePlayer implements TurnAction {
 
     @Override
     public void execute() {
-        Player playerInGameState = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
-        int row=0;
-        int col=0;
-        for(int i=0; i<7;i++){
+        var playerInGameState = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
+        var row=0;
+        var col=0;
+        for(var i=0; i<7;i++){
             if(boardStart.getX()+(TextureLoader.TILE_EDGE_SIZE*row)<movePosition.getX()){
                 row++;
             }

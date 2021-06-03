@@ -74,7 +74,7 @@ public class GameBoardFactory {
                     board[i][j]= getRandomTile();
                 }
                 if(itemOnTile){
-                    Position position= new Position(i,j);
+                    var position= new Position(i,j);
                     items[itemPathCounter].setPosition(position);
                     board[i][j].setItem(items[itemPathCounter++]);
                     itemOnTile=false;
