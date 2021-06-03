@@ -210,75 +210,45 @@ public class GameScreen implements Screen {
             }
             curX = initPos.getX();
             curY += TextureLoader.TILE_EDGE_SIZE;
-
-            if (isNewExtraTile()){
-                updateExtraTile();
-            }
         }
-        if(canMove){
+        if (isNewExtraTile() /*&& game.getGameState().getGamePhase()== GamePhaseType.INSERT_TILE*/){
+            updateExtraTile();
+        }
+        if(canMove && game.getGameState().getGamePhase()== GamePhaseType.MOVE_PLAYER){
             updatePlayerMovement(initPos.getX(),initPos.getY());
         }
     }
 
 
 
-    public void updatePlayerMovement(float curX, float curY){
-
-
-
-
-        stage.clear();
-        Texture texture;
-        for(Position pos: localPlayerMoves){
-            int col= pos.getX();
-            int row= pos.getY();
-            float xT= curX + (TextureLoader.TILE_EDGE_SIZE*(0+col));
-            float yT= curY+ (TextureLoader.TILE_EDGE_SIZE*(0+row));
-            texture=TextureLoader.getTileTextureOverlay();
-            Image image =new Image(texture);
-            image.setPosition(xT,yT);
-            image.setOrigin(xT,yT);
-            image.addListener(new ClickListener(){
-                @Override
-                public void clicked(InputEvent inputEvent,float x,float y){
-                    Player playerInGameState = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
-                    localPlayerMoves.clear();
-                    Position pos= getStartCoordinates();
-                    int row=0;
-                    int col=0;
-                    for(int i=0; i<7;i++){
-                        if(pos.getX()+(TextureLoader.TILE_EDGE_SIZE*row)<image.getOriginX()){
-                            row++;
-                        }
-                        if(pos.getY()+(TextureLoader.TILE_EDGE_SIZE*col)<image.getOriginY()){
-                            col++;
-                        }
-                    }
-                    playerInGameState.setPos(new Position(row, col));
-                    player.setPos(new Position(row, col));
-
-                    canMove=false;
-                    game.getGameState().completePhase();
-                    game.getClient().sendGameStateUpdate(game.getGameState());
-                    stage.clear();
-                }
-            });
-            canMove=false;
-            image.draw(batch,1f);
-            stage.addActor(image);
-        }
-
-    }
-
-
-    public void playerMove(){
+    public void updatePlayerMovement(float colStart, float rowStart){
         stage.clear();
         MovePlayer movePlayer= new MovePlayer();
-        boolean valid=movePlayer.validate();
-        if (valid && movePlayer.getPositionsToGO().size()>1){
+        if (movePlayer.validate() && movePlayer.getPositionsToGO().size()>1){
             localPlayerMoves=movePlayer.getPositionsToGO();
-            canMove = true;
+            Texture texture=TextureLoader.getTileTextureOverlay();
+            for(Position pos: localPlayerMoves){
+                float xT= colStart + (TextureLoader.TILE_EDGE_SIZE*(0+pos.getX()));
+                float yT= rowStart+ (TextureLoader.TILE_EDGE_SIZE*(0+pos.getY()));
+                Image image =new Image(texture);
+                image.setPosition(xT,yT);
+                image.setOrigin(xT,yT);
+                image.addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent inputEvent,float x,float y){
+                        localPlayerMoves.clear();
+                        movePlayer.setBoardStart(getStartCoordinates());
+                        movePlayer.setMovePosition(new Position((int)image.getOriginX(),(int) image.getOriginY() ));
+                        movePlayer.execute();
+                        stage.clear();
+                    }
+                });
+                canMove=false;
+                image.draw(batch,1f);
+                stage.addActor(image);
+            }
         }
+
     }
 
     private void drawCardToScreen(SpriteBatch batch) {
@@ -361,7 +331,7 @@ public class GameScreen implements Screen {
 
                         if (insertSuccess) {
                             insert.execute();
-                            playerMove();
+                            canMove=true;
                         } else {
                             img.setPosition(300, 500);
                         }

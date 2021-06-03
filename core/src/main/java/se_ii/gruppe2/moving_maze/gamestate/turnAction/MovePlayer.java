@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
@@ -12,19 +13,29 @@ import se_ii.gruppe2.moving_maze.tile.Tile;
 public class MovePlayer implements TurnAction {
 
     MovingMazeGame game= MovingMazeGame.getGameInstance();
-    private static GameBoard gameBoard;
-    private static Position currentPosition;
     private static Player player;
     private static Tile[][] gb;
     private static ArrayList<Position> positionsToGO;
+    private static Position movePosition;
+    private static Position boardStart;
 
 
 
     @Override
     public void execute() {
-
-
-
+        Player playerInGameState = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
+        int row=0;
+        int col=0;
+        for(int i=0; i<7;i++){
+            if(boardStart.getX()+(TextureLoader.TILE_EDGE_SIZE*row)<movePosition.getX()){
+                row++;
+            }
+            if(boardStart.getY()+(TextureLoader.TILE_EDGE_SIZE*col)< movePosition.getY()){
+                col++;
+            }
+        }
+        playerInGameState.setPos(new Position(row, col));
+        player.setPos(new Position(row, col));
         game.getGameState().completePhase();
         game.getClient().sendGameStateUpdate(game.getGameState());
 
@@ -93,4 +104,12 @@ public class MovePlayer implements TurnAction {
     public ArrayList<Position> getPositionsToGO() {
         return positionsToGO;
     }
+
+    public void setMovePosition(Position position){
+        this.movePosition=position;
+    }
+    public void setBoardStart(Position position){
+        this.boardStart=position;
+    }
+
 }
