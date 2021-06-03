@@ -42,14 +42,27 @@ public abstract class Tile {
             openLeft=help;
             rotationShifts--;
         }
+
         this.setRotationDegrees(rotationDegrees);
         return this;
     }
 
     // GETTER & SETTER
-    public void rotateClockwise(){}
+    public void rotateClockwise(){
+        if(this.rotationDegrees <= 270f) {
+            applyRotation(this.rotationDegrees+90f);
+        } else {
+            applyRotation((this.rotationDegrees+90f)%360);
+        }
+    }
 
-    public void rotateCounterClockwise(){}
+    public void rotateCounterClockwise(){
+        if(this.rotationDegrees >= 90f) {
+            applyRotation(this.rotationDegrees-90f);
+        } else {
+            applyRotation(270f);
+        }
+    }
 
     public void getBinaryString(){}
 

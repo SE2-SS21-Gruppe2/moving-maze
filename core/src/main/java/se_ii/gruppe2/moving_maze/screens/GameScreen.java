@@ -20,6 +20,7 @@ import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.MovePlayer;
+import se_ii.gruppe2.moving_maze.helperclasses.RotationResetter;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
@@ -40,8 +41,7 @@ public class GameScreen implements Screen {
     private Stage stage;
     private ArrayList<Position> localPlayerMoves;
     private boolean canMove=false;
-
-
+    public static boolean tileJustRotated = false;
 
 
     // Buffer-variables used for rendering
@@ -56,10 +56,7 @@ public class GameScreen implements Screen {
     ItemLogical itemBuffer;
     Position positionBuffer;
 
-
-
     Image img;
-
 
     // background
     private Texture bgImageTexture;
@@ -211,6 +208,28 @@ public class GameScreen implements Screen {
             curX = initPos.getX();
             curY += TextureLoader.TILE_EDGE_SIZE;
         }
+
+        // check for rotation of accelerometer
+        if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+            Gdx.app.log("sensor/accelerom", "X: " + Gdx.input.getAccelerometerX() +
+                    " | Y: " + Gdx.input.getAccelerometerY() + " | Z: " + Gdx.input.getAccelerometerZ());
+            if (Gdx.input.getAccelerometerY() > 4.0 && !tileJustRotated) {
+                Gdx.app.log("sensor/accelerom", "Triggered tile rotation positive!");
+                currentExtraTile.rotateCounterClockwise();
+                newExtraTile = true;
+                tileJustRotated = true;
+                new RotationResetter(2500).start();
+            }
+
+            if (Gdx.input.getAccelerometerY() < -4.0 && !tileJustRotated) {
+                Gdx.app.log("sensor/accelerom", "Triggered tile rotation negative!");
+                currentExtraTile.rotateClockwise();
+                newExtraTile = true;
+                tileJustRotated = true;
+                new RotationResetter(2500).start();
+            }
+        }
+
         if (isNewExtraTile() && game.getGameState().getGamePhase()== GamePhaseType.INSERT_TILE){
             updateExtraTile();
         }
