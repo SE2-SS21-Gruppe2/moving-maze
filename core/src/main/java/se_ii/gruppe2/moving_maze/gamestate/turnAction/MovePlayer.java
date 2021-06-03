@@ -22,7 +22,12 @@ public class MovePlayer implements TurnAction {
 
     @Override
     public void execute() {
-        positionsToGO.clear();
+
+
+
+        game.getGameState().completePhase();
+        game.getClient().sendGameStateUpdate(game.getGameState());
+
     }
 
     @Override
@@ -38,7 +43,11 @@ public class MovePlayer implements TurnAction {
             }
             return true;
         }
-        else return false;
+        else{
+            game.getGameState().completePhase();
+            game.getClient().sendGameStateUpdate(game.getGameState());
+            return false;
+        }
     }
 
 

@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
     private Stage imgStage;
     private ArrayList<Position> localPlayerMoves;
     private boolean canMove=false;
-    private Image moveImage;
+
 
 
 
@@ -97,10 +97,6 @@ public class GameScreen implements Screen {
             Gdx.app.log("recreateBoard", "Recreating gameboard");
             recreateGameBoard();
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            playerMove();
-        }
-
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             game.getGameState().completePhase();
@@ -227,6 +223,10 @@ public class GameScreen implements Screen {
 
 
     public void updatePlayerMovement(float curX, float curY){
+
+
+
+
         stage.clear();
         Texture texture;
         for(Position pos: localPlayerMoves){
@@ -242,14 +242,10 @@ public class GameScreen implements Screen {
                 @Override
                 public void clicked(InputEvent inputEvent,float x,float y){
                     Player playerInGameState = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
-                    System.out.println("Nice");
                     localPlayerMoves.clear();
                     Position pos= getStartCoordinates();
-                    Position currentPlayerPos=player.getPos();
                     int row=0;
                     int col=0;
-                    System.out.println(TextureLoader.TILE_EDGE_SIZE);
-                    System.out.println(image.getOriginX()+" "+image.getImageY());
                     for(int i=0; i<7;i++){
                         if(pos.getX()+(TextureLoader.TILE_EDGE_SIZE*row)<image.getOriginX()){
                             row++;
@@ -262,6 +258,8 @@ public class GameScreen implements Screen {
                     player.setPos(new Position(row, col));
 
                     canMove=false;
+                    game.getGameState().completePhase();
+                    game.getClient().sendGameStateUpdate(game.getGameState());
                     stage.clear();
                 }
             });
@@ -274,7 +272,7 @@ public class GameScreen implements Screen {
 
 
     public void playerMove(){
-        imgStage.clear();
+        stage.clear();
         MovePlayer movePlayer= new MovePlayer();
         boolean valid=movePlayer.validate();
         if (valid && movePlayer.getPositionsToGO().size()>1){
@@ -299,7 +297,7 @@ public class GameScreen implements Screen {
     }
 
     public void updateExtraTile(){
-        stage.clear();
+        //stage.clear();
         currentExtraTile = game.getGameState().getBoard().getExtraTile();
         Texture layeredTexture;
 
@@ -363,6 +361,7 @@ public class GameScreen implements Screen {
 
                         if (insertSuccess) {
                             insert.execute();
+                            playerMove();
                         } else {
                             img.setPosition(300, 500);
                         }
