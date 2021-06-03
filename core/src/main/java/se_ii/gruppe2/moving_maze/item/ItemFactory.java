@@ -11,6 +11,7 @@ public class ItemFactory {
     private static final String[] itemPaths = getFileList();
     private static final ItemLogical[] items=new ItemLogical[itemPaths.length];
 
+
     private ItemFactory(){}
 
 
@@ -19,14 +20,14 @@ public class ItemFactory {
      */
 
     public static ItemLogical[] itemArray(){
-        for (int i=0; i<itemPaths.length;i++){
+        for (var i=0; i<itemPaths.length;i++){
             items[i]= buildItem(i);
         }
         return items;
     }
 
     private static ItemLogical buildItem(int i){
-        Position position=new Position();
+        var position=new Position();
         String path= itemPaths[i];
         return new ItemLogical(path, position, false);
     }
@@ -58,9 +59,8 @@ public class ItemFactory {
     }
 
     private static String[] shuffleArray(String[] shuffleA){
-        Random random=new Random();
-        for (int j = 0; j < shuffleA.length; j++) {
-            int swapIndex= random.nextInt(shuffleA.length);
+        for (var j = 0; j < shuffleA.length; j++) {
+            var swapIndex= new Random().nextInt(shuffleA.length);
             String temp = shuffleA[swapIndex];
             shuffleA[swapIndex]= shuffleA[j];
             shuffleA[j]=temp;
