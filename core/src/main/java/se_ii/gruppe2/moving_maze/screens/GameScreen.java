@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
-import org.w3c.dom.Text;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
@@ -38,7 +37,6 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private Player player;
     private Stage stage;
-    private Stage imgStage;
     private ArrayList<Position> localPlayerMoves;
     private boolean canMove=false;
 
@@ -70,7 +68,6 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
 
         stage = new Stage();
-        imgStage=new Stage();
 
 
         camera = MovingMazeGame.getStandardizedCamera();
@@ -267,7 +264,7 @@ public class GameScreen implements Screen {
     }
 
     public void updateExtraTile(){
-        //stage.clear();
+        stage.clear();
         currentExtraTile = game.getGameState().getBoard().getExtraTile();
         Texture layeredTexture;
 

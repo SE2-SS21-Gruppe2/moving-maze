@@ -3,8 +3,6 @@ package se_ii.gruppe2.moving_maze.gamestate.turnAction;
 import java.util.ArrayList;
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
-import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
-import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.player.Player;
@@ -13,11 +11,10 @@ import se_ii.gruppe2.moving_maze.tile.Tile;
 public class MovePlayer implements TurnAction {
 
     MovingMazeGame game= MovingMazeGame.getGameInstance();
-    private static Player player;
-    private static Tile[][] gb;
-    private static ArrayList<Position> positionsToGO;
-    private static Position movePosition;
-    private static Position boardStart;
+    private Player player;
+    private ArrayList<Position> positionsToGO;
+    private Position movePosition;
+    private Position boardStart;
 
 
 
@@ -44,14 +41,10 @@ public class MovePlayer implements TurnAction {
     @Override
     public boolean validate() {
         positionsToGO=new ArrayList<>();
-        gb=new Tile[7][7];
-        gb= game.getGameState().getBoard().getBoard();
+        Tile[][] gb= game.getGameState().getBoard().getBoard();
         player=game.getGameState().getPlayerByName((game.getLocalPlayer().getName()));
         if(canMoveTop(gb,player.getPos().getY(), player.getPos().getX())|| canMoveRight(gb,player.getPos().getY(),player.getPos().getX())||canMoveBottom(gb,player.getPos().getY(),player.getPos().getX()) || canMoveLeft(gb,player.getPos().getY(),player.getPos().getX()) ){
             positionsToGO=possibleMoves(player.getPos(), gb,positionsToGO);
-            for(Position position: positionsToGO){
-                System.out.println(position.getX()+ " " +position.getY());
-            }
             return true;
         }
         else{
