@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.player.Player;
 
@@ -36,6 +37,8 @@ public class MainMenuScreen implements Screen {
     // textures and views
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
+
+    private final AudioManager audioManager = AudioManager.getInstance();
 
     public MainMenuScreen(final MovingMazeGame game) {
         this.game = game;
@@ -67,6 +70,15 @@ public class MainMenuScreen implements Screen {
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
+
+        // handle music
+        if (game.getPreferences().getBoolean("soundOn")) {
+            audioManager.getBackgroundMusic().play(0.4f);
+            audioManager.getBackgroundMusic().loop();
+
+        } else {
+            audioManager.getBackgroundMusic().stop();
+        }
     }
 
     @Override

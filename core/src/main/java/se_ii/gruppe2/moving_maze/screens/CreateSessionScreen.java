@@ -1,6 +1,7 @@
 package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -123,7 +124,7 @@ public class CreateSessionScreen implements Screen {
 
         setUpActorListeners();
 
-        game.setLocalPlayer(new Player("temp_SessionCreator"));
+        game.setLocalPlayer(new Player(game.getPreferences().getString("localPlayerName", "temp_SessionCreator")));
         game.getClient().createNewSession(game.getLocalPlayer());
 
         // Debugging
@@ -144,7 +145,7 @@ public class CreateSessionScreen implements Screen {
         nameLabel.setFontScale(scalingFactor);
         leftTable.add(nameLabel).align(Align.left);
 
-        txfName = new TextField("Martin", skin);
+        txfName = new TextField(game.getPreferences().getString("localPlayerName", "Name"), skin);
         var textFieldStyle = skin.get(TextField.TextFieldStyle.class);
         textFieldStyle.font.getData().scale(1.5f*scalingFactor);
         txfName.setStyle(textFieldStyle);
@@ -164,7 +165,7 @@ public class CreateSessionScreen implements Screen {
         leftTable.add(difficultyLabel).align(Align.left);
 
         difficultySlider = new Slider(1, 3, 1, false, skin);
-        difficultySlider.setValue(2);
+        difficultySlider.setValue(game.getPreferences().getInteger("lobbyDifficulty", 2));
         Container<Slider> difficultySliderContainer = new Container<>(difficultySlider);
         difficultySliderContainer.setTransform(true);
         difficultySliderContainer.size(100f*scalingFactor, 30f*scalingFactor);
@@ -185,7 +186,7 @@ public class CreateSessionScreen implements Screen {
         leftTable.add(numberOfCardsLabel).align(Align.left);
 
         numberOfCardsSlider = new Slider(1, 6, 1, false, skin);
-        numberOfCardsSlider.setValue(3);
+        numberOfCardsSlider.setValue(game.getPreferences().getInteger("lobbyNumOfCards", 3));
         Container<Slider> numberOfCardsSliderContainer = new Container<>(numberOfCardsSlider);
         numberOfCardsSliderContainer.setTransform(true);
         numberOfCardsSliderContainer.size(100f*scalingFactor, 25f*scalingFactor);
@@ -206,7 +207,12 @@ public class CreateSessionScreen implements Screen {
         cheatingAllowedLabel.setFontScale(scalingFactor);
         leftTable.add(cheatingAllowedLabel).align(Align.left);
 
-        cheatingAllowedButton = new TextButton("Allowed", skin);
+        cheatingAllowed = game.getPreferences().getBoolean("lobbyCheatingAllowed", true);
+        if (cheatingAllowed) {
+            cheatingAllowedButton = new TextButton("Allowed", skin);
+        } else {
+            cheatingAllowedButton = new TextButton("Not Allowed", skin);
+        }
         cheatingAllowedButton.getLabel().setFontScale(1.8f*scalingFactor);
         Container<TextButton> cheatingAllowedButtonContainer = new Container<>(cheatingAllowedButton);
         cheatingAllowedButtonContainer.setTransform(true);
@@ -220,6 +226,7 @@ public class CreateSessionScreen implements Screen {
         themeLabel.setFontScale(scalingFactor);
         leftTable.add(themeLabel).align(Align.left);
 
+        theme = game.getPreferences().getString("lobbyTheme", "Original");
         themeButton = new TextButton(theme, skin);
         themeButton.getLabel().setFontScale(1.8f*scalingFactor);
         themeButton.setDisabled(true);
@@ -325,16 +332,6 @@ public class CreateSessionScreen implements Screen {
             }
         });
 
-        startIcon.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (!gameCode.getText().toString().equals(NOGAMECODE)){
-                game.getLocalPlayer().setName(txfName.getText());
-                game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
-            }}
-        });
-
         cheatingAllowedButton.addListener(new ClickListener() {
 
             @Override
@@ -360,7 +357,6 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
             }
         });
 
@@ -372,6 +368,26 @@ public class CreateSessionScreen implements Screen {
                 game.getClient().closeSession(game.getSessionKey());
                 game.setSessionKey(NOGAMECODE);
             }
+        });
+
+        startIcon.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!gameCode.getText().toString().equals(NOGAMECODE)){
+
+                    game.getPreferences().putString("localPlayerName", txfName.getText());
+                    game.getPreferences().putInteger("lobbyDifficulty", (int) difficultySlider.getValue());
+                    game.getPreferences().putInteger("lobbyNumOfCards", (int) numberOfCardsSlider.getValue());
+                    game.getPreferences().putBoolean("lobbyCheatingAllowed", cheatingAllowed);
+                    game.getPreferences().putString("lobbyTheme", theme);
+                    game.getPreferences().flush();
+
+                    Preferences pref = game.getPreferences();
+
+                    game.getLocalPlayer().setName(txfName.getText());
+                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
+                }}
         });
     }
 

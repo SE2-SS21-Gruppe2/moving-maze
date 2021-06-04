@@ -1,6 +1,7 @@
 package se_ii.gruppe2.moving_maze;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -23,7 +24,7 @@ public class MovingMazeGame extends Game {
 	private static MovingMazeGame gameInstance;
 
 	private GameStateHandler state;
-
+	private Preferences preferences;
 	private Player localPlayer;
 
 	private SpriteBatch batch;
@@ -68,6 +69,7 @@ public class MovingMazeGame extends Game {
 
 		client = NetworkClient.getInstance();
 		state = new GameStateHandler();
+		preferences = Gdx.app.getPreferences("localPreferences");
 
 		sessionKey = "------";
 		connectedPlayers = new ArrayList<>();
@@ -229,5 +231,13 @@ public class MovingMazeGame extends Game {
 
 	public void setInGame(boolean inGame) {
 		this.inGame = inGame;
+	}
+
+	public Preferences getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(Preferences preferences) {
+		this.preferences = preferences;
 	}
 }

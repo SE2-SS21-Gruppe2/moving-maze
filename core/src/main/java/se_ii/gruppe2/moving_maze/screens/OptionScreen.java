@@ -46,8 +46,9 @@ public class OptionScreen implements Screen {
     private Table table1;
 
     //settings
-    private static boolean playMusic = false;
-    private static boolean rotateTileByGyro = true;
+    private static boolean playMusic;
+    private static boolean rotateTileByGyro;
+    private static boolean vibratePhone;
 
 
     private final Drawable soundOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));
@@ -94,11 +95,19 @@ public class OptionScreen implements Screen {
         backButton.setPosition(20f, camera.viewportHeight - 100f, Align.left);
 
 
-        soundButton = new ImageButton(soundOnDrawable, soundOffDrawable, soundOffDrawable);
-        vibrationButton = new ImageButton(vibrateOnDrawable, vibrateOffDrawable, vibrateOffDrawable);
-        rotateScreenButton = new ImageButton(rotateOnDrawable, rotateOffDrawable, rotateOffDrawable);
+        playMusic = game.getPreferences().getBoolean("soundOn", true);
+        vibratePhone = game.getPreferences().getBoolean("vibrationOn", true);
+        rotateTileByGyro = game.getPreferences().getBoolean("rotateWithSensorOn", true);
 
-        soundButton.setChecked(true);
+        soundButton = new ImageButton(soundOffDrawable, soundOnDrawable, soundOnDrawable);
+        vibrationButton = new ImageButton(vibrateOffDrawable, vibrateOnDrawable, vibrateOnDrawable);
+        rotateScreenButton = new ImageButton(rotateOffDrawable, rotateOnDrawable, rotateOnDrawable);
+
+        soundButton.setChecked(playMusic);
+        vibrationButton.setChecked(vibratePhone);
+        rotateScreenButton.setChecked(rotateTileByGyro);
+
+
 
         initTable1();
         setTable1();
@@ -209,6 +218,12 @@ public class OptionScreen implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+
+                game.getPreferences().putBoolean("soundOn", soundButton.isChecked());
+                game.getPreferences().putBoolean("vibrationOn", vibrationButton.isChecked());
+                game.getPreferences().putBoolean("rotateWithSensorOn", rotateScreenButton.isChecked());
+                game.getPreferences().flush();
+
                 game.setScreen(game.getMainMenuScreen());
             }
         });

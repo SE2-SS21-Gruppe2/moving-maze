@@ -67,7 +67,7 @@ public class JoinSessionScreen implements Screen {
         var textFieldStyle = skin.get(TextField.TextFieldStyle.class);
         textFieldStyle.font.getData().scale(1.2f*scalingFactor);
 
-        playerName = new TextField("Name", skin);
+        playerName = new TextField(game.getPreferences().getString("localPlayerName", "Name"), skin);
         playerName.setSize(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
         playerName.setStyle(textFieldStyle);
         playerName.setAlignment(Align.center);
@@ -115,6 +115,10 @@ public class JoinSessionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 game.setLocalPlayer(new Player(playerName.getText()));
                 if (!gameCode.getText().equals("") && !gameCode.getText().equals("Game Code")){
+
+                    game.getPreferences().putString("localPlayerName", playerName.getText());
+                    game.getPreferences().flush();
+
                     game.setSessionKey(gameCode.getText());
                     game.getClient().joinSession(game.getLocalPlayer(), game.getSessionKey());
                     game.setScreen(game.getWaitingScreen());
