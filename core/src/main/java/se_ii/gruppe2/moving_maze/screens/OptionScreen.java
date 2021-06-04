@@ -226,10 +226,5 @@ public class OptionScreen implements Screen {
             }
         });
     }
-
-    //Getter
-    public static boolean rotateTileByGyro() {
-        return rotateTileByGyro;
-    }
 }
 

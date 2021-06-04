@@ -221,7 +221,7 @@ public class GameScreen implements Screen {
         }
 
         // check for rotation of accelerometer
-        if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && OptionScreen.rotateTileByGyro()) {
+        if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && game.getPreferences().getBoolean("rotateWithSensorOn", true)) {
             Gdx.app.log("sensor/accelerom", "X: " + Gdx.input.getAccelerometerX() +
                     " | Y: " + Gdx.input.getAccelerometerY() + " | Z: " + Gdx.input.getAccelerometerZ());
             if (Gdx.input.getAccelerometerY() > 4.0 && !tileJustRotated) {
