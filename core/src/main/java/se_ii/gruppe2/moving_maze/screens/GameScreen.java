@@ -288,7 +288,7 @@ public class GameScreen implements Screen {
 
     public void updateExtraTile(){
         for (Actor actor : stage.getActors()){
-            if (actor.getName().equals(extraTileImage.getName())){
+            if (actor.getName() == extraTileImage.getName()){
                 actor.remove();
             }
         }
