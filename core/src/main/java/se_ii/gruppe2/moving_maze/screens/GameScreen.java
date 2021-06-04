@@ -211,7 +211,7 @@ public class GameScreen implements Screen {
         }
 
         // check for rotation of accelerometer
-        if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+        if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && OptionScreen.rotateTileByGyro()) {
             Gdx.app.log("sensor/accelerom", "X: " + Gdx.input.getAccelerometerX() +
                     " | Y: " + Gdx.input.getAccelerometerY() + " | Z: " + Gdx.input.getAccelerometerZ());
             if (Gdx.input.getAccelerometerY() > 4.0 && !tileJustRotated) {
@@ -248,8 +248,8 @@ public class GameScreen implements Screen {
             localPlayerMoves=movePlayer.getPositionsToGO();
             Texture texture=TextureLoader.getTileTextureOverlay();
             for(Position pos: localPlayerMoves){
-                float xT= colStart + (TextureLoader.TILE_EDGE_SIZE*(0+pos.getX()));
-                float yT= rowStart+ (TextureLoader.TILE_EDGE_SIZE*(0+pos.getY()));
+                float xT= colStart + (TextureLoader.TILE_EDGE_SIZE*(pos.getX()));
+                float yT= rowStart+ (TextureLoader.TILE_EDGE_SIZE*(pos.getY()));
                 Image image = new Image(texture);
                 image.setPosition(xT,yT);
                 image.setOrigin(xT,yT);
