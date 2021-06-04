@@ -116,13 +116,16 @@ public class GameScreen implements Screen {
 
         batch.draw(getScaledImage("ui/tileframe.png",0.1f), 450,150);
 
+        // the coordinates are not accurate
+        // batch.draw(getScaledImage("ui/boardframe.png",0.09f), Gdx.graphics.getWidth()/2f,Gdx.graphics.getHeight()/5f);
+
         drawCardToScreen(batch);
         drawGameBoard(batch);
         stage.draw();
         game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
         game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
         game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
-        game.getFont().draw(batch, "CARDS FOUND: " + game.getLocalPlayer().getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
+        game.getFont().draw(batch, "CARDS FOUND: " + player.getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
 
         batch.end();
     }
