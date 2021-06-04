@@ -15,10 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.audio.AudioManager;
-import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
-import se_ii.gruppe2.moving_maze.player.Player;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class MainMenuScreen implements Screen {
@@ -38,7 +35,7 @@ public class MainMenuScreen implements Screen {
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
 
-    private final AudioManager audioManager = AudioManager.getInstance();
+    private final AudioManager audioManager = AudioManager.getAudioManagerInstance();
 
     public MainMenuScreen(final MovingMazeGame game) {
         this.game = game;
@@ -73,11 +70,9 @@ public class MainMenuScreen implements Screen {
 
         // handle music
         if (game.getPreferences().getBoolean("soundOn")) {
-            audioManager.getBackgroundMusic().play(0.4f);
-            audioManager.getBackgroundMusic().loop();
-
+            game.getAudioManager().playBackgroundMusic();
         } else {
-            audioManager.getBackgroundMusic().stop();
+            game.getAudioManager().stopBackgroundMusic();
         }
     }
 

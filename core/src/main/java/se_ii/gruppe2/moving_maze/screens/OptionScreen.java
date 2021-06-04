@@ -58,8 +58,6 @@ public class OptionScreen implements Screen {
     private final Drawable rotateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
     private final Drawable rotateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
 
-    private final AudioManager audioManager = AudioManager.getInstance();
-
     public OptionScreen(final MovingMazeGame game) {
         this.game = game;
         this.batch = game.getBatch();
@@ -71,11 +69,9 @@ public class OptionScreen implements Screen {
 
         this.stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-
         Gdx.input.setInputProcessor(stage);
 
         title = new Label("OPTIONS", skin);
-
         setTitleCoordinates();
 
         table1 = new Table();
@@ -94,7 +90,6 @@ public class OptionScreen implements Screen {
         backButton = new ImageButton(textureRegionDrawable);
         backButton.setPosition(20f, camera.viewportHeight - 100f, Align.left);
 
-
         playMusic = game.getPreferences().getBoolean("soundOn", true);
         vibratePhone = game.getPreferences().getBoolean("vibrationOn", true);
         rotateTileByGyro = game.getPreferences().getBoolean("rotateWithSensorOn", true);
@@ -106,8 +101,6 @@ public class OptionScreen implements Screen {
         soundButton.setChecked(playMusic);
         vibrationButton.setChecked(vibratePhone);
         rotateScreenButton.setChecked(rotateTileByGyro);
-
-
 
         initTable1();
         setTable1();
@@ -206,11 +199,10 @@ public class OptionScreen implements Screen {
                 playMusic = !playMusic;
 
                 if (playMusic) {
-                    audioManager.getBackgroundMusic().play(0.4f);
-                    audioManager.getBackgroundMusic().loop();
+                    game.getAudioManager().playBackgroundMusic();
 
                 } else {
-                    audioManager.getBackgroundMusic().stop();
+                    game.getAudioManager().stopBackgroundMusic();
                 }
             }
         });
