@@ -45,16 +45,13 @@ public class CreateSessionScreen implements Screen {
     private TextButton backButton;
 
     // measures
-    private float myScreenHeight;
     private float myScreenWidth;
-    private float xWidth;
     private float scalingFactor;
 
     // Tables
     private Table table;
     private Table leftTable;
     private Table rightTable;
-    private Label nameLabel;
     private Label settingsLabel;
     private Slider difficultySlider;
     private Label difficultyValueLabel;
@@ -63,7 +60,6 @@ public class CreateSessionScreen implements Screen {
     private TextButton cheatingAllowedButton;
     private Label themeLabel;
     private TextButton themeButton;
-    private Label connectedPlayersLabel;
     private Label player1Label;
     private Label player2Label;
     private Label player3Label;
@@ -76,6 +72,7 @@ public class CreateSessionScreen implements Screen {
     private int numOfCards;
     private String theme;
     private float clock;
+    private static final String NOGAMECODE = "------";
 
 
     public CreateSessionScreen(final MovingMazeGame game) {
@@ -94,9 +91,7 @@ public class CreateSessionScreen implements Screen {
 
         myShapeRenderer = new MyShapeRenderer();
 
-        myScreenHeight = Gdx.graphics.getHeight();
         myScreenWidth = Gdx.graphics.getWidth();
-        xWidth = myScreenWidth / 25f;
         scalingFactor = myScreenWidth/1280f;
         clock = 0;
 
@@ -123,7 +118,7 @@ public class CreateSessionScreen implements Screen {
         Container<TextButton> backButtonContainer = new Container<>(backButton);
         backButtonContainer.setTransform(true);
         backButtonContainer.size(100*scalingFactor, 50f*scalingFactor);
-        backButtonContainer.setPosition(75f*scalingFactor,myScreenHeight - 50f*scalingFactor - backButtonContainer.getHeight());
+        backButtonContainer.setPosition(75f*scalingFactor,Gdx.graphics.getHeight() - 50f*scalingFactor - backButtonContainer.getHeight());
         stage.addActor(backButtonContainer);
 
         setUpActorListeners();
@@ -145,7 +140,7 @@ public class CreateSessionScreen implements Screen {
         leftTable.columnDefaults(2).width(50f*scalingFactor).padRight(25f*scalingFactor);
 
         // --- LT - 1st Row (Name) ---
-        nameLabel = new Label("Name:", myLblStyle);
+        var nameLabel = new Label("Name:", myLblStyle);
         nameLabel.setFontScale(scalingFactor);
         leftTable.add(nameLabel).align(Align.left);
 
@@ -248,7 +243,7 @@ public class CreateSessionScreen implements Screen {
         rightTable.columnDefaults(0).padLeft(25f*scalingFactor);
 
         // --- RT - 1st Row (Connected Players) ---
-        connectedPlayersLabel = new Label("Connected Players:", myLblStyle);
+        var connectedPlayersLabel = new Label("Connected Players:", myLblStyle);
         connectedPlayersLabel.setFontScale(0.85f*scalingFactor);
         rightTable.add(connectedPlayersLabel).colspan(2).align(Align.left).top().expandX();
 
@@ -273,7 +268,7 @@ public class CreateSessionScreen implements Screen {
 
         // --- RT - 5th Row (Code & Start) ---
         rightTable.row();
-        gameCode = new Label("------", myLblStyle);
+        gameCode = new Label(NOGAMECODE, myLblStyle);
         gameCode.setAlignment(Align.center);
         gameCode.setFontScale(1.3f*scalingFactor);
         rightTable.add(gameCode).padLeft(40f*scalingFactor).expandY().align(Align.center).center();
@@ -308,11 +303,6 @@ public class CreateSessionScreen implements Screen {
         table.add(rightTable).expand().fill().width(myScreenWidth /2.0f - 80.0f).top();
 
         // ------------------------- End Tables -------------------------
-
-        table.debug();
-        leftTable.debug();
-        rightTable.debug();
-
     }
 
     private void setUpActorListeners() {
@@ -339,7 +329,7 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (!gameCode.getText().equals("------")){
+                if (!gameCode.getText().toString().equals(NOGAMECODE)){
                 game.getLocalPlayer().setName(txfName.getText());
                 game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
             }}
@@ -380,7 +370,7 @@ public class CreateSessionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.getMainMenuScreen());
                 game.getClient().closeSession(game.getSessionKey());
-                game.setSessionKey("------");
+                game.setSessionKey(NOGAMECODE);
             }
         });
     }
