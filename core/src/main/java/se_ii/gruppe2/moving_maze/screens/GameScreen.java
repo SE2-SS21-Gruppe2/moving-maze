@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -56,7 +57,7 @@ public class GameScreen implements Screen {
     ItemLogical itemBuffer;
     Position positionBuffer;
 
-    Image img;
+    Image extraTileImage;
 
     // background
     private Texture bgImageTexture;
@@ -215,7 +216,7 @@ public class GameScreen implements Screen {
                     " | Y: " + Gdx.input.getAccelerometerY() + " | Z: " + Gdx.input.getAccelerometerZ());
             if (Gdx.input.getAccelerometerY() > 4.0 && !tileJustRotated) {
                 Gdx.app.log("sensor/accelerom", "Triggered tile rotation positive!");
-                currentExtraTile.rotateCounterClockwise();
+                game.getGameState().getExtraTile().rotateCounterClockwise();
                 newExtraTile = true;
                 tileJustRotated = true;
                 new RotationResetter(2500).start();
@@ -223,14 +224,14 @@ public class GameScreen implements Screen {
 
             if (Gdx.input.getAccelerometerY() < -4.0 && !tileJustRotated) {
                 Gdx.app.log("sensor/accelerom", "Triggered tile rotation negative!");
-                currentExtraTile.rotateClockwise();
+                game.getGameState().getExtraTile().rotateClockwise();
                 newExtraTile = true;
                 tileJustRotated = true;
                 new RotationResetter(2500).start();
             }
         }
 
-        if (isNewExtraTile() && game.getGameState().getGamePhase()== GamePhaseType.INSERT_TILE){
+        if (isNewExtraTile()){
             updateExtraTile();
         }
         if(canMove && game.getGameState().getGamePhase()== GamePhaseType.MOVE_PLAYER){
@@ -249,7 +250,7 @@ public class GameScreen implements Screen {
             for(Position pos: localPlayerMoves){
                 float xT= colStart + (TextureLoader.TILE_EDGE_SIZE*(0+pos.getX()));
                 float yT= rowStart+ (TextureLoader.TILE_EDGE_SIZE*(0+pos.getY()));
-                Image image =new Image(texture);
+                Image image = new Image(texture);
                 image.setPosition(xT,yT);
                 image.setOrigin(xT,yT);
                 image.addListener(new ClickListener(){
@@ -286,8 +287,12 @@ public class GameScreen implements Screen {
     }
 
     public void updateExtraTile(){
-        stage.clear();
-        currentExtraTile = game.getGameState().getBoard().getExtraTile();
+        for (Actor actor : stage.getActors()){
+            if (actor.getName() == extraTileImage.getName()){
+                actor.remove();
+            }
+        }
+        currentExtraTile = game.getGameState().getExtraTile();
         Texture layeredTexture;
 
         if (currentExtraTile != null){
@@ -299,41 +304,41 @@ public class GameScreen implements Screen {
                 layeredTexture = TextureLoader.getLayeredTexture(currentExtraTile.getTexturePath(), currentExtraTileItem.getTexturePath());
             }
 
-            img = new Image(layeredTexture);
-            img.setOrigin(img.getWidth()/2f, img.getHeight()/2f);
-            img.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight()/2 - img.getHeight());
-            img.setRotation(currentExtraTile.getRotationDegrees());
+            extraTileImage = new Image(layeredTexture);
+            extraTileImage.setOrigin(extraTileImage.getWidth()/2f, extraTileImage.getHeight()/2f);
+            extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight()/2 - extraTileImage.getHeight());
+            extraTileImage.setRotation(currentExtraTile.getRotationDegrees());
 
-            if (game.getGameState().isMyTurn(game.getLocalPlayer()) && game.getGameState().getGamePhase() == GamePhaseType.INSERT_TILE) {
+            if (isMyTurn() && gamePhase() == GamePhaseType.INSERT_TILE) {
 
-                img.addListener(new DragListener() {
+                extraTileImage.addListener(new DragListener() {
 
                     @Override
                     public void drag(InputEvent event, float x, float y, int pointer) {
                         var dir = new Vector2();
                         var offset = new Vector2();
-                        if (img.getRotation() == 0) {
+                        if (extraTileImage.getRotation() == 0) {
                             dir.x = x;
                             dir.y = y;
-                            offset.x = 0 - img.getWidth() / 2f;
-                            offset.y = 0 - img.getHeight() / 2f;
-                        } else if (img.getRotation() == 90f) {
+                            offset.x = 0 - extraTileImage.getWidth() / 2f;
+                            offset.y = 0 - extraTileImage.getHeight() / 2f;
+                        } else if (extraTileImage.getRotation() == 90f) {
                             dir.x = -y;
                             dir.y = x;
-                            offset.x = img.getHeight() / 2f;
-                            offset.y = 0 - img.getWidth() / 2f;
-                        } else if (img.getRotation() == 180f) {
+                            offset.x = extraTileImage.getHeight() / 2f;
+                            offset.y = 0 - extraTileImage.getWidth() / 2f;
+                        } else if (extraTileImage.getRotation() == 180f) {
                             dir.x = -x;
                             dir.y = -y;
-                            offset.x = img.getWidth() / 2f;
-                            offset.y = img.getHeight() / 2f;
-                        } else if (img.getRotation() == 270f) {
+                            offset.x = extraTileImage.getWidth() / 2f;
+                            offset.y = extraTileImage.getHeight() / 2f;
+                        } else if (extraTileImage.getRotation() == 270f) {
                             dir.x = y;
                             dir.y = -x;
-                            offset.x = 0 - img.getHeight() / 2f;
-                            offset.y = img.getWidth() / 2f;
+                            offset.x = 0 - extraTileImage.getHeight() / 2f;
+                            offset.y = extraTileImage.getWidth() / 2f;
                         }
-                        img.moveBy(dir.x + offset.x, dir.y + offset.y);
+                        extraTileImage.moveBy(dir.x + offset.x, dir.y + offset.y);
                     }
 
                     @Override
@@ -352,21 +357,21 @@ public class GameScreen implements Screen {
                             insert.execute();
                             canMove=true;
                         } else {
-                            img.setPosition(300, 500);
+                            extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight()/2 - extraTileImage.getHeight());
                         }
                     }
                 });
 
-                img.addListener(new ClickListener() {
+                extraTileImage.addListener(new ClickListener() {
 
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        img.rotateBy(90);
-                        currentExtraTile.setRotationDegrees((currentExtraTile.getRotationDegrees() + 90) % 360);
+                        extraTileImage.rotateBy(90);
+                        game.getGameState().getExtraTile().rotateClockwise();
                     }
                 });
             }
-            stage.addActor(img);
+            stage.addActor(extraTileImage);
             setNewExtraTile(false);
         }
 
@@ -379,4 +384,21 @@ public class GameScreen implements Screen {
     public void setNewExtraTile(boolean newExtraTile) {
         this.newExtraTile = newExtraTile;
     }
+
+    /**
+     * Checks if it is the local player's turn
+     * @return true if it is my turn
+     */
+    private boolean isMyTurn(){
+        return game.getGameState().isMyTurn(game.getLocalPlayer());
+    }
+
+    /**
+     * Gets the active game phase
+     * @return current game phase
+     */
+    private GamePhaseType gamePhase(){
+        return game.getGameState().getGamePhase();
+    }
+
 }

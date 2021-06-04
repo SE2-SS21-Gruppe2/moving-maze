@@ -131,7 +131,6 @@ public class CreateSessionScreen implements Screen {
         setUpActorListeners();
 
         game.setLocalPlayer(new Player("temp_SessionCreator"));
-        System.out.println("----------------------------------------------------------------" + game.getLocalPlayer());
         game.getClient().createNewSession(game.getLocalPlayer());
 
 
@@ -423,7 +422,7 @@ public class CreateSessionScreen implements Screen {
         clock -= Gdx.graphics.getDeltaTime();
         if (clock < 0){
             updateGameCodeAndConnectedPlayers();
-            clock = 5;
+            clock = 3;
         }
     }
 
