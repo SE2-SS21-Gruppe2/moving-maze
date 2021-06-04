@@ -120,7 +120,10 @@ public class GameScreen implements Screen {
         drawGameBoard(batch);
         stage.draw();
         game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
-        game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-160f);
+        game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
+        game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
+        game.getFont().draw(batch, "CARDS FOUND: " + game.getLocalPlayer().getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
+
         batch.end();
     }
 
