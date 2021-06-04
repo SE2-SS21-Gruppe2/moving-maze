@@ -3,8 +3,7 @@ package se_ii.gruppe2.moving_maze.gamestate.turnAction;
 import java.util.ArrayList;
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
-import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
-import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
@@ -12,33 +11,47 @@ import se_ii.gruppe2.moving_maze.tile.Tile;
 public class MovePlayer implements TurnAction {
 
     MovingMazeGame game= MovingMazeGame.getGameInstance();
-    private static GameBoard gameBoard;
-    private static Position currentPosition;
-    private static Player player;
-    private static Tile[][] gb;
-    private static ArrayList<Position> positionsToGO;
+    private Player player;
+    private ArrayList<Position> positionsToGO;
+    private Position movePosition;
+    private Position boardStart;
 
 
 
     @Override
     public void execute() {
-        positionsToGO.clear();
+        var playerInGameState = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
+        var row=0;
+        var col=0;
+        for(var i=0; i<7;i++){
+            if(boardStart.getX()+(TextureLoader.TILE_EDGE_SIZE*row)<movePosition.getX()){
+                row++;
+            }
+            if(boardStart.getY()+(TextureLoader.TILE_EDGE_SIZE*col)< movePosition.getY()){
+                col++;
+            }
+        }
+        playerInGameState.setPos(new Position(row, col));
+        player.setPos(new Position(row, col));
+        game.getGameState().completePhase();
+        game.getClient().sendGameStateUpdate(game.getGameState());
+
     }
 
     @Override
     public boolean validate() {
         positionsToGO=new ArrayList<>();
-        gb=new Tile[7][7];
-        gb= game.getGameState().getBoard().getBoard();
+        Tile[][] gb= game.getGameState().getBoard().getBoard();
         player=game.getGameState().getPlayerByName((game.getLocalPlayer().getName()));
         if(canMoveTop(gb,player.getPos().getY(), player.getPos().getX())|| canMoveRight(gb,player.getPos().getY(),player.getPos().getX())||canMoveBottom(gb,player.getPos().getY(),player.getPos().getX()) || canMoveLeft(gb,player.getPos().getY(),player.getPos().getX()) ){
             positionsToGO=possibleMoves(player.getPos(), gb,positionsToGO);
-            for(Position position: positionsToGO){
-                System.out.println(position.getX()+ " " +position.getY());
-            }
             return true;
         }
-        else return false;
+        else{
+            game.getGameState().completePhase();
+            game.getClient().sendGameStateUpdate(game.getGameState());
+            return false;
+        }
     }
 
 
@@ -84,4 +97,12 @@ public class MovePlayer implements TurnAction {
     public ArrayList<Position> getPositionsToGO() {
         return positionsToGO;
     }
+
+    public void setMovePosition(Position position){
+        this.movePosition=position;
+    }
+    public void setBoardStart(Position position){
+        this.boardStart=position;
+    }
+
 }

@@ -1,8 +1,5 @@
 package se_ii.gruppe2.moving_maze.gameboard;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 
 import se_ii.gruppe2.moving_maze.item.ItemFactory;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
@@ -46,8 +43,6 @@ public class GameBoardFactory {
         amountOfITiles =12;
         buildBoard(board);
         gb.setExtraTile(getRandomTile());
-        System.out.println(board[6][1].isOpenLeft()+" "+board[6][1].isOpenBottom()+" "+board[6][1].isOpenTop() +" " +board[6][1].isOpenRight());
-        System.out.println(board[5][0].isOpenLeft()+" "+board[5][0].isOpenBottom()+" "+board[5][0].isOpenTop() +" " +board[5][0].isOpenRight());
         return gb;
     }
 
@@ -79,7 +74,7 @@ public class GameBoardFactory {
                     board[i][j]= getRandomTile();
                 }
                 if(itemOnTile){
-                    Position position= new Position(i,j);
+                    var position= new Position(i,j);
                     items[itemPathCounter].setPosition(position);
                     board[i][j].setItem(items[itemPathCounter++]);
                     itemOnTile=false;

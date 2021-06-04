@@ -97,7 +97,7 @@ public class NetworkClient {
     }
 
     public void initGame(String key, GameBoard board, String finalHostName) {
-        kryoClient.sendTCP(new InitGameStart(key, board, finalHostName, ItemFactory.items));
+        kryoClient.sendTCP(new InitGameStart(key, board, finalHostName, ItemFactory.getItems()));
         Gdx.app.log("NetworkClient/initGame", "Sent request to initialize game '" + key + "'");
     }
 

@@ -12,9 +12,9 @@ public abstract class Tile {
     private float rotationDegrees;
     private String texturePath;
 
-    public Tile(){}
+    protected Tile(){}
 
-    public Tile(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath) {
+    protected Tile(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath) {
         this.openTop = openTop;
         this.openRight = openRight;
         this.openBottom = openBottom;
@@ -22,7 +22,7 @@ public abstract class Tile {
         this.texturePath = texturePath;
     }
 
-    public Tile(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath, float rotationDegrees) {
+    protected Tile(boolean openTop, boolean openRight, boolean openBottom, boolean openLeft, String texturePath, float rotationDegrees) {
         this(openTop, openRight, openBottom, openLeft, texturePath );
         this.rotationDegrees = rotationDegrees;
     }
@@ -42,14 +42,27 @@ public abstract class Tile {
             openLeft=help;
             rotationShifts--;
         }
+
         this.setRotationDegrees(rotationDegrees);
         return this;
     }
 
     // GETTER & SETTER
-    public void rotateClockwise(){}
+    public void rotateClockwise(){
+        if(this.rotationDegrees <= 270f) {
+            applyRotation(this.rotationDegrees+90f);
+        } else {
+            applyRotation((this.rotationDegrees+90f)%360);
+        }
+    }
 
-    public void rotateCounterClockwise(){}
+    public void rotateCounterClockwise(){
+        if(this.rotationDegrees >= 90f) {
+            applyRotation(this.rotationDegrees-90f);
+        } else {
+            applyRotation(270f);
+        }
+    }
 
     public void getBinaryString(){}
 
