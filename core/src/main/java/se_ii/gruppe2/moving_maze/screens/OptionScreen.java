@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
-import se_ii.gruppe2.moving_maze.audio.AudioManager;
 
 public class OptionScreen implements Screen {
 
@@ -46,9 +45,9 @@ public class OptionScreen implements Screen {
     private Table table1;
 
     //settings
-    private static boolean playMusic;
-    private static boolean rotateTileByGyro;
-    private static boolean vibratePhone;
+    private boolean playMusic;
+    private boolean rotateTileByGyro;
+    private boolean vibratePhone;
 
 
     private final Drawable soundOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));

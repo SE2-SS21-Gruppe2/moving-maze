@@ -2,12 +2,11 @@ package se_ii.gruppe2.moving_maze.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import se_ii.gruppe2.moving_maze.MovingMazeGame;
 
 public class AudioManager {
 
     private static AudioManager audioManagerInstance;
-    private Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/ambient.mp3"));
+    private static Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/ambient.mp3"));
     private static boolean isPlayingBackgroundMusic;
 
     private AudioManager(){ }
@@ -19,11 +18,11 @@ public class AudioManager {
         return audioManagerInstance;
     }
 
-    private Sound getBackgroundMusic() {
+    private static Sound getBackgroundMusic() {
         return backgroundMusic;
     }
 
-    public void playBackgroundMusic(){
+    public static void playBackgroundMusic(){
         if (!isPlayingBackgroundMusic){
             getBackgroundMusic().play(0.4f);
             getBackgroundMusic().loop();
@@ -31,7 +30,7 @@ public class AudioManager {
         }
     }
 
-    public void stopBackgroundMusic(){
+    public static void stopBackgroundMusic(){
         getBackgroundMusic().stop();
         isPlayingBackgroundMusic = false;
     }

@@ -35,8 +35,6 @@ public class MainMenuScreen implements Screen {
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
 
-    private final AudioManager audioManager = AudioManager.getAudioManagerInstance();
-
     public MainMenuScreen(final MovingMazeGame game) {
         this.game = game;
         this.batch = game.getBatch();

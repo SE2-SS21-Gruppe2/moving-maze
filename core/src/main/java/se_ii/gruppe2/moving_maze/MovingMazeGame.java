@@ -25,7 +25,7 @@ public class MovingMazeGame extends Game {
 	private static MovingMazeGame gameInstance;
 
 	private GameStateHandler state;
-	private static Preferences preferences;
+	private Preferences preferences;
 	private Player localPlayer;
 
 	private SpriteBatch batch;
@@ -238,7 +238,7 @@ public class MovingMazeGame extends Game {
 		this.inGame = inGame;
 	}
 
-	public static Preferences getPreferences() {
+	public Preferences getPreferences() {
 		return preferences;
 	}
 
