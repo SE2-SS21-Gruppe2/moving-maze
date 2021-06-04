@@ -1,11 +1,13 @@
 package se_ii.gruppe2.moving_maze;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.NetworkClient;
 import se_ii.gruppe2.moving_maze.player.Player;
@@ -23,7 +25,7 @@ public class MovingMazeGame extends Game {
 	private static MovingMazeGame gameInstance;
 
 	private GameStateHandler state;
-
+	private Preferences preferences;
 	private Player localPlayer;
 
 	private SpriteBatch batch;
@@ -50,6 +52,9 @@ public class MovingMazeGame extends Game {
 	// Network
 	private NetworkClient client;
 
+	// Audio
+	private AudioManager audioManager;
+
     /**
 	 * Private constructor to avoid accidental instantiation
 	 */
@@ -67,7 +72,9 @@ public class MovingMazeGame extends Game {
 		MovingMazeGame.HEIGHT = Gdx.graphics.getHeight();
 
 		client = NetworkClient.getInstance();
+		audioManager = AudioManager.getAudioManagerInstance();
 		state = new GameStateHandler();
+		preferences = Gdx.app.getPreferences("localPreferences");
 
 		sessionKey = "------";
 		connectedPlayers = new ArrayList<>();
@@ -229,5 +236,13 @@ public class MovingMazeGame extends Game {
 
 	public void setInGame(boolean inGame) {
 		this.inGame = inGame;
+	}
+
+	public Preferences getPreferences() {
+		return preferences;
+	}
+
+	public AudioManager getAudioManager() {
+		return audioManager;
 	}
 }

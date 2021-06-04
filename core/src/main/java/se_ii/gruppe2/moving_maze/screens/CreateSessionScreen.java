@@ -67,12 +67,21 @@ public class CreateSessionScreen implements Screen {
     private Image startIcon;
 
     // game state variables
-    private Boolean cheatingAllowed;
+    private boolean cheatingAllowed;
     private int difficulty;
     private int numOfCards;
     private String theme;
     private float clock;
+
+
     private static final String NOGAMECODE = "------";
+
+    // Keys for the locally stored preferences
+    private static final String LOCALPLAYERNAME = "localPlayerName";
+    private static final String LOBBYDIFFICULTY = "lobbyDifficulty";
+    private static final String LOBBYNUMOFCARDS = "lobbyNumOfCards";
+    private static final String LOBBYCHEATINGALLOWED = "lobbyCheatingAllowed";
+    private static final String LOBBYTHEME = "lobbyTheme";
 
 
     public CreateSessionScreen(final MovingMazeGame game) {
@@ -123,7 +132,7 @@ public class CreateSessionScreen implements Screen {
 
         setUpActorListeners();
 
-        game.setLocalPlayer(new Player("temp_SessionCreator"));
+        game.setLocalPlayer(new Player(game.getPreferences().getString(LOCALPLAYERNAME, "temp_SessionCreator")));
         game.getClient().createNewSession(game.getLocalPlayer());
 
         // Debugging
@@ -144,7 +153,7 @@ public class CreateSessionScreen implements Screen {
         nameLabel.setFontScale(scalingFactor);
         leftTable.add(nameLabel).align(Align.left);
 
-        txfName = new TextField("Martin", skin);
+        txfName = new TextField(game.getPreferences().getString(LOCALPLAYERNAME, "Name"), skin);
         var textFieldStyle = skin.get(TextField.TextFieldStyle.class);
         textFieldStyle.font.getData().scale(1.5f*scalingFactor);
         txfName.setStyle(textFieldStyle);
@@ -164,7 +173,7 @@ public class CreateSessionScreen implements Screen {
         leftTable.add(difficultyLabel).align(Align.left);
 
         difficultySlider = new Slider(1, 3, 1, false, skin);
-        difficultySlider.setValue(2);
+        difficultySlider.setValue(game.getPreferences().getInteger(LOBBYDIFFICULTY, 2));
         Container<Slider> difficultySliderContainer = new Container<>(difficultySlider);
         difficultySliderContainer.setTransform(true);
         difficultySliderContainer.size(100f*scalingFactor, 30f*scalingFactor);
@@ -185,7 +194,7 @@ public class CreateSessionScreen implements Screen {
         leftTable.add(numberOfCardsLabel).align(Align.left);
 
         numberOfCardsSlider = new Slider(1, 6, 1, false, skin);
-        numberOfCardsSlider.setValue(3);
+        numberOfCardsSlider.setValue(game.getPreferences().getInteger(LOBBYNUMOFCARDS, 3));
         Container<Slider> numberOfCardsSliderContainer = new Container<>(numberOfCardsSlider);
         numberOfCardsSliderContainer.setTransform(true);
         numberOfCardsSliderContainer.size(100f*scalingFactor, 25f*scalingFactor);
@@ -206,7 +215,12 @@ public class CreateSessionScreen implements Screen {
         cheatingAllowedLabel.setFontScale(scalingFactor);
         leftTable.add(cheatingAllowedLabel).align(Align.left);
 
-        cheatingAllowedButton = new TextButton("Allowed", skin);
+        cheatingAllowed = game.getPreferences().getBoolean(LOBBYCHEATINGALLOWED, true);
+        if (cheatingAllowed) {
+            cheatingAllowedButton = new TextButton("Allowed", skin);
+        } else {
+            cheatingAllowedButton = new TextButton("Not Allowed", skin);
+        }
         cheatingAllowedButton.getLabel().setFontScale(1.8f*scalingFactor);
         Container<TextButton> cheatingAllowedButtonContainer = new Container<>(cheatingAllowedButton);
         cheatingAllowedButtonContainer.setTransform(true);
@@ -220,6 +234,7 @@ public class CreateSessionScreen implements Screen {
         themeLabel.setFontScale(scalingFactor);
         leftTable.add(themeLabel).align(Align.left);
 
+        theme = game.getPreferences().getString(LOBBYTHEME, "Original");
         themeButton = new TextButton(theme, skin);
         themeButton.getLabel().setFontScale(1.8f*scalingFactor);
         themeButton.setDisabled(true);
@@ -325,22 +340,12 @@ public class CreateSessionScreen implements Screen {
             }
         });
 
-        startIcon.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (!gameCode.getText().toString().equals(NOGAMECODE)){
-                game.getLocalPlayer().setName(txfName.getText());
-                game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
-            }}
-        });
-
         cheatingAllowedButton.addListener(new ClickListener() {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 cheatingAllowed ^= true;
-                if (Boolean.TRUE.equals(cheatingAllowed)) {
+                if (cheatingAllowed) {
                     cheatingAllowedButton.setText("Allowed");
                 } else {
                     cheatingAllowedButton.setText("Not Allowed");
@@ -360,7 +365,6 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
             }
         });
 
@@ -372,6 +376,24 @@ public class CreateSessionScreen implements Screen {
                 game.getClient().closeSession(game.getSessionKey());
                 game.setSessionKey(NOGAMECODE);
             }
+        });
+
+        startIcon.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!gameCode.getText().toString().equals(NOGAMECODE)){
+
+                    game.getPreferences().putString(LOCALPLAYERNAME, txfName.getText());
+                    game.getPreferences().putInteger(LOBBYDIFFICULTY, (int) difficultySlider.getValue());
+                    game.getPreferences().putInteger(LOBBYNUMOFCARDS, (int) numberOfCardsSlider.getValue());
+                    game.getPreferences().putBoolean(LOBBYCHEATINGALLOWED, cheatingAllowed);
+                    game.getPreferences().putString(LOBBYTHEME, theme);
+                    game.getPreferences().flush();
+
+                    game.getLocalPlayer().setName(txfName.getText());
+                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
+                }}
         });
     }
 

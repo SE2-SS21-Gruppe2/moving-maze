@@ -5,20 +5,35 @@ import com.badlogic.gdx.audio.Sound;
 
 public class AudioManager {
 
-    private static AudioManager audioManager = new AudioManager() ;
+    private static AudioManager audioManagerInstance;
+    private static Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/ambient.mp3"));
+    private static boolean isPlayingBackgroundMusic;
 
-    private  Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/ambient.mp3"));
+    private AudioManager(){ }
 
-    public static AudioManager getInstance(){
-        return audioManager;
+    public static AudioManager getAudioManagerInstance(){
+        if(audioManagerInstance == null) {
+            audioManagerInstance = new AudioManager();
+        }
+        return audioManagerInstance;
     }
 
-    public Sound getBackgroundMusic() {
+    private static Sound getBackgroundMusic() {
         return backgroundMusic;
     }
 
+    public static void playBackgroundMusic(){
+        if (!isPlayingBackgroundMusic){
+            getBackgroundMusic().play(0.4f);
+            getBackgroundMusic().loop();
+            isPlayingBackgroundMusic = true;
+        }
+    }
 
-
+    public static void stopBackgroundMusic(){
+        getBackgroundMusic().stop();
+        isPlayingBackgroundMusic = false;
+    }
 }
 
 
