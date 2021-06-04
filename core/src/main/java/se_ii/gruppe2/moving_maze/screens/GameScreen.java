@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -106,11 +107,20 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.draw(bgTextureRegion, 0, 0);
+
+        batch.draw(getScaledImage("ui/tileframe.png",0.1f), 450,150);
+
+        // the coordinates are not accurate
+        // batch.draw(getScaledImage("ui/boardframe.png",0.09f), Gdx.graphics.getWidth()/2f,Gdx.graphics.getHeight()/5f);
+
         drawCardToScreen(batch);
         drawGameBoard(batch);
         stage.draw();
-        game.getFont().draw(batch, "LOCAL PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
-        game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-160f);
+        game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
+        game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
+        game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
+        game.getFont().draw(batch, "CARDS FOUND: " + player.getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
+
         batch.end();
     }
 
@@ -383,6 +393,31 @@ public class GameScreen implements Screen {
 
     public void setNewExtraTile(boolean newExtraTile) {
         this.newExtraTile = newExtraTile;
+    }
+
+
+    private Texture getScaledImage(String path, float percentOfScreen) {
+        var originalBg = new Pixmap(Gdx.files.internal(path));
+
+        // determine how much the picture has to be scaled in order to fit the screen width exactly
+        float baseScalingFactor = (originalBg.getWidth()*1.0f) / (camera.viewportWidth);
+        float scalingFactor = baseScalingFactor / percentOfScreen;
+
+        var scaledBg = new Pixmap((int) (originalBg.getWidth()/scalingFactor),
+                (int) (originalBg.getHeight()/scalingFactor),
+                originalBg.getFormat());
+
+        // scale by "redrawing" the original pixmap into the smaller pixmap
+        scaledBg.drawPixmap(originalBg,
+                0, 0, originalBg.getWidth(), originalBg.getHeight(),
+                0, 0, scaledBg.getWidth(), scaledBg.getHeight());
+
+        var scaledBgTexture = new Texture(scaledBg);
+
+        originalBg.dispose();
+        scaledBg.dispose();
+
+        return scaledBgTexture;
     }
 
     /**
