@@ -14,9 +14,10 @@ public class InsertTile implements TurnAction {
     Vector2 insertPosition;
     Vector2 lastInsertPosition;
 
-    public InsertTile() {}
+    public InsertTile() {
+    }
 
-    public InsertTile(Vector2 insertPosition){
+    public InsertTile(Vector2 insertPosition) {
         this.insertPosition = insertPosition;
         this.lastInsertPosition = game.getGameState().getLastInsertPosition();
     }
@@ -32,51 +33,48 @@ public class InsertTile implements TurnAction {
 
         int boardLength = game.getGameState().getBoard().getBoard().length;
 
-        if (insertPosition.x == 0){
-            var newExtraTile = newGameBoard.getBoard()[(int)insertPosition.y][boardLength-1];
-            movePlayers(boardLength-1, (int)insertPosition.y, -1, -1);
-            for (var i = boardLength-1; i > 0; i--){
-                newGameBoard.getBoard()[(int)insertPosition.y][i] = newGameBoard.getBoard()[(int)insertPosition.y][i-1];
-                movePlayers(i-1, (int)insertPosition.y, i, (int)insertPosition.y);
+        if (insertPosition.x == 0) {
+            var newExtraTile = newGameBoard.getBoard()[(int) insertPosition.y][boardLength - 1];
+            movePlayers(boardLength - 1, (int) insertPosition.y, -1, -1);
+            for (var i = boardLength - 1; i > 0; i--) {
+                newGameBoard.getBoard()[(int) insertPosition.y][i] = newGameBoard.getBoard()[(int) insertPosition.y][i - 1];
+                movePlayers(i - 1, (int) insertPosition.y, i, (int) insertPosition.y);
             }
-            movePlayers(-1,-1, 0, (int)insertPosition.y);
-            newGameBoard.getBoard()[(int)insertPosition.y][0] = newGameBoard.getExtraTile();
+            movePlayers(-1, -1, 0, (int) insertPosition.y);
+            newGameBoard.getBoard()[(int) insertPosition.y][0] = newGameBoard.getExtraTile();
             newGameBoard.setExtraTile(newExtraTile);
             lastInsertPosition = new Vector2(6, insertPosition.y);
-        }
-        else if (insertPosition.x == 6){
-            var newExtraTile = newGameBoard.getBoard()[(int)insertPosition.y][0];
-            movePlayers(0, (int)insertPosition.y, -1, -1);
-            for (var i = 0; i < boardLength-1; i++){
-                newGameBoard.getBoard()[(int)insertPosition.y][i] = newGameBoard.getBoard()[(int)insertPosition.y][i+1];
-                movePlayers(i+1, (int)insertPosition.y, i, (int)insertPosition.y);
+        } else if (insertPosition.x == 6) {
+            var newExtraTile = newGameBoard.getBoard()[(int) insertPosition.y][0];
+            movePlayers(0, (int) insertPosition.y, -1, -1);
+            for (var i = 0; i < boardLength - 1; i++) {
+                newGameBoard.getBoard()[(int) insertPosition.y][i] = newGameBoard.getBoard()[(int) insertPosition.y][i + 1];
+                movePlayers(i + 1, (int) insertPosition.y, i, (int) insertPosition.y);
             }
-            movePlayers(-1, -1, boardLength-1, (int)insertPosition.y);
-            newGameBoard.getBoard()[(int)insertPosition.y][boardLength-1] = newGameBoard.getExtraTile();
+            movePlayers(-1, -1, boardLength - 1, (int) insertPosition.y);
+            newGameBoard.getBoard()[(int) insertPosition.y][boardLength - 1] = newGameBoard.getExtraTile();
             newGameBoard.setExtraTile(newExtraTile);
             lastInsertPosition = new Vector2(0, insertPosition.y);
-        }
-        else if (insertPosition.y == 0){
-            var newExtraTile = newGameBoard.getBoard()[boardLength-1][(int)insertPosition.x];
-            movePlayers((int)insertPosition.x, boardLength-1, -1, -1);
-            for (var i = boardLength-1; i > 0; i--){
-                newGameBoard.getBoard()[i][(int)insertPosition.x] = newGameBoard.getBoard()[i-1][(int)insertPosition.x];
-                movePlayers((int)insertPosition.x,i-1, (int)insertPosition.x, i);
+        } else if (insertPosition.y == 0) {
+            var newExtraTile = newGameBoard.getBoard()[boardLength - 1][(int) insertPosition.x];
+            movePlayers((int) insertPosition.x, boardLength - 1, -1, -1);
+            for (var i = boardLength - 1; i > 0; i--) {
+                newGameBoard.getBoard()[i][(int) insertPosition.x] = newGameBoard.getBoard()[i - 1][(int) insertPosition.x];
+                movePlayers((int) insertPosition.x, i - 1, (int) insertPosition.x, i);
             }
-            movePlayers(-1, -1, (int)insertPosition.x, 0);
-            newGameBoard.getBoard()[0][(int)insertPosition.x] = newGameBoard.getExtraTile();
+            movePlayers(-1, -1, (int) insertPosition.x, 0);
+            newGameBoard.getBoard()[0][(int) insertPosition.x] = newGameBoard.getExtraTile();
             newGameBoard.setExtraTile(newExtraTile);
             lastInsertPosition = new Vector2(insertPosition.x, 6);
-        }
-        else if (insertPosition.y == 6){
-            var newExtraTile = newGameBoard.getBoard()[0][(int)insertPosition.x];
-            movePlayers((int)insertPosition.x, 0, -1, -1);
-            for (var i = 0; i < boardLength-1; i++){
-                newGameBoard.getBoard()[i][(int)insertPosition.x] = newGameBoard.getBoard()[i+1][(int)insertPosition.x];
-                movePlayers((int)insertPosition.x,i+1, (int)insertPosition.x, i);
+        } else if (insertPosition.y == 6) {
+            var newExtraTile = newGameBoard.getBoard()[0][(int) insertPosition.x];
+            movePlayers((int) insertPosition.x, 0, -1, -1);
+            for (var i = 0; i < boardLength - 1; i++) {
+                newGameBoard.getBoard()[i][(int) insertPosition.x] = newGameBoard.getBoard()[i + 1][(int) insertPosition.x];
+                movePlayers((int) insertPosition.x, i + 1, (int) insertPosition.x, i);
             }
-            movePlayers(-1, -1, (int)insertPosition.x, boardLength-1);
-            newGameBoard.getBoard()[boardLength-1][(int)insertPosition.x] = newGameBoard.getExtraTile();
+            movePlayers(-1, -1, (int) insertPosition.x, boardLength - 1);
+            newGameBoard.getBoard()[boardLength - 1][(int) insertPosition.x] = newGameBoard.getExtraTile();
             newGameBoard.setExtraTile(newExtraTile);
             lastInsertPosition = new Vector2(insertPosition.x, 0);
         }
@@ -97,22 +95,17 @@ public class InsertTile implements TurnAction {
             return false;
         }
 
-        if ((insertPosition.x == 0.0f || insertPosition.x == 6.0f) && insertPosition.y % 2 != 0.0f){
+        if ((insertPosition.x == 0.0f || insertPosition.x == 6.0f) && insertPosition.y % 2 != 0.0f) {
             return true;
-        } else if ((insertPosition.y == 0.0f || insertPosition.y == 6.0f) && insertPosition.x % 2 != 0.0f){
-            return true;
-        }
-        else {
-            return false;
-        }
+        } else return (insertPosition.y == 0.0f || insertPosition.y == 6.0f) && insertPosition.x % 2 != 0.0f;
     }
 
 
-    private void movePlayers(int oldY, int oldX, int newX, int newY){
+    private void movePlayers(int oldY, int oldX, int newX, int newY) {
         List<Player> playersOnTile = game.getGameState().playersOnTile(oldX, oldY);
 
-        if (!playersOnTile.isEmpty()){
-            for (Player p : playersOnTile){
+        if (!playersOnTile.isEmpty()) {
+            for (Player p : playersOnTile) {
                 var p1 = game.getGameState().getPlayerByName(p.getName());
                 p1.setPos(newX, newY);
             }

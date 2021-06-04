@@ -45,7 +45,9 @@ public class OptionScreen implements Screen {
 
     private Table table1;
 
-    private int musicInc = 1;
+    //settings
+    private static boolean playMusic = false;
+    private static boolean rotateTileByGyro = true;
 
 
     private final Drawable soundOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));
@@ -55,7 +57,7 @@ public class OptionScreen implements Screen {
     private final Drawable rotateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
     private final Drawable rotateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
 
-    private AudioManager audioManager = AudioManager.getInstance();
+    private final AudioManager audioManager = AudioManager.getInstance();
 
     public OptionScreen(final MovingMazeGame game) {
         this.game = game;
@@ -163,7 +165,7 @@ public class OptionScreen implements Screen {
 
         table1.setPosition(Gdx.graphics.getWidth() / 2f - table1.getWidth() / 2f,
                 Gdx.graphics.getHeight() / 2f + table1.getHeight() / 2f, Align.center);
-        table1.padBottom(290);
+
     }
 
 
@@ -192,33 +194,36 @@ public class OptionScreen implements Screen {
         soundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playMusic = !playMusic;
 
-
-                musicInc++;
-
-                if (musicInc % 2 == 0) {
-
+                if (playMusic) {
                     audioManager.getBackgroundMusic().play(0.4f);
                     audioManager.getBackgroundMusic().loop();
 
                 } else {
-
                     audioManager.getBackgroundMusic().stop();
-
                 }
             }
         });
 
-
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 game.setScreen(game.getMainMenuScreen());
+            }
+        });
 
+        rotateScreenButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                rotateTileByGyro = !rotateTileByGyro;
             }
         });
     }
 
+    //Getter
+    public static boolean rotateTileByGyro() {
+        return rotateTileByGyro;
+    }
 }
 
