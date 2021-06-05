@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.player.Player;
 
@@ -25,6 +26,7 @@ public class JoinSessionScreen implements Screen {
     private final MovingMazeGame game;
     private final SpriteBatch batch;
     private OrthographicCamera camera;
+    private FitViewport viewport;
 
     // UI stuff
     Stage stage;
@@ -35,15 +37,22 @@ public class JoinSessionScreen implements Screen {
     TextField gameCode;
     TextField playerName;
     TextButton backButton;
+    float scalingFactor;
 
     // textures and views
     Texture bgImageTexture;
     TextureRegion bgTextureRegion;
 
+    // helper variables
+    boolean gameCodeFocused;
+    boolean playerNameFocused;
+    Button unfocusButton;
+
     public JoinSessionScreen(final MovingMazeGame game) {
         this.game = game;
         this.batch = game.getBatch();
         camera = MovingMazeGame.getStandardizedCamera();
+        viewport = new FitViewport(0,0, camera);
     }
 
     @Override
@@ -54,11 +63,21 @@ public class JoinSessionScreen implements Screen {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        float scalingFactor = Gdx.graphics.getWidth()/1280.0f;
+        scalingFactor = Gdx.graphics.getWidth()/1280.0f;
         var myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
         myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         var myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
         var myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
+
+        playerNameFocused = false;
+        gameCodeFocused = false;
+
+        unfocusButton = new Button(skin);
+        unfocusButton.setColor(0,0,0,0);
+        unfocusButton.setVisible(false);
+        unfocusButton.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        unfocusButton.setPosition(0,0);
+        stage.addActor(unfocusButton);
 
         var lblCreateLobbyHeading = new Label("CREATE LOBBY", myLblStyle);
         lblCreateLobbyHeading.setFontScale(2.0f*scalingFactor);
@@ -89,7 +108,6 @@ public class JoinSessionScreen implements Screen {
         tableLayout.add(joinGame).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
 
         stage.addActor(tableLayout);
-        stage.getCamera().position.set(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f, 0);
 
         // instantiate textures
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
@@ -104,25 +122,22 @@ public class JoinSessionScreen implements Screen {
         stage.addActor(backButtonContainer);
 
         setUpActorListeners();
-
     }
 
     private void setUpActorListeners() {
 
-        joinGame.addListener(new ClickListener() {
+        playerName.addListener(new ClickListener(){
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setLocalPlayer(new Player(playerName.getText()));
-                if (!gameCode.getText().equals("") && !gameCode.getText().equals("Game Code")){
-
-                    game.getPreferences().putString("localPlayerName", playerName.getText());
-                    game.getPreferences().flush();
-
-                    game.setSessionKey(gameCode.getText());
-                    game.getClient().joinSession(game.getLocalPlayer(), game.getSessionKey());
-                    game.setScreen(game.getWaitingScreen());
+                if (playerName.getText().equals("Name")){
+                    playerName.setText("");
                 }
+                joinGame.setVisible(false);
+                gameCode.setVisible(false);
+                tableLayout.setPosition(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f - 100f + 50f*scalingFactor);
+                playerNameFocused = true;
+                unfocusButton.setVisible(true);
             }
         });
 
@@ -133,23 +148,35 @@ public class JoinSessionScreen implements Screen {
                 if (gameCode.getText().equals("Game Code")){
                     gameCode.setText("");
                 }
+                joinGame.setVisible(false);
+                playerName.setVisible(false);
+                tableLayout.setPosition(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f - 100f + 150f*scalingFactor);
+                gameCodeFocused = true;
+                unfocusButton.setVisible(true);
             }
         });
 
         gameCode.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                var cursorPos = gameCode.getCursorPosition();
                 gameCode.setText(gameCode.getText().toUpperCase());
-                gameCode.setCursorPosition(gameCode.getText().length());
+                gameCode.setCursorPosition(cursorPos);
             }
         });
 
-        playerName.addListener(new ClickListener(){
+        joinGame.addListener(new ClickListener() {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (playerName.getText().equals("Name")){
-                    playerName.setText("");
+                if (gameCode.getText().length() == 6 && gameCode.getText().matches("^[A-Z]{6}")){
+                    game.setLocalPlayer(new Player(playerName.getText()));
+                    game.getPreferences().putString("localPlayerName", playerName.getText());
+                    game.getPreferences().flush();
+
+                    game.setSessionKey(gameCode.getText());
+                    game.getClient().joinSession(game.getLocalPlayer(), game.getSessionKey());
+                    game.setScreen(game.getWaitingScreen());
                 }
             }
         });
@@ -161,6 +188,26 @@ public class JoinSessionScreen implements Screen {
             }
         });
 
+        unfocusButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+               resetLayout();
+            }
+        });
+    }
+
+    private void resetLayout(){
+        if (gameCodeFocused || playerNameFocused){
+            stage.unfocusAll();
+            Gdx.input.setOnscreenKeyboardVisible(false);
+            gameCodeFocused = false;
+            playerNameFocused = false;
+            joinGame.setVisible(true);
+            gameCode.setVisible(true);
+            playerName.setVisible(true);
+            tableLayout.setPosition(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f - 100f);
+            unfocusButton.setVisible(false);
+        }
     }
 
     @Override
@@ -169,32 +216,29 @@ public class JoinSessionScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-
         batch.draw(bgTextureRegion, 0, 0);
-
         batch.draw(headerLogoScaled,
                 camera.viewportWidth/2 - headerLogoScaled.getWidth()/2.0f,
                 camera.viewportHeight-headerLogoScaled.getHeight()-30);
-
         stage.draw();
-
         batch.end();
+
     }
 
 
     @Override
     public void resize(int width, int height) {
-
+        // lifecycle function
     }
 
     @Override
     public void pause() {
-
+        // lifecycle function
     }
 
     @Override
     public void resume() {
-
+        // lifecycle function
     }
 
     @Override
