@@ -22,6 +22,7 @@ import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.MovePlayer;
+import se_ii.gruppe2.moving_maze.gamestate.turnAction.TreasurePickupAction;
 import se_ii.gruppe2.moving_maze.helperclasses.RotationResetter;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
@@ -271,6 +272,8 @@ public class GameScreen implements Screen {
                         movePlayer.setMovePosition(new Position((int)image.getOriginX(),(int) image.getOriginY() ));
                         movePlayer.execute();
                         stage.clear();
+
+                        new TreasurePickupAction().execute();
                     }
                 });
                 canMove=false;
