@@ -35,7 +35,6 @@ public class MovePlayer implements TurnAction {
         player.setPos(new Position(row, col));
         game.getGameState().completePhase();
         game.getClient().sendGameStateUpdate(game.getGameState());
-
     }
 
     @Override

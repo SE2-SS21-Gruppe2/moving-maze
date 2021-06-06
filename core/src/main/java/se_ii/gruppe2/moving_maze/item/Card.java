@@ -12,4 +12,5 @@ public class Card {
     public ItemLogical getItem() {
         return item;
     }
+
 }
