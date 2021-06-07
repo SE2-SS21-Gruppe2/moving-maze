@@ -46,6 +46,7 @@ public class GameScreen implements Screen {
     public static boolean tileJustRotated = false;
 
 
+
     // Buffer-variables used for rendering
     Sprite currentSprite;
     Sprite cardSprite;
@@ -58,11 +59,19 @@ public class GameScreen implements Screen {
     ItemLogical itemBuffer;
     Position positionBuffer;
 
+
     Image extraTileImage;
 
     // background
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
+
+    private Texture boardframe ;
+    private float getBoardFrameX;
+    private float getBoardFrameY;
+    private float getTileFrameX;
+    private float getTileFrameY;
+
 
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
@@ -76,6 +85,8 @@ public class GameScreen implements Screen {
         // instantiate textures for background
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
+
+        boardframe = getScaledImage("ui/boardframe.PNG",0.7f);
     }
 
     @Override
@@ -110,8 +121,8 @@ public class GameScreen implements Screen {
 
         batch.draw(getScaledImage("ui/tileframe.png",0.1f), 450,150);
 
-        // the coordinates are not accurate
-        // batch.draw(getScaledImage("ui/boardframe.png",0.09f), Gdx.graphics.getWidth()/2f,Gdx.graphics.getHeight()/5f);
+
+        batch.draw(new TextureRegion(boardframe), (int)getBoardFrameX,(int)getBoardFrameY);
 
         drawCardToScreen(batch);
         drawGameBoard(batch);
@@ -153,15 +164,24 @@ public class GameScreen implements Screen {
      * Calculates the start-coordinates for a gameboard with respect to the aspect-ratio.
      */
     private Position getStartCoordinates(){
+
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
+
         if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
-            return new Position(Gdx.graphics.getWidth()/100 *45, Gdx.graphics.getHeight()/100);
+            getBoardFrameX = Gdx.graphics.getWidth()/100 * 40 - 40 ;
+            getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight())/1.75f;
+            return new Position(Gdx.graphics.getWidth()/100 * 49, Gdx.graphics.getHeight()/90);
         }
         else if(aspectRatio==4f/3f){
-            return new Position(Gdx.graphics.getWidth()/100 * 35, Gdx.graphics.getHeight()/100*10);
+            getBoardFrameX = Gdx.graphics.getWidth()/100 * 30 - 30;
+            getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight())/1.75f;
+            return new Position(Gdx.graphics.getWidth()/100 * 35 , Gdx.graphics.getHeight()/90*10);
         }
         else if(aspectRatio==1f){
+            getBoardFrameX = Gdx.graphics.getWidth()/100 ;
+            getBoardFrameY = Gdx.graphics.getHeight()/100 ;
             return new Position(Gdx.graphics.getWidth()/100, Gdx.graphics.getHeight()/100);
+
         } else {
             return new Position(0,0);
         }
