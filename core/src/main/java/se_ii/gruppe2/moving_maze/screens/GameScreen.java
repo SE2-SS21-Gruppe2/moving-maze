@@ -170,7 +170,7 @@ public class GameScreen implements Screen {
         if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
             getBoardFrameX = Gdx.graphics.getWidth()/100 * 40 - 40 ;
             getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight())/1.75f;
-            return new Position(Gdx.graphics.getWidth()/100 * 49, Gdx.graphics.getHeight()/90);
+            return new Position(Gdx.graphics.getWidth()/100 * 49, Gdx.graphics.getHeight()/100 * 5);
         }
         else if(aspectRatio==4f/3f){
             getBoardFrameX = Gdx.graphics.getWidth()/100 * 30 - 30;
@@ -303,7 +303,7 @@ public class GameScreen implements Screen {
 
     private void drawCardToScreen(SpriteBatch batch) {
         cardSprite = TextureLoader.getSpriteByTexturePath("gameboard/card.png", TextureType.CARD);
-        cardSprite.setPosition(80f, 80f);
+        cardSprite.setPosition(100f, 80f);
         cardSprite.draw(batch);
 
         playerBuffer = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
