@@ -20,8 +20,9 @@ public class InitGameHandler extends Listener {
                 Log.info("Session '" + igs.getKey() + "' found, initializing game");
                 s.updateLobbyHostName(igs.getFinalHostName());
                 s.getState().setBoard(igs.getBoard());
-                s.getState().updatePlayerOnTurn();
                 s.getState().initGamePhase();
+                s.randomizePlayerTurns();
+                s.getState().updatePlayerOnTurn();
                 s.initializeItems(igs.getItemsToDistribute());
                 s.sendStateToPlayers();
             } else {
