@@ -63,6 +63,18 @@ public class Session {
     }
 
     /**
+     * Shuffles the player-array to randomize turn-orders
+     */
+    public void randomizePlayerTurns() {
+        Collections.shuffle(state.getPlayers());
+        Log.info("Randomized order of players: ");
+        int counter = 1;
+        for(Player p : state.getPlayers()) {
+            Log.info(p.getName());
+        }
+    }
+
+    /**
      * Distribute the client-generated list of items to the players
      * TODO: check if spread evenly
      * @param items to distribute
