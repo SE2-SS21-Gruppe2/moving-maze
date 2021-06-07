@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -45,6 +46,8 @@ public class GameScreen implements Screen {
     private boolean canMove=false;
     public static boolean tileJustRotated = false;
 
+    private Table table;
+
 
 
     // Buffer-variables used for rendering
@@ -67,6 +70,7 @@ public class GameScreen implements Screen {
     private TextureRegion bgTextureRegion;
 
     private Texture boardframe ;
+    private Texture tileframe ;
     private float getBoardFrameX;
     private float getBoardFrameY;
     private float getTileFrameX;
@@ -87,12 +91,14 @@ public class GameScreen implements Screen {
         bgTextureRegion = new TextureRegion(bgImageTexture);
 
         boardframe = getScaledImage("ui/boardframe.PNG",0.7f);
+        tileframe = getScaledImage("ui/tileframe.png",0.1f);
+
+
     }
 
     @Override
     public void show() {
         player = game.getLocalPlayer();
-        Gdx.input.setInputProcessor(stage);
         Gdx.input.setInputProcessor(stage);
 
     }
@@ -119,10 +125,10 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.draw(bgTextureRegion, 0, 0);
 
-        batch.draw(getScaledImage("ui/tileframe.png",0.1f), 450,150);
+        batch.draw(tileframe, getTileFrameX - tileframe.getWidth()/5 ,getTileFrameY - tileframe.getHeight()/5);
 
 
-        batch.draw(new TextureRegion(boardframe), (int)getBoardFrameX,(int)getBoardFrameY);
+        batch.draw(boardframe, (int)getBoardFrameX,(int)getBoardFrameY);
 
         drawCardToScreen(batch);
         drawGameBoard(batch);
@@ -303,7 +309,8 @@ public class GameScreen implements Screen {
 
     private void drawCardToScreen(SpriteBatch batch) {
         cardSprite = TextureLoader.getSpriteByTexturePath("gameboard/card.png", TextureType.CARD);
-        cardSprite.setPosition(100f, 80f);
+        cardSprite.setPosition(Gdx.graphics.getWidth()/100 * 7, Gdx.graphics.getHeight()/100 * 5);
+        cardSprite.setScale(0.7f);
         cardSprite.draw(batch);
 
         playerBuffer = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
@@ -338,6 +345,9 @@ public class GameScreen implements Screen {
             extraTileImage.setOrigin(extraTileImage.getWidth()/2f, extraTileImage.getHeight()/2f);
             extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight()/2 - extraTileImage.getHeight());
             extraTileImage.setRotation(currentExtraTile.getRotationDegrees());
+
+            getTileFrameX = cardSprite.getX() + cardSprite.getWidth() + 80f ;
+            getTileFrameY = cardSprite.getY() + cardSprite.getHeight()/2 - extraTileImage.getHeight();
 
             if (isMyTurn() && gamePhase() == GamePhaseType.INSERT_TILE) {
 
