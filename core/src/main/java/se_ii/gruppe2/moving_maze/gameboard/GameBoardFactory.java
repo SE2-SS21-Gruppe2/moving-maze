@@ -67,10 +67,7 @@ public class GameBoardFactory {
         var cornerRotation =0;
         for(var i = 0; i < board.length; i++) {
             for(var j = 0; j < board[i].length; j++) {
-                if (isCorner(i,j)){
-                    board[i][j] = TileFactory.getLTile().applyRotation(possibleRotationAngles[cornerRotation++]);
-                }
-                else {
+                if (!isCorner(i,j)){
                     board[i][j]= getRandomTile();
                 }
                 if(itemOnTile){
