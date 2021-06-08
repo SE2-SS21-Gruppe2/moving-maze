@@ -223,10 +223,7 @@ public class GameScreen implements Screen {
 
         // check for rotation of accelerometer
         if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && game.getPreferences().getBoolean("rotateWithSensorOn", true)) {
-            Gdx.app.log("sensor/accelerom", "X: " + Gdx.input.getAccelerometerX() +
-                    " | Y: " + Gdx.input.getAccelerometerY() + " | Z: " + Gdx.input.getAccelerometerZ());
             if (Gdx.input.getAccelerometerY() > 4.0 && !tileJustRotated) {
-                Gdx.app.log("sensor/accelerom", "Triggered tile rotation positive!");
                 game.getGameState().getExtraTile().rotateCounterClockwise();
                 newExtraTile = true;
                 tileJustRotated = true;
@@ -234,7 +231,6 @@ public class GameScreen implements Screen {
             }
 
             if (Gdx.input.getAccelerometerY() < -4.0 && !tileJustRotated) {
-                Gdx.app.log("sensor/accelerom", "Triggered tile rotation negative!");
                 game.getGameState().getExtraTile().rotateClockwise();
                 newExtraTile = true;
                 tileJustRotated = true;
@@ -254,6 +250,8 @@ public class GameScreen implements Screen {
 
     public void updatePlayerMovement(float colStart, float rowStart){
         stage.clear();
+        System.out.println("Top:"+ game.getGameState().getBoard().getBoard()[5][0].isOpenTop()+" Right:"+game.getGameState().getBoard().getBoard()[5][0].isOpenRight()+" Bottom:"+game.getGameState().getBoard().getBoard()[5][0].isOpenBottom()+" Left:"+game.getGameState().getBoard().getBoard()[5][0].isOpenLeft());
+        System.out.println(game.getGameState().getBoard().getBoard()[5][0].getRotationDegrees());
         MovePlayer movePlayer= new MovePlayer();
         if (movePlayer.validate() && movePlayer.getPositionsToGO().size()>1){
             localPlayerMoves=movePlayer.getPositionsToGO();
@@ -380,7 +378,7 @@ public class GameScreen implements Screen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         extraTileImage.rotateBy(90);
-                        game.getGameState().getExtraTile().rotateClockwise();
+                        game.getGameState().getExtraTile().rotateCounterClockwise();
                     }
                 });
             }

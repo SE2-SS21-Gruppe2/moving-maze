@@ -35,34 +35,60 @@ public abstract class Tile {
     public Tile applyRotation(float rotationDegrees) {
         float rotationShifts= rotationDegrees/90f;
         while (rotationShifts>0.0){
-            boolean help = openTop;
-            openTop= openRight;
-            openRight=openBottom;
-            openBottom=openLeft;
-            openLeft=help;
+            left();
             rotationShifts--;
         }
-
         this.setRotationDegrees(rotationDegrees);
         return this;
     }
 
+
+
     // GETTER & SETTER
     public void rotateClockwise(){
-        if(this.rotationDegrees <= 270f) {
-            applyRotation(this.rotationDegrees+90f);
+        if(this.rotationDegrees >= 90f) {
+            shiftClockwise(this.rotationDegrees-90f);
         } else {
-            applyRotation((this.rotationDegrees+90f)%360);
+            shiftClockwise(270f);
         }
     }
 
     public void rotateCounterClockwise(){
-        if(this.rotationDegrees >= 90f) {
-            applyRotation(this.rotationDegrees-90f);
+        if(this.rotationDegrees <= 270f) {
+            shiftCounterClockwise(this.rotationDegrees+90f);
         } else {
-            applyRotation(270f);
+            shiftCounterClockwise((this.rotationDegrees+90f)%360);
         }
+
     }
+
+    private Tile shiftClockwise(float rotationDegrees){
+        right();
+        this.setRotationDegrees(rotationDegrees);
+        return this;
+    }
+
+    private Tile shiftCounterClockwise(float rotationDegrees){
+        left();
+        this.setRotationDegrees(rotationDegrees);
+        return this;
+    }
+
+    private void left(){
+        boolean help = openTop;
+        openTop= openRight;
+        openRight=openBottom;
+        openBottom=openLeft;
+        openLeft=help;
+    }
+    private void right(){
+        boolean help = openTop;
+        openTop= openLeft;
+        openLeft=openBottom;
+        openBottom=openRight;
+        openRight=help;
+    }
+
 
     public void getBinaryString(){}
 
