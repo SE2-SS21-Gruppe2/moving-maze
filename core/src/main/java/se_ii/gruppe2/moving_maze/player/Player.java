@@ -1,6 +1,7 @@
 package se_ii.gruppe2.moving_maze.player;
 
 import com.badlogic.gdx.Gdx;
+import se_ii.gruppe2.moving_maze.cheatfunction.CheatFunction;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 
@@ -16,6 +17,7 @@ public class Player {
     private Stack<ItemLogical> cardsFound;
     private ItemLogical currentCard;
     private PlayerRole role;
+    private CheatFunction cheatFunction;
 
     private PlayerColor color;
 
@@ -23,6 +25,7 @@ public class Player {
         cardsToFind = new Stack<>();
         cardsFound = new Stack<>();
         id = generateId();
+        cheatFunction = new CheatFunction();
     }
 
     public Player(String name) {
@@ -31,7 +34,7 @@ public class Player {
     }
 
     public void move(int dX, int dY){
-        // TODO: validation
+        //TODO: validation
         this.pos.setPosition(
                 this.pos.getX()+dX,
                 this.pos.getY()+dY
@@ -151,5 +154,9 @@ public class Player {
 
     public void setCurrentCard(ItemLogical currentCard) {
         this.currentCard = currentCard;
+    }
+
+    public CheatFunction getCheatFunction() {
+        return cheatFunction;
     }
 }
