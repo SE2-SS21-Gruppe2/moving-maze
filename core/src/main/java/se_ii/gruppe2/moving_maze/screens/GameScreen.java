@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
@@ -76,6 +78,13 @@ public class GameScreen implements Screen {
     private float getTileFrameX;
     private float getTileFrameY;
 
+    private Label player1Label;
+    private Label player2Label;
+    private Label player3Label;
+    private Label player4Label;
+
+    private Skin skin;
+
 
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
@@ -86,6 +95,8 @@ public class GameScreen implements Screen {
 
         camera = MovingMazeGame.getStandardizedCamera();
 
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+
         // instantiate textures for background
         bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
         bgTextureRegion = new TextureRegion(bgImageTexture);
@@ -93,7 +104,7 @@ public class GameScreen implements Screen {
         boardframe = getScaledImage("ui/boardframe.PNG",0.7f);
         tileframe = getScaledImage("ui/tileframe.png",0.1f);
 
-
+        table = new Table();
     }
 
     @Override
@@ -102,6 +113,8 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
     }
+
+
 
     @Override
     public void render(float delta) {
@@ -130,13 +143,16 @@ public class GameScreen implements Screen {
 
         batch.draw(boardframe, (int)getBoardFrameX,(int)getBoardFrameY);
 
+        initTable();
+        setCoordinatesTable();
+
         drawCardToScreen(batch);
         drawGameBoard(batch);
         stage.draw();
-        game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
-        game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
-        game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
-        game.getFont().draw(batch, "CARDS FOUND: " + player.getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
+        //game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
+        //game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
+        //game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
+        //game.getFont().draw(batch, "CARDS FOUND: " + player.getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
 
         batch.end();
     }
@@ -164,6 +180,40 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         // lifecycle function
+    }
+
+    private void initTable(){
+
+        player1Label = new Label(currentPlayersOnTile.get(0).getName(),skin);
+        table.add(player1Label);
+        Label cardsfound1 = new Label(currentPlayersOnTile.get(0).getCardsFound().toString(),skin);
+        table.add(cardsfound1);
+
+        table.row();
+
+        player2Label = new Label(currentPlayersOnTile.get(1).getName(),skin);
+        table.add(player2Label);
+        Label cardsfound2 = new Label(currentPlayersOnTile.get(1).getCardsFound().toString(),skin);
+        table.add(cardsfound2);
+
+        table.row();
+
+        player3Label = new Label(currentPlayersOnTile.get(2).getName(),skin);
+        table.add(player3Label);
+        Label cardsfound3 = new Label(currentPlayersOnTile.get(2).getCardsFound().toString(),skin);
+        table.add(cardsfound3);
+
+        table.row();
+
+        player4Label = new Label(currentPlayersOnTile.get(3).getName(),skin);
+        table.add(player2Label);
+        Label cardsfound4 = new Label(currentPlayersOnTile.get(3).getCardsFound().toString(),skin);
+        table.add(cardsfound4);
+
+    }
+
+    private void setCoordinatesTable(){
+
     }
 
     /**
