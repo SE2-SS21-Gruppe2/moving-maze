@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
     private Player player;
     private Stage stage;
     private ArrayList<Position> localPlayerMoves;
-    private boolean canMove=false;
+    private boolean canMove = false;
     public static boolean tileJustRotated = false;
 
 
@@ -89,27 +89,27 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0,0,0,1);
+        ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             Gdx.app.log("recreateBoard", "Recreating gameboard");
             recreateGameBoard();
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             game.getGameState().completePhase();
             game.getClient().sendGameStateUpdate(game.getGameState());
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             game.getGameState().getPlayerByName(game.getLocalPlayer().getName()).nextCard();
         }
 
         batch.begin();
         batch.draw(bgTextureRegion, 0, 0);
 
-        batch.draw(getScaledImage("ui/tileframe.png",0.1f), 450,150);
+        batch.draw(getScaledImage("ui/tileframe.png", 0.1f), 450, 150);
 
         // the coordinates are not accurate
         // batch.draw(getScaledImage("ui/boardframe.png",0.09f), Gdx.graphics.getWidth()/2f,Gdx.graphics.getHeight()/5f);
@@ -117,10 +117,10 @@ public class GameScreen implements Screen {
         drawCardToScreen(batch);
         drawGameBoard(batch);
         stage.draw();
-        game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
-        game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
-        game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
-        game.getFont().draw(batch, "CARDS FOUND: " + player.getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
+        game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight() - 100f);
+        game.getFont().draw(batch, "COLOR: " + player.getColor().toString(), 70f, Gdx.graphics.getHeight() - 160f);
+        game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight() - 220f);
+        game.getFont().draw(batch, "CARDS FOUND: " + player.getCardsFound().size(), 70f, Gdx.graphics.getHeight() - 280f);
 
         batch.end();
     }
@@ -153,18 +153,16 @@ public class GameScreen implements Screen {
     /**
      * Calculates the start-coordinates for a gameboard with respect to the aspect-ratio.
      */
-    private Position getStartCoordinates(){
-        float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
-        if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
-            return new Position(Gdx.graphics.getWidth()/100 *45, Gdx.graphics.getHeight()/100);
-        }
-        else if(aspectRatio==4f/3f){
-            return new Position(Gdx.graphics.getWidth()/100 * 35, Gdx.graphics.getHeight()/100*10);
-        }
-        else if(aspectRatio==1f){
-            return new Position(Gdx.graphics.getWidth()/100, Gdx.graphics.getHeight()/100);
+    private Position getStartCoordinates() {
+        float aspectRatio = (float) Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
+        if (aspectRatio <= 19f / 9f && aspectRatio >= 16f / 9f) {
+            return new Position(Gdx.graphics.getWidth() / 100 * 45, Gdx.graphics.getHeight() / 100);
+        } else if (aspectRatio == 4f / 3f) {
+            return new Position(Gdx.graphics.getWidth() / 100 * 35, Gdx.graphics.getHeight() / 100 * 10);
+        } else if (aspectRatio == 1f) {
+            return new Position(Gdx.graphics.getWidth() / 100, Gdx.graphics.getHeight() / 100);
         } else {
-            return new Position(0,0);
+            return new Position(0, 0);
         }
 
     }
@@ -176,8 +174,8 @@ public class GameScreen implements Screen {
 
     /**
      * Draws a visual representation of a logical gameboard onto the screen.
-     * @param batch
-     * TODO: refactor
+     *
+     * @param batch TODO: refactor
      */
     private void drawGameBoard(SpriteBatch batch) {
         Tile[][] tl = game.getGameState().getBoard().getBoard();
@@ -186,8 +184,8 @@ public class GameScreen implements Screen {
         float curX = initPos.getX();
         float curY = initPos.getY();
 
-        for(var y = 0; y < tl.length; y++) {
-            for(var x = 0; x < tl[y].length; x++) {
+        for (var y = 0; y < tl.length; y++) {
+            for (var x = 0; x < tl[y].length; x++) {
                 currentTile = tl[y][x];
                 currentSprite = TextureLoader.getSpriteByTexturePath(currentTile.getTexturePath(), TextureType.TILE);
                 currentItem = currentTile.getItem();
@@ -197,20 +195,20 @@ public class GameScreen implements Screen {
                 currentSprite.draw(batch);
 
                 // render item
-                if(currentItem != null) {
+                if (currentItem != null) {
                     currentSprite = TextureLoader.getSpriteByTexturePath(currentItem.getTexturePath(), TextureType.ITEM);
-                    currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE /4f, curY + TextureLoader.TILE_EDGE_SIZE /4f);
+                    currentSprite.setPosition(curX + TextureLoader.TILE_EDGE_SIZE / 4f, curY + TextureLoader.TILE_EDGE_SIZE / 4f);
                     currentSprite.draw(batch);
                 }
 
                 // render players
                 currentPlayersOnTile = game.getGameState().playersOnTile(y, x);
 
-                if(currentPlayersOnTile.size() != 0) {
-                    for(Player p : currentPlayersOnTile) {
+                if (currentPlayersOnTile.size() != 0) {
+                    for (Player p : currentPlayersOnTile) {
                         positionBuffer = PlayerColorMapper.getOffsetByColor(p.getColor());
                         currentSprite = TextureLoader.getSpriteByTexturePath(p.getTexturePath(), TextureType.PLAYER);
-                        currentSprite.setPosition(curX+TextureLoader.TILE_EDGE_SIZE/4f + positionBuffer.getX(), curY+TextureLoader.TILE_EDGE_SIZE/4f + positionBuffer.getY());
+                        currentSprite.setPosition(curX + TextureLoader.TILE_EDGE_SIZE / 4f + positionBuffer.getX(), curY + TextureLoader.TILE_EDGE_SIZE / 4f + positionBuffer.getY());
                         currentSprite.draw(batch);
                     }
                 }
@@ -222,7 +220,7 @@ public class GameScreen implements Screen {
         }
 
         // check for rotation of accelerometer
-        if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && game.getPreferences().getBoolean("rotateWithSensorOn", true)) {
+        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && game.getPreferences().getBoolean("rotateWithSensorOn", true)) {
             Gdx.app.log("sensor/accelerom", "X: " + Gdx.input.getAccelerometerX() +
                     " | Y: " + Gdx.input.getAccelerometerY() + " | Z: " + Gdx.input.getAccelerometerZ());
             if (Gdx.input.getAccelerometerY() > 4.0 && !tileJustRotated) {
@@ -242,42 +240,41 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (isNewExtraTile()){
+        if (isNewExtraTile()) {
             updateExtraTile();
         }
-        if(canMove && game.getGameState().getGamePhase()== GamePhaseType.MOVE_PLAYER){
-            updatePlayerMovement(initPos.getX(),initPos.getY());
+        if (canMove && game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER) {
+            updatePlayerMovement(initPos.getX(), initPos.getY());
         }
     }
 
 
-
-    public void updatePlayerMovement(float colStart, float rowStart){
+    public void updatePlayerMovement(float colStart, float rowStart) {
         stage.clear();
-        MovePlayer movePlayer= new MovePlayer();
-        if (movePlayer.validate() && movePlayer.getPositionsToGO().size()>1){
-            localPlayerMoves=movePlayer.getPositionsToGO();
-            Texture texture=TextureLoader.getTileTextureOverlay();
-            for(Position pos: localPlayerMoves){
-                float xT= colStart + (TextureLoader.TILE_EDGE_SIZE*(pos.getX()));
-                float yT= rowStart+ (TextureLoader.TILE_EDGE_SIZE*(pos.getY()));
+        MovePlayer movePlayer = new MovePlayer();
+        if (movePlayer.validate() && movePlayer.getPositionsToGO().size() > 1) {
+            localPlayerMoves = movePlayer.getPositionsToGO();
+            Texture texture = TextureLoader.getTileTextureOverlay();
+            for (Position pos : localPlayerMoves) {
+                float xT = colStart + (TextureLoader.TILE_EDGE_SIZE * (pos.getX()));
+                float yT = rowStart + (TextureLoader.TILE_EDGE_SIZE * (pos.getY()));
                 Image image = new Image(texture);
-                image.setPosition(xT,yT);
-                image.setOrigin(xT,yT);
-                image.addListener(new ClickListener(){
+                image.setPosition(xT, yT);
+                image.setOrigin(xT, yT);
+                image.addListener(new ClickListener() {
                     @Override
-                    public void clicked(InputEvent inputEvent,float x,float y){
+                    public void clicked(InputEvent inputEvent, float x, float y) {
                         localPlayerMoves.clear();
                         movePlayer.setBoardStart(getStartCoordinates());
-                        movePlayer.setMovePosition(new Position((int)image.getOriginX(),(int) image.getOriginY() ));
+                        movePlayer.setMovePosition(new Position((int) image.getOriginX(), (int) image.getOriginY()));
                         movePlayer.execute();
                         stage.clear();
 
                         new TreasurePickupAction().execute();
                     }
                 });
-                canMove=false;
-                image.draw(batch,1f);
+                canMove = false;
+                image.draw(batch, 1f);
                 stage.addActor(image);
             }
         }
@@ -291,35 +288,35 @@ public class GameScreen implements Screen {
 
         playerBuffer = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
         itemBuffer = playerBuffer != null ? playerBuffer.getCurrentCard() : null;
-        if(itemBuffer != null) {
+        if (itemBuffer != null) {
             currentSprite = TextureLoader.getSpriteByTexturePath(itemBuffer.getTexturePath(), TextureType.ITEM);
-            currentSprite.setCenterX(cardSprite.getX() + cardSprite.getWidth()/2f);
-            currentSprite.setCenterY(cardSprite.getY() + cardSprite.getHeight()/2f);
+            currentSprite.setCenterX(cardSprite.getX() + cardSprite.getWidth() / 2f);
+            currentSprite.setCenterY(cardSprite.getY() + cardSprite.getHeight() / 2f);
             currentSprite.draw(batch);
         }
     }
 
-    public void updateExtraTile(){
-        for (Actor actor : stage.getActors()){
-            if (actor.getName() == extraTileImage.getName()){
+    public void updateExtraTile() {
+        for (Actor actor : stage.getActors()) {
+            if (actor.getName() == extraTileImage.getName()) {
                 actor.remove();
             }
         }
         currentExtraTile = game.getGameState().getExtraTile();
         Texture layeredTexture;
 
-        if (currentExtraTile != null){
+        if (currentExtraTile != null) {
 
             layeredTexture = TextureLoader.getLayeredTexture(currentExtraTile.getTexturePath(), null);
 
-            if (currentExtraTile.getItem() != null){
+            if (currentExtraTile.getItem() != null) {
                 currentExtraTileItem = currentExtraTile.getItem();
                 layeredTexture = TextureLoader.getLayeredTexture(currentExtraTile.getTexturePath(), currentExtraTileItem.getTexturePath());
             }
 
             extraTileImage = new Image(layeredTexture);
-            extraTileImage.setOrigin(extraTileImage.getWidth()/2f, extraTileImage.getHeight()/2f);
-            extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight()/2 - extraTileImage.getHeight());
+            extraTileImage.setOrigin(extraTileImage.getWidth() / 2f, extraTileImage.getHeight() / 2f);
+            extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight() / 2 - extraTileImage.getHeight());
             extraTileImage.setRotation(currentExtraTile.getRotationDegrees());
 
             if (isMyTurn() && gamePhase() == GamePhaseType.INSERT_TILE) {
@@ -368,9 +365,9 @@ public class GameScreen implements Screen {
 
                         if (insertSuccess) {
                             insert.execute();
-                            canMove=true;
+                            canMove = true;
                         } else {
-                            extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight()/2 - extraTileImage.getHeight());
+                            extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight() / 2 - extraTileImage.getHeight());
                         }
                     }
                 });
@@ -403,11 +400,11 @@ public class GameScreen implements Screen {
         var originalBg = new Pixmap(Gdx.files.internal(path));
 
         // determine how much the picture has to be scaled in order to fit the screen width exactly
-        float baseScalingFactor = (originalBg.getWidth()*1.0f) / (camera.viewportWidth);
+        float baseScalingFactor = (originalBg.getWidth() * 1.0f) / (camera.viewportWidth);
         float scalingFactor = baseScalingFactor / percentOfScreen;
 
-        var scaledBg = new Pixmap((int) (originalBg.getWidth()/scalingFactor),
-                (int) (originalBg.getHeight()/scalingFactor),
+        var scaledBg = new Pixmap((int) (originalBg.getWidth() / scalingFactor),
+                (int) (originalBg.getHeight() / scalingFactor),
                 originalBg.getFormat());
 
         // scale by "redrawing" the original pixmap into the smaller pixmap
@@ -425,17 +422,19 @@ public class GameScreen implements Screen {
 
     /**
      * Checks if it is the local player's turn
+     *
      * @return true if it is my turn
      */
-    private boolean isMyTurn(){
+    private boolean isMyTurn() {
         return game.getGameState().isMyTurn(game.getLocalPlayer());
     }
 
     /**
      * Gets the active game phase
+     *
      * @return current game phase
      */
-    private GamePhaseType gamePhase(){
+    private GamePhaseType gamePhase() {
         return game.getGameState().getGamePhase();
     }
 

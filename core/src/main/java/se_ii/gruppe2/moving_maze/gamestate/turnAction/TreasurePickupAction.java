@@ -31,6 +31,9 @@ public class TreasurePickupAction implements TurnAction {
                 Gdx.app.log("turnAction/treasure", "Currently searched item found! Updating card ...");
                 local.nextCard();
             }
+        } else {
+            //
+
         }
 
         game.getGameState().completePhase();

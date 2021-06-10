@@ -1,6 +1,7 @@
 package se_ii.gruppe2.moving_maze.gamestate;
 
 import com.badlogic.gdx.math.Vector2;
+import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
@@ -19,6 +20,7 @@ public class GameStateHandler {
 
     public GameStateHandler() {
         players = new ArrayList<>();
+
     }
 
     /**
@@ -65,9 +67,13 @@ public class GameStateHandler {
         gamePhase = new GamePhase();
     }
 
-    public void completePhase(){
+    public void completePhase() {
         GamePhaseType nextPhase = gamePhase.nextPhase();
-        if (nextPhase == GamePhaseType.END_TURN){
+
+        if (nextPhase == GamePhaseType.CHEAT_FUNCTION) {
+            //TODO do the thing when is in cheat_function state
+        }
+        if (nextPhase == GamePhaseType.END_TURN) {
             updatePlayerOnTurn();
             gamePhase.nextPhase();
         }

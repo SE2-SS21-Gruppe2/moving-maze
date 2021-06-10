@@ -2,6 +2,7 @@ package se_ii.gruppe2.moving_maze.network;
 
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
+import se_ii.gruppe2.moving_maze.cheatfunction.CheatFunction;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhase;
 import se_ii.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
@@ -66,6 +67,7 @@ public class Registry {
         kryo.register(InitGameStart.class);
         kryo.register(Vector2.class);
         kryo.register(GamePhase.class);
+        kryo.register(CheatFunction.class);
     }
 
 }
