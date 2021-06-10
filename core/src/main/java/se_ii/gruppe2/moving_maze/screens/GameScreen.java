@@ -106,6 +106,10 @@ public class GameScreen implements Screen {
             game.getGameState().getPlayerByName(game.getLocalPlayer().getName()).nextCard();
         }
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            game.getClient().gameWin(game.getLocalPlayer(), game.getSessionKey());
+        }
+
         batch.begin();
         batch.draw(bgTextureRegion, 0, 0);
 

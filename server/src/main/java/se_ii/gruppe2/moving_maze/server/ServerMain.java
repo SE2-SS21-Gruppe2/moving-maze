@@ -27,6 +27,7 @@ public class ServerMain {
             srv.addListener(new CloseSessionHandler());
             srv.addListener(new LeaveSessionHandler());
             srv.addListener(new InitGameHandler());
+            srv.addListener(new WinGameHandler());
             System.out.println("Server successfully listening on port " + ServerConfiguration.PORT);
         } catch(IOException ioe) {
             System.err.println("Failed to bind port " + ServerConfiguration.PORT + " to server! Exiting ...");

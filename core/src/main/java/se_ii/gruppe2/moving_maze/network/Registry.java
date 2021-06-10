@@ -18,6 +18,7 @@ import se_ii.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.player.PlayerColor;
 import se_ii.gruppe2.moving_maze.player.PlayerRole;
+import se_ii.gruppe2.moving_maze.screens.GameScreen;
 import se_ii.gruppe2.moving_maze.tile.*;
 
 import java.util.ArrayList;
@@ -66,6 +67,9 @@ public class Registry {
         kryo.register(InitGameStart.class);
         kryo.register(Vector2.class);
         kryo.register(GamePhase.class);
+        kryo.register(NetworkClient.class);
+        kryo.register(WinGameRequest.class);
+
     }
 
 }

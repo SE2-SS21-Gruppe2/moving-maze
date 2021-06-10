@@ -101,4 +101,9 @@ public class NetworkClient {
         Gdx.app.log("NetworkClient/initGame", "Sent request to initialize game '" + key + "'");
     }
 
+    public void gameWin(Player player, String sessionKey){
+        kryoClient.sendTCP(new WinGameRequest(sessionKey,player));
+        Gdx.app.log("NetworkClient/gameWin","Sent winning player"+ "'"+ player.getName() +"'");
+    }
+
 }
