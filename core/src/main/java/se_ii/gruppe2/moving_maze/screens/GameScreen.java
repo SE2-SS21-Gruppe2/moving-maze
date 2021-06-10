@@ -107,7 +107,7 @@ public class GameScreen implements Screen {
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            game.getClient().gameWin(game.getLocalPlayer(), game.getSessionKey());
+            game.getClient().gameWin(game.getSessionKey(),game.getLocalPlayer());
         }
 
         batch.begin();

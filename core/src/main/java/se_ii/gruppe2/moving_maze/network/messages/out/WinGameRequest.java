@@ -3,15 +3,16 @@ package se_ii.gruppe2.moving_maze.network.messages.out;
 import se_ii.gruppe2.moving_maze.player.Player;
 
 public class WinGameRequest {
-    Player player;
     String sessionCode;
+    Player player;
 
     public WinGameRequest(){};
 
     public WinGameRequest(String sessionCode, Player player) {
-        this.player = player;
+        this.player=player;
         this.sessionCode = sessionCode;
     }
+
 
     public Player getPlayer() {
         return player;

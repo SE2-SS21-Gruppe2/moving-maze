@@ -12,7 +12,7 @@ public class WinGameHandler extends Listener {
     public void received(Connection con, Object obj){
         if(obj instanceof WinGameRequest){
             WinGameRequest win= (WinGameRequest) obj;
-            Log.info("Win Player Name:"+win.getPlayer());
+
         }
     }
 }
