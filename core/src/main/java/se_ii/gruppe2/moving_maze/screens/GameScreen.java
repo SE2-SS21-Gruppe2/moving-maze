@@ -48,6 +48,8 @@ public class GameScreen implements Screen {
     private boolean canMove=false;
     public static boolean tileJustRotated = false;
 
+    private Stage stageTable;
+
     private Table table;
 
 
@@ -81,7 +83,6 @@ public class GameScreen implements Screen {
     private Label player1Label;
     private Label player2Label;
     private Label player3Label;
-    private Label player4Label;
 
     private Skin skin;
 
@@ -105,6 +106,17 @@ public class GameScreen implements Screen {
         tileframe = getScaledImage("ui/tileframe.png",0.1f);
 
         table = new Table();
+        stageTable = new Stage();
+        stageTable.getCamera().position.set(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f, 0);
+
+        Gdx.input.setInputProcessor(stageTable);
+
+        initTable();
+        setCoordinatesTable();
+
+        stageTable.addActor(table);
+
+
     }
 
     @Override
@@ -143,12 +155,10 @@ public class GameScreen implements Screen {
 
         batch.draw(boardframe, (int)getBoardFrameX,(int)getBoardFrameY);
 
-        initTable();
-        setCoordinatesTable();
-
         drawCardToScreen(batch);
         drawGameBoard(batch);
         stage.draw();
+        stageTable.draw();
         //game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
         //game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
         //game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
@@ -184,35 +194,81 @@ public class GameScreen implements Screen {
 
     private void initTable(){
 
-        player1Label = new Label(currentPlayersOnTile.get(0).getName(),skin);
-        table.add(player1Label);
-        Label cardsfound1 = new Label(currentPlayersOnTile.get(0).getCardsFound().toString(),skin);
-        table.add(cardsfound1);
+        Label localplayer = new Label("Martin",skin);
+        Label cardsfound0 = new Label(0 + " / " + 3,skin);
 
-        table.row();
+        Label extra = new Label("S",skin);
 
-        player2Label = new Label(currentPlayersOnTile.get(1).getName(),skin);
-        table.add(player2Label);
-        Label cardsfound2 = new Label(currentPlayersOnTile.get(1).getCardsFound().toString(),skin);
-        table.add(cardsfound2);
 
-        table.row();
+        player1Label = new Label("",skin);
+        player2Label = new Label("",skin);
+        player3Label = new Label("",skin);
 
-        player3Label = new Label(currentPlayersOnTile.get(2).getName(),skin);
-        table.add(player3Label);
-        Label cardsfound3 = new Label(currentPlayersOnTile.get(2).getCardsFound().toString(),skin);
-        table.add(cardsfound3);
+        table.add(localplayer).size(50,30);
+        table.add(cardsfound0).size(50,30);
 
-        table.row();
+        if (currentPlayersOnTile.size() != 0 ){
+            if ( currentPlayersOnTile.size() == 1){
 
-        player4Label = new Label(currentPlayersOnTile.get(3).getName(),skin);
-        table.add(player2Label);
-        Label cardsfound4 = new Label(currentPlayersOnTile.get(3).getCardsFound().toString(),skin);
-        table.add(cardsfound4);
+            player1Label = new Label(currentPlayersOnTile.get(0).getName(),skin);
+            table.add(player1Label);
+            Label cardsfound1 = new Label(currentPlayersOnTile.get(0).getCardsFound().toString(),skin);
+            table.add(cardsfound1);
+            table.add(extra);
+
+            }else if (currentPlayersOnTile.size() == 2){
+
+            table.row();
+
+            player1Label = new Label(currentPlayersOnTile.get(0).getName(),skin);
+            table.add(player1Label);
+            Label cardsfound1 = new Label(currentPlayersOnTile.get(0).getCardsFound().toString(),skin);
+            table.add(cardsfound1);
+            table.add(extra);
+
+            table.row();
+
+            player2Label = new Label(currentPlayersOnTile.get(1).getName(),skin);
+            table.add(player2Label);
+            Label cardsfound2 = new Label(currentPlayersOnTile.get(1).getCardsFound().toString(),skin);
+            table.add(cardsfound2);
+            table.add(extra);
+
+
+            }else {
+
+            player1Label = new Label(currentPlayersOnTile.get(0).getName(),skin);
+            table.add(player1Label);
+            Label cardsfound1 = new Label(currentPlayersOnTile.get(0).getCardsFound().toString(),skin);
+            table.add(cardsfound1);
+            table.add(extra);
+
+            table.row();
+
+            player2Label = new Label(currentPlayersOnTile.get(1).getName(),skin);
+            table.add(player2Label);
+            Label cardsfound2 = new Label(currentPlayersOnTile.get(1).getCardsFound().toString(),skin);
+            table.add(cardsfound2);
+            table.add(extra);
+
+            table.row();
+
+            player3Label = new Label(currentPlayersOnTile.get(2).getName(),skin);
+            table.add(player3Label);
+            Label cardsfound3 = new Label(currentPlayersOnTile.get(2).getCardsFound().toString(),skin);
+            table.add(cardsfound3);
+            table.add(extra);
+            }
+        }
+
+
 
     }
 
     private void setCoordinatesTable(){
+
+        table.setPosition(   Gdx.graphics.getWidth()/100 * 10,Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/100 * 5);
+
 
     }
 
