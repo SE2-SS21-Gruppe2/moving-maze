@@ -38,6 +38,7 @@ public class MovingMazeGame extends Game {
 	private GameScreen gameScreen;
 	private OptionScreen optionScreen;
 	private RuleScreen ruleScreen;
+	private VictoryScreen victoryScreen;
 	// new
 	private LoadingScreen loadingScreen;
 	private SplashScreen splashScreen;
@@ -95,6 +96,7 @@ public class MovingMazeGame extends Game {
 		loadingScreen = new LoadingScreen(this);
 		splashScreen = new SplashScreen(this);
 		waitingScreen = new WaitingScreen(this);
+		victoryScreen= new VictoryScreen(this);
 
 		// when started, show loading screen (which then transitions to the MainMenuScreen)
 		setScreen(loadingScreen);
@@ -112,6 +114,7 @@ public class MovingMazeGame extends Game {
 		splashScreen.dispose();
 		mainMenuScreen.dispose();
 		waitingScreen.dispose();
+
 
 	}
 
@@ -184,6 +187,10 @@ public class MovingMazeGame extends Game {
 
 	public MainMenuScreen getMainMenuScreen() {
 		return mainMenuScreen;
+	}
+
+	public VictoryScreen getVictoryScreen(){
+		return victoryScreen;
 	}
 
 	public SplashScreen getSplashScreen() {

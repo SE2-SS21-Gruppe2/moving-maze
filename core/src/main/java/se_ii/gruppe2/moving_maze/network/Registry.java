@@ -12,6 +12,7 @@ import com.esotericsoftware.kryo.Kryo;
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhase;
+import se_ii.gruppe2.moving_maze.network.listeners.WinGameListener;
 import se_ii.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.WinGameConformation;
@@ -81,6 +82,7 @@ public class Registry {
 
         kryo.register(WinGameRequest.class);
         kryo.register(WinGameConformation.class);
+        kryo.register(WinGameListener.class);
 
 
 
