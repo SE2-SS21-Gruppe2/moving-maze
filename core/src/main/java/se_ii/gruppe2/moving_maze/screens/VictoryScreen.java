@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.player.Player;
 
 public class VictoryScreen implements Screen {
 
@@ -16,7 +17,7 @@ public class VictoryScreen implements Screen {
     private final SpriteBatch batch;
     private OrthographicCamera camera;
 
-
+    private static Player winingPlayer;
 
     //Textures
     private Texture bgImageTexture;
@@ -39,7 +40,7 @@ public class VictoryScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
 
         batch.begin();
-        game.getFont().draw(batch, "Test", 70f, 70f);
+        game.getFont().draw(batch, winingPlayer.getName(), 300f, 300f);
 
 
         batch.end();
@@ -70,5 +71,7 @@ public class VictoryScreen implements Screen {
 
     }
 
-
+    public static void setWiningPlayer(Player player) {
+        winingPlayer= player;
+    }
 }
