@@ -3,12 +3,9 @@ package se_ii.gruppe2.moving_maze.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -19,12 +16,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.MovePlayer;
+import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
 import se_ii.gruppe2.moving_maze.helperclasses.RotationResetter;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
@@ -35,6 +34,7 @@ import se_ii.gruppe2.moving_maze.player.PlayerColorMapper;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen implements Screen {
 
@@ -48,11 +48,9 @@ public class GameScreen implements Screen {
     private boolean canMove=false;
     public static boolean tileJustRotated = false;
 
-    private Stage stageTable;
+    private MyShapeRenderer myShapeRenderer;
 
-    private Table table;
-
-
+    private Table playerTable;
 
     // Buffer-variables used for rendering
     Sprite currentSprite;
@@ -75,16 +73,32 @@ public class GameScreen implements Screen {
 
     private Texture boardframe ;
     private Texture tileframe ;
+    private Texture cardStack;
+    private Image cardStackImage;
     private float getBoardFrameX;
     private float getBoardFrameY;
     private float getTileFrameX;
     private float getTileFrameY;
 
+    private Label localPlayerLabel;
     private Label player1Label;
     private Label player2Label;
     private Label player3Label;
 
+    private Label localPlayerCardsLabel;
+    private Label player1CardsLabel;
+    private Label player2CardsLabel;
+    private Label player3CardsLabel;
+
+    private Player localPlayer;
+    private Player player1;
+    private Player player2;
+    private Player player3;
+
     private Skin skin;
+    private Label.LabelStyle myLblStyle;
+    private float scalingFactor;
+    private boolean firstCall;
 
 
     public GameScreen(final MovingMazeGame game) {
@@ -92,7 +106,8 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
 
         stage = new Stage();
-
+        myShapeRenderer = new MyShapeRenderer();
+        firstCall = true;
 
         camera = MovingMazeGame.getStandardizedCamera();
 
@@ -104,18 +119,8 @@ public class GameScreen implements Screen {
 
         boardframe = getScaledImage("ui/boardframe.PNG",0.7f);
         tileframe = getScaledImage("ui/tileframe.png",0.1f);
-
-        table = new Table();
-        stageTable = new Stage();
-        stageTable.getCamera().position.set(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f, 0);
-
-        Gdx.input.setInputProcessor(stageTable);
-
-        initTable();
-        setCoordinatesTable();
-
-        stageTable.addActor(table);
-
+        cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
+        cardStackImage = new Image(cardStack);
 
     }
 
@@ -123,6 +128,12 @@ public class GameScreen implements Screen {
     public void show() {
         player = game.getLocalPlayer();
         Gdx.input.setInputProcessor(stage);
+
+        var myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
+        myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        BitmapFont myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
+        myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
+        scalingFactor = Gdx.graphics.getWidth()/1280f;
 
     }
 
@@ -152,18 +163,19 @@ public class GameScreen implements Screen {
 
         batch.draw(tileframe, getTileFrameX - tileframe.getWidth()/5 ,getTileFrameY - tileframe.getHeight()/5);
 
-
         batch.draw(boardframe, (int)getBoardFrameX,(int)getBoardFrameY);
 
         drawCardToScreen(batch);
         drawGameBoard(batch);
+        if (!firstCall){
+            drawPlayerColorShapes(batch);
+        }
+        drawPlayerTable(batch);
         stage.draw();
-        stageTable.draw();
         //game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
         //game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
         //game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
         //game.getFont().draw(batch, "CARDS FOUND: " + player.getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
-
         batch.end();
     }
 
@@ -192,83 +204,141 @@ public class GameScreen implements Screen {
         // lifecycle function
     }
 
-    private void initTable(){
+    private void drawPlayerTable(SpriteBatch batch){
 
-        Label localplayer = new Label("Martin",skin);
-        Label cardsfound0 = new Label(0 + " / " + 3,skin);
+        List<Player> players = game.getGameState().getPlayers();
+        playerTable = new Table();
+        playerTable.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
+        playerTable.defaults().padTop(30f);
+        var indexOfLocalPlayer = 0;
+        var i = 0;
 
-        Label extra = new Label("S",skin);
-
-
-        player1Label = new Label("",skin);
-        player2Label = new Label("",skin);
-        player3Label = new Label("",skin);
-
-        table.add(localplayer).size(50,30);
-        table.add(cardsfound0).size(50,30);
-
-        if (currentPlayersOnTile.size() != 0 ){
-            if ( currentPlayersOnTile.size() == 1){
-
-            player1Label = new Label(currentPlayersOnTile.get(0).getName(),skin);
-            table.add(player1Label);
-            Label cardsfound1 = new Label(currentPlayersOnTile.get(0).getCardsFound().toString(),skin);
-            table.add(cardsfound1);
-            table.add(extra);
-
-            }else if (currentPlayersOnTile.size() == 2){
-
-            table.row();
-
-            player1Label = new Label(currentPlayersOnTile.get(0).getName(),skin);
-            table.add(player1Label);
-            Label cardsfound1 = new Label(currentPlayersOnTile.get(0).getCardsFound().toString(),skin);
-            table.add(cardsfound1);
-            table.add(extra);
-
-            table.row();
-
-            player2Label = new Label(currentPlayersOnTile.get(1).getName(),skin);
-            table.add(player2Label);
-            Label cardsfound2 = new Label(currentPlayersOnTile.get(1).getCardsFound().toString(),skin);
-            table.add(cardsfound2);
-            table.add(extra);
-
-
-            }else {
-
-            player1Label = new Label(currentPlayersOnTile.get(0).getName(),skin);
-            table.add(player1Label);
-            Label cardsfound1 = new Label(currentPlayersOnTile.get(0).getCardsFound().toString(),skin);
-            table.add(cardsfound1);
-            table.add(extra);
-
-            table.row();
-
-            player2Label = new Label(currentPlayersOnTile.get(1).getName(),skin);
-            table.add(player2Label);
-            Label cardsfound2 = new Label(currentPlayersOnTile.get(1).getCardsFound().toString(),skin);
-            table.add(cardsfound2);
-            table.add(extra);
-
-            table.row();
-
-            player3Label = new Label(currentPlayersOnTile.get(2).getName(),skin);
-            table.add(player3Label);
-            Label cardsfound3 = new Label(currentPlayersOnTile.get(2).getCardsFound().toString(),skin);
-            table.add(cardsfound3);
-            table.add(extra);
+        for (Player player : players){
+            if (game.getLocalPlayer().getName() == player.getName()){
+                indexOfLocalPlayer = players.indexOf(player);
             }
         }
 
+        localPlayer = players.get((indexOfLocalPlayer+i)%players.size());
+        player1 = players.get((indexOfLocalPlayer+(++i))%players.size());
+        player2 = players.get((indexOfLocalPlayer+(++i))%players.size());
+        player3 = players.get((indexOfLocalPlayer+(++i))%players.size());
 
+        if (localPlayer != null){
+            localPlayerLabel = new Label(localPlayer.getName(), skin);
+            localPlayerLabel.setFontScale(2.0f*scalingFactor);
+            localPlayerLabel.setAlignment(Align.left);
+            playerTable.add(localPlayerLabel).align(Align.left).expandX().fillX();
+
+            var cardstackimage = new Image(cardStack);
+            cardstackimage.setScale(0.7f);
+            cardstackimage.setOrigin(cardstackimage.getWidth()/2.0f, cardstackimage.getHeight()/3.5f);
+            playerTable.add(cardstackimage).right();
+
+            localPlayerCardsLabel = new Label(String.valueOf(localPlayer.getCardsToFind().size()+1), skin);
+            localPlayerCardsLabel.setFontScale(2.0f*scalingFactor);
+            localPlayerCardsLabel.setAlignment(Align.left);
+            playerTable.add(localPlayerCardsLabel).align(Align.left);
+
+            playerTable.row();
+        }
+        if (player1 != null){
+            player1Label = new Label(player1.getName(), skin);
+            player1Label.setFontScale(2.0f*scalingFactor);
+            player1Label.setAlignment(Align.left);
+            playerTable.add(player1Label).align(Align.left).expandX().fillX();
+
+            var cardstackimage = new Image(cardStack);
+            cardstackimage.setScale(0.7f);
+            cardstackimage.setOrigin(cardstackimage.getWidth()/2.0f, cardstackimage.getHeight()/3.5f);
+            playerTable.add(cardstackimage).right();
+
+            player1CardsLabel = new Label(String.valueOf(player1.getCardsToFind().size()+1), skin);
+            player1CardsLabel.setFontScale(2.0f*scalingFactor);
+            player1CardsLabel.setAlignment(Align.left);
+            playerTable.add(player1CardsLabel).align(Align.left);
+
+            playerTable.row();
+        }
+        if (player1 != null){
+            player2Label = new Label(player2.getName(), skin);
+            player2Label.setFontScale(2.0f*scalingFactor);
+            player2Label.setAlignment(Align.left);
+            playerTable.add(player2Label).align(Align.left).expandX().fillX();
+
+            var cardstackimage = new Image(cardStack);
+            cardstackimage.setScale(0.7f);
+            cardstackimage.setOrigin(cardstackimage.getWidth()/2.0f, cardstackimage.getHeight()/3.5f);
+            playerTable.add(cardstackimage).right();
+
+            player2CardsLabel = new Label(String.valueOf(player2.getCardsToFind().size()+1), skin);
+            player2CardsLabel.setFontScale(2.0f*scalingFactor);
+            player2CardsLabel.setAlignment(Align.left);
+            playerTable.add(player2CardsLabel).align(Align.left);
+
+            playerTable.row();
+        }
+        if (player1 != null){
+            player3Label = new Label(player3.getName(), skin);
+            player3Label.setFontScale(2.0f*scalingFactor);
+            player3Label.setAlignment(Align.left);
+            playerTable.add(player3Label).align(Align.left).expandX().fillX();
+
+            var cardstackimage = new Image(cardStack);
+            cardstackimage.setScale(0.7f);
+            cardstackimage.setOrigin(cardstackimage.getWidth()/2.0f, cardstackimage.getHeight()/3.5f);
+            playerTable.add(cardstackimage).right();
+
+            player3CardsLabel = new Label(String.valueOf(player3.getCardsToFind().size()+1), skin);
+            player3CardsLabel.setFontScale(2.0f*scalingFactor);
+            player3CardsLabel.setAlignment(Align.left);
+            playerTable.add(player3CardsLabel).align(Align.left);
+
+            playerTable.row();
+        }
+
+        playerTable.setPosition(50f*scalingFactor,Gdx.graphics.getHeight()-playerTable.getHeight()-100f*scalingFactor);
+        stage.addActor(playerTable);
+        firstCall = false;
 
     }
 
-    private void setCoordinatesTable(){
+    private void drawPlayerColorShapes(SpriteBatch batch) {
 
-        table.setPosition(   Gdx.graphics.getWidth()/100 * 10,Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/100 * 5);
+        float offsetX = 10f*scalingFactor;
+        float offsetY = 4f*scalingFactor;
+        myShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
+        if(localPlayer != null){
+            myShapeRenderer.setColor(PlayerColorMapper.getColorValue(localPlayer.getColor()));
+            if (game.getGameState().isMyTurn(localPlayer)){
+                myShapeRenderer.roundedRect(playerTable.getX()-2.0f*offsetX, playerTable.getY() + localPlayerLabel.getY() - 2.0f*offsetY, playerTable.getWidth() + 4.0f*offsetX, localPlayerLabel.getHeight()+ 4.0f*offsetY, 10);
+            }
+            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + localPlayerLabel.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, localPlayerLabel.getHeight()+ 2.0f*offsetY, 10);
+        }
+        if(player1 != null){
+            myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player1.getColor()));
+            if (game.getGameState().isMyTurn(player1)){
+                myShapeRenderer.roundedRect(playerTable.getX()-2.0f*offsetX, playerTable.getY() + player1Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 4.0f*offsetX, player1Label.getHeight()+ 4.0f*offsetY, 10);
+            }
+            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player1Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player1Label.getHeight()+ 2.0f*offsetY, 10);
+        }
+        if(player2 != null){
+            myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player2.getColor()));
+            if (game.getGameState().isMyTurn(player2)){
+                myShapeRenderer.roundedRect(playerTable.getX()-2.0f*offsetX, playerTable.getY() + player2Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 4.0f*offsetX, player2Label.getHeight()+ 4.0f*offsetY, 10);
+            }
+            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player2Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player2Label.getHeight()+ 2.0f*offsetY, 10);
+        }
+        if(player3 != null){
+            myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player3.getColor()));
+            if (game.getGameState().isMyTurn(player3)){
+                myShapeRenderer.roundedRect(playerTable.getX()-2.0f*offsetX, playerTable.getY() + player3Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 4.0f*offsetX, player3Label.getHeight()+ 4.0f*offsetY, 10);
+            }
+            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player3Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player3Label.getHeight()+ 2.0f*offsetY, 10);
+        }
+
+        myShapeRenderer.end();
 
     }
 
@@ -415,7 +485,7 @@ public class GameScreen implements Screen {
 
     private void drawCardToScreen(SpriteBatch batch) {
         cardSprite = TextureLoader.getSpriteByTexturePath("gameboard/card.png", TextureType.CARD);
-        cardSprite.setPosition(Gdx.graphics.getWidth()/100 * 7, Gdx.graphics.getHeight()/100 * 5);
+        cardSprite.setPosition(50f*scalingFactor, 10f*scalingFactor);
         cardSprite.setScale(0.7f);
         cardSprite.draw(batch);
 
