@@ -10,10 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
@@ -100,6 +97,9 @@ public class GameScreen implements Screen {
     private float scalingFactor;
     private boolean firstCall;
 
+    private TextButton backButton;
+    private Dialog dialog;
+
 
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
@@ -120,7 +120,8 @@ public class GameScreen implements Screen {
         boardframe = getScaledImage("ui/boardframe.PNG",0.7f);
         tileframe = getScaledImage("ui/tileframe.png",0.1f);
         cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
-        cardStackImage = new Image(cardStack);
+
+
 
     }
 
@@ -134,6 +135,40 @@ public class GameScreen implements Screen {
         BitmapFont myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
         myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
         scalingFactor = Gdx.graphics.getWidth()/1280f;
+
+        backButton = new TextButton("Menu", skin);
+        backButton.getLabel().setFontScale(2.0f*scalingFactor);
+        Container<TextButton> backButtonContainer = new Container<>(backButton);
+        backButtonContainer.setTransform(true);
+        backButtonContainer.size(100*scalingFactor, 50f*scalingFactor);
+        backButtonContainer.setPosition(75f*scalingFactor,Gdx.graphics.getHeight() - 50f*scalingFactor - backButtonContainer.getHeight());
+        stage.addActor(backButtonContainer);
+
+        dialog = new Dialog("Quit Game", skin, "dialog") {
+            public void result(Object obj) {
+                if (obj.equals(true)){
+                    game.setScreen(game.getMainMenuScreen());
+                    game.getClient().closeSession(game.getSessionKey());
+                    game.setSessionKey("------");
+                    game.setInGame(false);
+                } else {
+                    dialog.remove();
+                }
+            }
+        };
+        dialog.text("Are you sure you want to quit?");
+        dialog.button("Yes", true); //sends "true" as the result
+        dialog.button("No", false); //sends "false" as the result
+        dialog.pack();
+        dialog.setOrigin(Align.center);
+
+        backButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dialog.show(stage);
+            }
+        });
+
 
     }
 
@@ -164,7 +199,6 @@ public class GameScreen implements Screen {
         batch.draw(tileframe, getTileFrameX - tileframe.getWidth()/5 ,getTileFrameY - tileframe.getHeight()/5);
 
         batch.draw(boardframe, (int)getBoardFrameX,(int)getBoardFrameY);
-
         drawCardToScreen(batch);
         drawGameBoard(batch);
         if (!firstCall){
@@ -196,12 +230,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        // lifecycle function
+        dispose();
     }
 
     @Override
     public void dispose() {
-        // lifecycle function
+        stage.clear();
     }
 
     private void drawPlayerTable(SpriteBatch batch){
@@ -209,7 +243,7 @@ public class GameScreen implements Screen {
         List<Player> players = game.getGameState().getPlayers();
         playerTable = new Table();
         playerTable.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
-        playerTable.defaults().padTop(30f);
+        playerTable.defaults().padTop(30f).maxHeight(50f*scalingFactor);;
         var indexOfLocalPlayer = 0;
         var i = 0;
 
@@ -219,75 +253,67 @@ public class GameScreen implements Screen {
             }
         }
 
-        localPlayer = players.get((indexOfLocalPlayer+i)%players.size());
-        player1 = players.get((indexOfLocalPlayer+(++i))%players.size());
-        player2 = players.get((indexOfLocalPlayer+(++i))%players.size());
-        player3 = players.get((indexOfLocalPlayer+(++i))%players.size());
 
-        if (localPlayer != null){
+        if (players.size()!=0){
+            localPlayer = players.get((indexOfLocalPlayer+i)%players.size());
             localPlayerLabel = new Label(localPlayer.getName(), skin);
             localPlayerLabel.setFontScale(2.0f*scalingFactor);
             localPlayerLabel.setAlignment(Align.left);
             playerTable.add(localPlayerLabel).align(Align.left).expandX().fillX();
 
             var cardstackimage = new Image(cardStack);
-            cardstackimage.setScale(0.7f);
-            cardstackimage.setOrigin(cardstackimage.getWidth()/2.0f, cardstackimage.getHeight()/3.5f);
-            playerTable.add(cardstackimage).right();
+            playerTable.add(cardstackimage).right().maxWidth(50f*scalingFactor);
 
             localPlayerCardsLabel = new Label(String.valueOf(localPlayer.getCardsToFind().size()+1), skin);
             localPlayerCardsLabel.setFontScale(2.0f*scalingFactor);
             localPlayerCardsLabel.setAlignment(Align.left);
             playerTable.add(localPlayerCardsLabel).align(Align.left);
 
-            playerTable.row();
+            playerTable.row().maxHeight(50f*scalingFactor);
         }
-        if (player1 != null){
+        if (players.size()>1){
+            player1 = players.get((indexOfLocalPlayer+(++i))%players.size());
             player1Label = new Label(player1.getName(), skin);
             player1Label.setFontScale(2.0f*scalingFactor);
             player1Label.setAlignment(Align.left);
             playerTable.add(player1Label).align(Align.left).expandX().fillX();
 
             var cardstackimage = new Image(cardStack);
-            cardstackimage.setScale(0.7f);
-            cardstackimage.setOrigin(cardstackimage.getWidth()/2.0f, cardstackimage.getHeight()/3.5f);
-            playerTable.add(cardstackimage).right();
+            playerTable.add(cardstackimage).right().maxWidth(50f*scalingFactor);
 
             player1CardsLabel = new Label(String.valueOf(player1.getCardsToFind().size()+1), skin);
             player1CardsLabel.setFontScale(2.0f*scalingFactor);
             player1CardsLabel.setAlignment(Align.left);
             playerTable.add(player1CardsLabel).align(Align.left);
 
-            playerTable.row();
+            playerTable.row().maxHeight(50f*scalingFactor);
         }
-        if (player1 != null){
+        if (players.size()>2){
+            player2 = players.get((indexOfLocalPlayer+(++i))%players.size());
             player2Label = new Label(player2.getName(), skin);
             player2Label.setFontScale(2.0f*scalingFactor);
             player2Label.setAlignment(Align.left);
             playerTable.add(player2Label).align(Align.left).expandX().fillX();
 
             var cardstackimage = new Image(cardStack);
-            cardstackimage.setScale(0.7f);
-            cardstackimage.setOrigin(cardstackimage.getWidth()/2.0f, cardstackimage.getHeight()/3.5f);
-            playerTable.add(cardstackimage).right();
+            playerTable.add(cardstackimage).right().maxWidth(50f*scalingFactor);
 
             player2CardsLabel = new Label(String.valueOf(player2.getCardsToFind().size()+1), skin);
             player2CardsLabel.setFontScale(2.0f*scalingFactor);
             player2CardsLabel.setAlignment(Align.left);
             playerTable.add(player2CardsLabel).align(Align.left);
 
-            playerTable.row();
+            playerTable.row().maxHeight(50f*scalingFactor);
         }
-        if (player1 != null){
+        if (players.size()>3){
+            player3 = players.get((indexOfLocalPlayer+(++i))%players.size());
             player3Label = new Label(player3.getName(), skin);
             player3Label.setFontScale(2.0f*scalingFactor);
             player3Label.setAlignment(Align.left);
             playerTable.add(player3Label).align(Align.left).expandX().fillX();
 
             var cardstackimage = new Image(cardStack);
-            cardstackimage.setScale(0.7f);
-            cardstackimage.setOrigin(cardstackimage.getWidth()/2.0f, cardstackimage.getHeight()/3.5f);
-            playerTable.add(cardstackimage).right();
+            playerTable.add(cardstackimage).right().maxWidth(50f*scalingFactor);
 
             player3CardsLabel = new Label(String.valueOf(player3.getCardsToFind().size()+1), skin);
             player3CardsLabel.setFontScale(2.0f*scalingFactor);
@@ -297,7 +323,10 @@ public class GameScreen implements Screen {
             playerTable.row();
         }
 
-        playerTable.setPosition(50f*scalingFactor,Gdx.graphics.getHeight()-playerTable.getHeight()-100f*scalingFactor);
+        var emptyLabel = new Label(" ", skin);
+        playerTable.add(emptyLabel).colspan(3).expandY().fillY();
+
+        playerTable.setPosition(50f*scalingFactor,Gdx.graphics.getHeight()-playerTable.getHeight()-120f*scalingFactor);
         stage.addActor(playerTable);
         firstCall = false;
 
@@ -501,7 +530,7 @@ public class GameScreen implements Screen {
 
     public void updateExtraTile(){
         for (Actor actor : stage.getActors()){
-            if (actor.getName() == extraTileImage.getName()){
+            if (extraTileImage != null && actor.getName() == extraTileImage.getName()){
                 actor.remove();
             }
         }
