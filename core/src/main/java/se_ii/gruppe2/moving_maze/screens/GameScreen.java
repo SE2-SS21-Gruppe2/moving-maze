@@ -2,12 +2,18 @@ package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -42,6 +48,8 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private Player player;
     private Stage stage;
+    private Stage stage2;
+    private Stage stage3;
     private ArrayList<Position> localPlayerMoves;
     private boolean canMove=false;
     public static boolean tileJustRotated = false;
@@ -107,6 +115,8 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
 
         stage = new Stage();
+        stage2 = new Stage();
+        stage3 = new Stage();
         myShapeRenderer = new MyShapeRenderer();
         firstCall = true;
 
@@ -129,7 +139,13 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         player = game.getLocalPlayer();
-        Gdx.input.setInputProcessor(stage);
+
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(stage);
+        inputMultiplexer.addProcessor(stage2);
+        inputMultiplexer.addProcessor(stage3);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         var myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
         myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -143,7 +159,7 @@ public class GameScreen implements Screen {
         backButtonContainer.setTransform(true);
         backButtonContainer.size(100*scalingFactor, 50f*scalingFactor);
         backButtonContainer.setPosition(75f*scalingFactor,Gdx.graphics.getHeight() - 50f*scalingFactor - backButtonContainer.getHeight());
-        stage.addActor(backButtonContainer);
+        stage2.addActor(backButtonContainer);
 
         dialog = new Dialog("Quit Game", skin, "dialog") {
             public void result(Object obj) {
@@ -166,7 +182,7 @@ public class GameScreen implements Screen {
         backButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                dialog.show(stage);
+                dialog.show(stage2);
             }
         });
 
@@ -207,6 +223,8 @@ public class GameScreen implements Screen {
         }
         drawPlayerTable(batch);
         stage.draw();
+        stage3.draw();
+        stage2.draw();
         //game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
         //game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
         //game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
@@ -249,11 +267,10 @@ public class GameScreen implements Screen {
         var i = 0;
 
         for (Player player : players){
-            if (game.getLocalPlayer().getName() == player.getName()){
+            if (game.getLocalPlayer().getName().equals(player.getName())){
                 indexOfLocalPlayer = players.indexOf(player);
             }
         }
-
 
         if (players.size()!=0){
             localPlayer = players.get((indexOfLocalPlayer+i)%players.size());
@@ -342,28 +359,28 @@ public class GameScreen implements Screen {
         if(localPlayer != null){
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(localPlayer.getColor()));
             if (game.getGameState().isMyTurn(localPlayer)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.0f*offsetX, playerTable.getY() + localPlayerLabel.getY() - 2.0f*offsetY, playerTable.getWidth() + 4.0f*offsetX, localPlayerLabel.getHeight()+ 4.0f*offsetY, 10);
+                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + localPlayerLabel.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, localPlayerLabel.getHeight()+ 4.0f*offsetY, 10);
             }
             myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + localPlayerLabel.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, localPlayerLabel.getHeight()+ 2.0f*offsetY, 10);
         }
         if(player1 != null){
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player1.getColor()));
             if (game.getGameState().isMyTurn(player1)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.0f*offsetX, playerTable.getY() + player1Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 4.0f*offsetX, player1Label.getHeight()+ 4.0f*offsetY, 10);
+                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player1Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player1Label.getHeight()+ 4.0f*offsetY, 10);
             }
             myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player1Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player1Label.getHeight()+ 2.0f*offsetY, 10);
         }
         if(player2 != null){
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player2.getColor()));
             if (game.getGameState().isMyTurn(player2)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.0f*offsetX, playerTable.getY() + player2Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 4.0f*offsetX, player2Label.getHeight()+ 4.0f*offsetY, 10);
+                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player2Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player2Label.getHeight()+ 4.0f*offsetY, 10);
             }
             myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player2Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player2Label.getHeight()+ 2.0f*offsetY, 10);
         }
         if(player3 != null){
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player3.getColor()));
             if (game.getGameState().isMyTurn(player3)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.0f*offsetX, playerTable.getY() + player3Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 4.0f*offsetX, player3Label.getHeight()+ 4.0f*offsetY, 10);
+                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player3Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player3Label.getHeight()+ 4.0f*offsetY, 10);
             }
             myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player3Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player3Label.getHeight()+ 2.0f*offsetY, 10);
         }
@@ -454,10 +471,10 @@ public class GameScreen implements Screen {
 
         // check for rotation of accelerometer
         if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && game.getPreferences().getBoolean("rotateWithSensorOn", true)) {
-            Gdx.app.log("sensor/accelerom", "X: " + Gdx.input.getAccelerometerX() +
-                    " | Y: " + Gdx.input.getAccelerometerY() + " | Z: " + Gdx.input.getAccelerometerZ());
+            //Gdx.app.log("sensor/accelerom", "X: " + Gdx.input.getAccelerometerX() +
+                    //" | Y: " + Gdx.input.getAccelerometerY() + " | Z: " + Gdx.input.getAccelerometerZ());
             if (Gdx.input.getAccelerometerY() > 4.0 && !tileJustRotated) {
-                Gdx.app.log("sensor/accelerom", "Triggered tile rotation positive!");
+                //Gdx.app.log("sensor/accelerom", "Triggered tile rotation positive!");
                 game.getGameState().getExtraTile().rotateCounterClockwise();
                 newExtraTile = true;
                 tileJustRotated = true;
@@ -465,7 +482,7 @@ public class GameScreen implements Screen {
             }
 
             if (Gdx.input.getAccelerometerY() < -4.0 && !tileJustRotated) {
-                Gdx.app.log("sensor/accelerom", "Triggered tile rotation negative!");
+                //Gdx.app.log("sensor/accelerom", "Triggered tile rotation negative!");
                 game.getGameState().getExtraTile().rotateClockwise();
                 newExtraTile = true;
                 tileJustRotated = true;
@@ -476,7 +493,7 @@ public class GameScreen implements Screen {
         if (isNewExtraTile()){
             updateExtraTile();
         }
-        if(canMove && game.getGameState().getGamePhase()== GamePhaseType.MOVE_PLAYER){
+        if(game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer())){
             updatePlayerMovement(initPos.getX(),initPos.getY());
         }
     }
@@ -507,12 +524,11 @@ public class GameScreen implements Screen {
                         new TreasurePickupAction().execute();
                     }
                 });
-                canMove=false;
-                image.draw(batch,1f);
+                //image.draw(batch,1f);
                 stage.addActor(image);
             }
         }
-
+        canMove=false;
     }
 
     private void drawCardToScreen(SpriteBatch batch) {
@@ -532,11 +548,7 @@ public class GameScreen implements Screen {
     }
 
     public void updateExtraTile(){
-        for (Actor actor : stage.getActors()){
-            if (extraTileImage != null && actor.getName() == extraTileImage.getName()){
-                actor.remove();
-            }
-        }
+        stage3.clear();
         currentExtraTile = game.getGameState().getExtraTile();
         Texture layeredTexture;
 
@@ -619,7 +631,7 @@ public class GameScreen implements Screen {
                     }
                 });
             }
-            stage.addActor(extraTileImage);
+            stage3.addActor(extraTileImage);
             setNewExtraTile(false);
         }
 

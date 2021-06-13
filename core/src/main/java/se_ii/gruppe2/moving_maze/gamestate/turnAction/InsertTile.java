@@ -95,6 +95,10 @@ public class InsertTile implements TurnAction {
             return false;
         }
 
+        if (insertPosition.x < 0.0f || insertPosition.y < 0.0f){
+            return false;
+        }
+
         if ((insertPosition.x == 0.0f || insertPosition.x == 6.0f) && insertPosition.y % 2 != 0.0f) {
             return true;
         } else return (insertPosition.y == 0.0f || insertPosition.y == 6.0f) && insertPosition.x % 2 != 0.0f;
