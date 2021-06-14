@@ -1,6 +1,8 @@
 package se_ii.gruppe2.moving_maze.player;
 
 import com.badlogic.gdx.Gdx;
+
+import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 
@@ -16,6 +18,7 @@ public class Player {
     private Stack<ItemLogical> cardsFound;
     private ItemLogical currentCard;
     private PlayerRole role;
+
 
     private PlayerColor color;
 
@@ -55,6 +58,8 @@ public class Player {
             currentCard = cardsToFind.pop();
             Gdx.app.log("player/treasure", "Card updated: " + currentCard.getName());
         } else {
+            var game= MovingMazeGame.getGameInstance();
+            game.getClient().gameWin(game.getSessionKey(),this);
             currentCard = null;
         }
 

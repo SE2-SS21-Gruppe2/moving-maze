@@ -6,6 +6,7 @@ import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.item.ItemFactory;
 import se_ii.gruppe2.moving_maze.network.listeners.CreateSessionConfirmationListener;
 import se_ii.gruppe2.moving_maze.network.listeners.UpdateConnectedPlayersListener;
+import se_ii.gruppe2.moving_maze.network.listeners.WinGameListener;
 import se_ii.gruppe2.moving_maze.network.messages.out.*;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
 import se_ii.gruppe2.moving_maze.network.listeners.ErrorResponseListener;
@@ -63,6 +64,7 @@ public class NetworkClient {
         kryoClient.addListener(new JoinConfirmationListener());
         kryoClient.addListener(new CreateSessionConfirmationListener());
         kryoClient.addListener(new UpdateConnectedPlayersListener());
+        kryoClient.addListener(new WinGameListener());
     }
 
     /**
@@ -99,6 +101,11 @@ public class NetworkClient {
     public void initGame(String key, GameBoard board, String finalHostName) {
         kryoClient.sendTCP(new InitGameStart(key, board, finalHostName, ItemFactory.getItems()));
         Gdx.app.log("NetworkClient/initGame", "Sent request to initialize game '" + key + "'");
+    }
+
+    public void gameWin(String sessionKey,Player player){
+        kryoClient.sendTCP(new WinGameRequest(sessionKey,player));
+        Gdx.app.log("NetworkClient/gameWin","Sent winning player"+ "'"+ player.getName() +"'");
     }
 
 }

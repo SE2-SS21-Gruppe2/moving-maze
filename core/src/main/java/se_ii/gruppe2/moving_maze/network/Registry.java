@@ -1,10 +1,21 @@
 package se_ii.gruppe2.moving_maze.network;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.RefCountedContainer;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.esotericsoftware.kryo.Kryo;
+
+import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhase;
+import se_ii.gruppe2.moving_maze.network.listeners.WinGameListener;
 import se_ii.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
 import se_ii.gruppe2.moving_maze.network.messages.in.UpdateConnectedPlayersConfirmation;
+import se_ii.gruppe2.moving_maze.network.messages.in.WinGameConformation;
 import se_ii.gruppe2.moving_maze.network.messages.out.*;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.gamestate.ChatMessage;
@@ -18,6 +29,7 @@ import se_ii.gruppe2.moving_maze.network.messages.in.RequestProcessError;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.player.PlayerColor;
 import se_ii.gruppe2.moving_maze.player.PlayerRole;
+import se_ii.gruppe2.moving_maze.screens.GameScreen;
 import se_ii.gruppe2.moving_maze.tile.*;
 
 import java.util.ArrayList;
@@ -66,6 +78,16 @@ public class Registry {
         kryo.register(InitGameStart.class);
         kryo.register(Vector2.class);
         kryo.register(GamePhase.class);
+        kryo.register(NetworkClient.class);
+
+        kryo.register(WinGameRequest.class);
+        kryo.register(WinGameConformation.class);
+        kryo.register(WinGameListener.class);
+
+
+
+
+
     }
 
 }
