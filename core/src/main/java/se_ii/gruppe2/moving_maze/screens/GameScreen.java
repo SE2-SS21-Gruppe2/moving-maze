@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -37,6 +34,7 @@ import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.player.PlayerColorMapper;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
+import javax.swing.text.GlyphView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,9 +45,10 @@ public class GameScreen implements Screen {
     private boolean newExtraTile;
     private OrthographicCamera camera;
     private Player player;
-    private Stage stage;
-    private Stage stage2;
-    private Stage stage3;
+    private Stage stagePlayerMovement;
+    private Stage stageMenuButton;
+    private Stage stageExtraTile;
+    private Stage stagePlayerList;
     private ArrayList<Position> localPlayerMoves;
     private boolean canMove=false;
     public static boolean tileJustRotated = false;
@@ -86,6 +85,8 @@ public class GameScreen implements Screen {
     private float getTileFrameX;
     private float getTileFrameY;
 
+    private Label phaseLabel;
+
     private Label localPlayerLabel;
     private Label player1Label;
     private Label player2Label;
@@ -106,17 +107,18 @@ public class GameScreen implements Screen {
     private float scalingFactor;
     private boolean firstCall;
 
-    private TextButton backButton;
-    private Dialog dialog;
+    private TextButton menuButton;
+    private Dialog dialogMenu;
 
 
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
         this.batch = game.getBatch();
 
-        stage = new Stage();
-        stage2 = new Stage();
-        stage3 = new Stage();
+        stagePlayerMovement = new Stage();
+        stageMenuButton = new Stage();
+        stageExtraTile = new Stage();
+        stagePlayerList = new Stage();
         myShapeRenderer = new MyShapeRenderer();
         firstCall = true;
 
@@ -141,11 +143,17 @@ public class GameScreen implements Screen {
         player = game.getLocalPlayer();
 
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(stage2);
-        inputMultiplexer.addProcessor(stage3);
+        inputMultiplexer.addProcessor(stagePlayerMovement);
+        inputMultiplexer.addProcessor(stageMenuButton);
+        inputMultiplexer.addProcessor(stageExtraTile);
+        inputMultiplexer.addProcessor(stagePlayerList);
 
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        stagePlayerList.clear();
+        stageExtraTile.clear();
+        stageMenuButton.clear();
+        stagePlayerMovement.clear();
 
         var myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
         myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -153,42 +161,8 @@ public class GameScreen implements Screen {
         myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
         scalingFactor = Gdx.graphics.getWidth()/1280f;
 
-        backButton = new TextButton("Menu", skin);
-        backButton.getLabel().setFontScale(2.0f*scalingFactor);
-        Container<TextButton> backButtonContainer = new Container<>(backButton);
-        backButtonContainer.setTransform(true);
-        backButtonContainer.size(100*scalingFactor, 50f*scalingFactor);
-        backButtonContainer.setPosition(75f*scalingFactor,Gdx.graphics.getHeight() - 50f*scalingFactor - backButtonContainer.getHeight());
-        stage2.addActor(backButtonContainer);
-
-        dialog = new Dialog("Quit Game", skin, "dialog") {
-            public void result(Object obj) {
-                if (obj.equals(true)){
-                    game.setScreen(game.getMainMenuScreen());
-                    game.getClient().closeSession(game.getSessionKey());
-                    game.setSessionKey("------");
-                    game.setInGame(false);
-                } else {
-                    dialog.remove();
-                }
-            }
-        };
-        dialog.text("Are you sure you want to quit?");
-        dialog.button("Yes", true); //sends "true" as the result
-        dialog.button("No", false); //sends "false" as the result
-        dialog.pack();
-        dialog.setOrigin(Align.center);
-
-        backButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                dialog.show(stage2);
-            }
-        });
-
-
+        setUpMenuButton();
     }
-
 
 
     @Override
@@ -219,12 +193,13 @@ public class GameScreen implements Screen {
         drawCardToScreen(batch);
         drawGameBoard(batch);
         if (!firstCall){
-            drawPlayerColorShapes(batch);
+            drawPlayerColorShapes();
         }
-        drawPlayerTable(batch);
-        stage.draw();
-        stage3.draw();
-        stage2.draw();
+        updatePlayerTable();
+        stagePlayerMovement.draw();
+        stagePlayerList.draw();
+        stageExtraTile.draw();
+        stageMenuButton.draw();
         //game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
         //game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
         //game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
@@ -254,15 +229,23 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.clear();
+        stagePlayerMovement.dispose();
+        stagePlayerList.dispose();
+        stageMenuButton.dispose();
+        stageExtraTile.dispose();
     }
 
-    private void drawPlayerTable(SpriteBatch batch){
+
+    /**
+     * updates the player table with the names and the players' remaining cards
+     */
+    private void updatePlayerTable(){
 
         List<Player> players = game.getGameState().getPlayers();
         playerTable = new Table();
         playerTable.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
         playerTable.defaults().padTop(30f).maxHeight(50f*scalingFactor);;
+
         var indexOfLocalPlayer = 0;
         var i = 0;
 
@@ -338,19 +321,26 @@ public class GameScreen implements Screen {
             player3CardsLabel.setAlignment(Align.left);
             playerTable.add(player3CardsLabel).align(Align.left);
 
-            playerTable.row();
         }
 
-        var emptyLabel = new Label(" ", skin);
-        playerTable.add(emptyLabel).colspan(3).expandY().fillY();
-
         playerTable.setPosition(50f*scalingFactor,Gdx.graphics.getHeight()-playerTable.getHeight()-120f*scalingFactor);
-        stage.addActor(playerTable);
+        stagePlayerList.clear();
+        stagePlayerList.addActor(playerTable);
         firstCall = false;
+
+        phaseLabel = new Label(game.getGameState().getGamePhaseText(),skin);
+        phaseLabel.setFontScale(1.8f*scalingFactor);
+        phaseLabel.setAlignment(Align.center);
+        phaseLabel.setSize(Gdx.graphics.getWidth()/4, phaseLabel.getHeight());
+        phaseLabel.setPosition(Gdx.graphics.getWidth()/3+50f*scalingFactor-phaseLabel.getWidth(), Gdx.graphics.getHeight()-50f*scalingFactor-phaseLabel.getHeight());
+        stagePlayerList.addActor(phaseLabel);
 
     }
 
-    private void drawPlayerColorShapes(SpriteBatch batch) {
+    /**
+     * draws the rounded rectangles around the player names
+     */
+    private void drawPlayerColorShapes() {
 
         float offsetX = 10f*scalingFactor;
         float offsetY = 4f*scalingFactor;
@@ -385,9 +375,56 @@ public class GameScreen implements Screen {
             myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player3Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player3Label.getHeight()+ 2.0f*offsetY, 10);
         }
 
+        if(phaseLabel != null){
+            myShapeRenderer.setColor(0.5f, 0.5f, 0.5f, 0.85f);
+            myShapeRenderer.roundedRect(phaseLabel.getX()-0.5f*offsetX, phaseLabel.getY()-2.0f*offsetX,phaseLabel.getWidth()+2.0f*offsetX, phaseLabel.getHeight()+4.0f*offsetX, 10);
+        }
+
         myShapeRenderer.end();
 
     }
+
+
+    /**
+     * set up the menu button and the associated confirm dialog
+     */
+    private void setUpMenuButton() {
+        menuButton = new TextButton("Menu", skin);
+        menuButton.getLabel().setFontScale(1.75f*scalingFactor);
+        Container<TextButton> backButtonContainer = new Container<>(menuButton);
+        backButtonContainer.setTransform(true);
+        backButtonContainer.size(80*scalingFactor, 40f*scalingFactor);
+        backButtonContainer.setPosition(80f*scalingFactor,Gdx.graphics.getHeight() - 57f*scalingFactor - backButtonContainer.getHeight());
+        stageMenuButton.addActor(backButtonContainer);
+
+        dialogMenu = new Dialog("Quit Game", skin, "dialog") {
+            public void result(Object obj) {
+                if (obj.equals(true)){
+                    game.setScreen(game.getMainMenuScreen());
+                    game.getClient().leaveSession(game.getLocalPlayer(), game.getSessionKey());
+                    game.setSessionKey("------");
+                    game.setInGame(false);
+                } else {
+                    dialogMenu.remove();
+                }
+            }
+        };
+        dialogMenu.text("Are you sure you want to quit?");
+        dialogMenu.button("Yes", true); //sends "true" as the result
+        dialogMenu.button("No", false); //sends "false" as the result
+        dialogMenu.scaleBy(2.0f);
+        dialogMenu.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
+        dialogMenu.setPosition(Gdx.graphics.getWidth()/3.0f, Gdx.graphics.getHeight()/3.0f);
+        dialogMenu.pack();
+
+        menuButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stageMenuButton.addActor(dialogMenu);
+            }
+        });
+    }
+
 
     /**
      * Calculates the start-coordinates for a gameboard with respect to the aspect-ratio.
@@ -501,7 +538,7 @@ public class GameScreen implements Screen {
 
 
     public void updatePlayerMovement(float colStart, float rowStart){
-        stage.clear();
+        stagePlayerMovement.clear();
         MovePlayer movePlayer= new MovePlayer();
         if (movePlayer.validate() && movePlayer.getPositionsToGO().size()>1){
             localPlayerMoves=movePlayer.getPositionsToGO();
@@ -519,13 +556,13 @@ public class GameScreen implements Screen {
                         movePlayer.setBoardStart(getStartCoordinates());
                         movePlayer.setMovePosition(new Position((int)image.getOriginX(),(int) image.getOriginY() ));
                         movePlayer.execute();
-                        stage.clear();
+                        stagePlayerMovement.clear();
 
                         new TreasurePickupAction().execute();
                     }
                 });
                 //image.draw(batch,1f);
-                stage.addActor(image);
+                stagePlayerMovement.addActor(image);
             }
         }
         canMove=false;
@@ -547,8 +584,11 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * updates the current extra tile and handles the inserting into the gameboard
+     */
     public void updateExtraTile(){
-        stage3.clear();
+        stageExtraTile.clear();
         currentExtraTile = game.getGameState().getExtraTile();
         Texture layeredTexture;
 
@@ -631,7 +671,7 @@ public class GameScreen implements Screen {
                     }
                 });
             }
-            stage3.addActor(extraTileImage);
+            stageExtraTile.addActor(extraTileImage);
             setNewExtraTile(false);
         }
 

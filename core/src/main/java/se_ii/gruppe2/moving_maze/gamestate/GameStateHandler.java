@@ -141,4 +141,18 @@ public class GameStateHandler {
             return false;
         }
     }
+
+    /**
+     * Can be called to get the current game phase in plain text
+     * @return current game phase as plain text
+     */
+    public String getGamePhaseText() {
+        switch(this.gamePhase.getPhaseType()){
+            case INSERT_TILE: return "Extra-Teil einsetzen";
+            case MOVE_PLAYER: return "Spielfigur bewegen";
+            case DRAW_CARD: return "Karte ziehen";
+            case PICKUP_ITEM: return "Symbol aufnehmen";
+            default: return "";
+        }
+    }
 }
