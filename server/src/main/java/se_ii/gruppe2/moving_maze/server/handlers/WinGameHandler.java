@@ -21,16 +21,14 @@ public class WinGameHandler extends Listener {
     public void received(Connection con, Object obj){
         if(obj instanceof WinGameRequest){
             WinGameRequest win= (WinGameRequest) obj;
-            if(true/*win.getPlayer().getCardsToFind().size()==0*/){
-                WinGameConformation winConf= new WinGameConformation(win.getPlayer());
-                var session= SessionManager.getSessionByKey(win.getSessionCode());
-                Connection connection;
-                for(Map.Entry<Player,Connection> entry: session.getPlayers().entrySet()){
-                    connection= entry.getValue();
-                    connection.sendTCP(winConf);
-                }
-                SessionManager.closeSession(win.getSessionCode());
+            WinGameConformation winConf= new WinGameConformation(win.getPlayer());
+            var session= SessionManager.getSessionByKey(win.getSessionCode());
+            Connection connection;
+            for(Map.Entry<Player,Connection> entry: session.getPlayers().entrySet()){
+                connection= entry.getValue();
+                connection.sendTCP(winConf);
             }
+            SessionManager.closeSession(win.getSessionCode());
 
         }
     }
