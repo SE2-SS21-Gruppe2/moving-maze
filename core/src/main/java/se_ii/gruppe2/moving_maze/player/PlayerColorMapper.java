@@ -1,6 +1,6 @@
 package se_ii.gruppe2.moving_maze.player;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Color;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.item.Position;
@@ -84,6 +84,21 @@ public class PlayerColorMapper {
             case BLUE:
                 return new Position(-TextureLoader.TILE_EDGE_SIZE/offsetFactor, -TextureLoader.TILE_EDGE_SIZE/offsetFactor);
 
+            default:
+                return null;
+        }
+    }
+
+    public static Color getColorValue(PlayerColor color) {
+        switch (color){
+            case RED:
+                return new Color(Color.RED);
+            case YELLOW:
+                return new Color(Color.YELLOW);
+            case GREEN:
+                return new Color(Color.GREEN);
+            case BLUE:
+                return new Color(Color.BLUE);
             default:
                 return null;
         }
