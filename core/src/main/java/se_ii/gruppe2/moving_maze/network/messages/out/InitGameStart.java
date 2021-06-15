@@ -12,6 +12,7 @@ import java.util.Arrays;
  */
 public class InitGameStart {
     private String key;
+    private int itemsPerPlayer;
     private GameBoard board;
     private String finalHostName;
     private ArrayList<ItemLogical> itemsToDistribute;
@@ -19,10 +20,11 @@ public class InitGameStart {
     public InitGameStart() {
     }
 
-    public InitGameStart(String key, GameBoard board, String finalHostName, ItemLogical[] availableItems) {
+    public InitGameStart(String key, GameBoard board, String finalHostName, int itemsPerPlayer, ItemLogical[] availableItems) {
         this.key = key;
         this.board = board;
         this.finalHostName = finalHostName;
+        this.itemsPerPlayer = itemsPerPlayer;
         this.itemsToDistribute = new ArrayList<>(Arrays.asList(availableItems));
     }
 
@@ -57,5 +59,13 @@ public class InitGameStart {
 
     public void setItemsToDistribute(ArrayList<ItemLogical> itemsToDistribute) {
         this.itemsToDistribute = itemsToDistribute;
+    }
+
+    public int getItemsPerPlayer() {
+        return itemsPerPlayer;
+    }
+
+    public void setItemsPerPlayer(int itemsPerPlayer) {
+        this.itemsPerPlayer = itemsPerPlayer;
     }
 }

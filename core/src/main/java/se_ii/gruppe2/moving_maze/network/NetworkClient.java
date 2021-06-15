@@ -98,8 +98,8 @@ public class NetworkClient {
         Gdx.app.log("NetworkClient/leaveSession", "Submitted request to leave session '" + sessionKey + "'");
     }
 
-    public void initGame(String key, GameBoard board, String finalHostName) {
-        kryoClient.sendTCP(new InitGameStart(key, board, finalHostName, ItemFactory.getItems()));
+    public void initGame(String key, GameBoard board, String finalHostName, int itemsPerPlayer) {
+        kryoClient.sendTCP(new InitGameStart(key, board, finalHostName, itemsPerPlayer, ItemFactory.getItems()));
         Gdx.app.log("NetworkClient/initGame", "Sent request to initialize game '" + key + "'");
     }
 
