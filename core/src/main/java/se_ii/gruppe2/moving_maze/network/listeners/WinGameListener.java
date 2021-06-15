@@ -14,9 +14,8 @@ public class WinGameListener extends Listener {
         if(obj instanceof WinGameConformation){
             WinGameConformation win= (WinGameConformation) obj;
             var game= MovingMazeGame.getGameInstance();
-            game.setScreen(game.getVictoryScreen());
             VictoryScreen.setWiningPlayer(win.getPlayer());
-
+            game.setScreen(game.getVictoryScreen());
         }
     }
 }

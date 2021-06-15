@@ -28,7 +28,7 @@ public class MainMenuScreen implements Screen {
 
     // UI stuff
     private Stage stage;
-    private Skin skin;
+    public static Skin skin;
     private Table tableLayout = new Table();
     private Texture headerLogoScaled;
     private ArrayList<Actor> buttons;
