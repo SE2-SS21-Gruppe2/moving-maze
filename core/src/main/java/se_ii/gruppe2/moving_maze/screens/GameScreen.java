@@ -72,10 +72,6 @@ public class GameScreen implements Screen {
 
     Image extraTileImage;
 
-    // background
-    private Texture bgImageTexture;
-    private TextureRegion bgTextureRegion;
-
     private Texture boardframe ;
     private Texture tileframe ;
     private Texture cardStack;
@@ -125,10 +121,6 @@ public class GameScreen implements Screen {
         camera = MovingMazeGame.getStandardizedCamera();
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-
-        // instantiate textures for background
-        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
-        bgTextureRegion = new TextureRegion(bgImageTexture);
 
         boardframe = getScaledImage("ui/boardframe.PNG",0.7f);
         tileframe = getScaledImage("ui/tileframe.png",0.1f);
@@ -189,7 +181,7 @@ public class GameScreen implements Screen {
         }
 
         batch.begin();
-        batch.draw(bgTextureRegion, 0, 0);
+        batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
 
         batch.draw(tileframe, getTileFrameX - tileframe.getWidth()/5 ,getTileFrameY - tileframe.getHeight()/5);
 
@@ -247,7 +239,7 @@ public class GameScreen implements Screen {
 
         List<Player> players = game.getGameState().getPlayers();
         playerTable = new Table();
-        playerTable.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
+        playerTable.setSize(Gdx.graphics.getWidth()/3f, Gdx.graphics.getHeight()/3f);
         playerTable.defaults().padTop(30f).maxHeight(50f*scalingFactor);;
 
         var indexOfLocalPlayer = 0;

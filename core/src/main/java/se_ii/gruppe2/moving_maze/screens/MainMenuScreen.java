@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.audio.AudioManager;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 
 import java.util.ArrayList;
 
@@ -30,10 +32,6 @@ public class MainMenuScreen implements Screen {
     private Table tableLayout = new Table();
     private Texture headerLogoScaled;
     private ArrayList<Actor> buttons;
-
-    // textures and views
-    private Texture bgImageTexture;
-    private TextureRegion bgTextureRegion;
 
     public MainMenuScreen(final MovingMazeGame game) {
         this.game = game;
@@ -62,10 +60,6 @@ public class MainMenuScreen implements Screen {
         stage.addActor(tableLayout);
         stage.getCamera().position.set(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f, 0);
 
-        // instantiate textures
-        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
-        bgTextureRegion = new TextureRegion(bgImageTexture);
-
         // handle music
         if (game.getPreferences().getBoolean("soundOn")) {
             game.getAudioManager().playBackgroundMusic();
@@ -81,7 +75,7 @@ public class MainMenuScreen implements Screen {
 
         batch.begin();
 
-            batch.draw(bgTextureRegion, 0, 0);
+            batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
 
             batch.draw(headerLogoScaled,
                     camera.viewportWidth/2 - headerLogoScaled.getWidth()/2.0f,

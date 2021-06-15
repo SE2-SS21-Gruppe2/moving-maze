@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.player.Player;
 
 public class VictoryScreen implements Screen {
@@ -40,8 +42,8 @@ public class VictoryScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
 
         batch.begin();
+        batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
         game.getFont().draw(batch, winingPlayer.getName(), 300f, 300f);
-
 
         batch.end();
     }

@@ -48,12 +48,33 @@ public class TextureLoader {
                 sprite = new Sprite(getCardTexture(path));
                 break;
 
+            case BACKGROUND:
+                sprite = new Sprite(getScaledBackgroundTexture(path));
+                break;
+
             default:
                 sprite = null;
         }
 
         textures.put(path, sprite);
         return sprite;
+    }
+
+    public static Texture getScaledBackgroundTexture(String texturePath) {
+        var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+
+        var scaledPicture = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), originalPicture.getFormat());
+
+        scaledPicture.drawPixmap(originalPicture,
+                0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
+                0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
+
+        var scaledBackground = new Texture(scaledPicture);
+
+        originalPicture.dispose();
+        scaledPicture.dispose();
+
+        return scaledBackground;
     }
 
     /**

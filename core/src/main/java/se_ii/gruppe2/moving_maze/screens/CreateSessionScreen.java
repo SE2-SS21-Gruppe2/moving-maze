@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 
@@ -34,10 +36,6 @@ public class CreateSessionScreen implements Screen {
     private Skin skin;
 
     private TextField txfName;
-
-    // textures and views
-    private Texture bgImageTexture;
-    private TextureRegion bgTextureRegion;
 
     private Texture myFontTexture;
     private Texture startImageTexture;
@@ -93,9 +91,6 @@ public class CreateSessionScreen implements Screen {
     public void show() {
         camera = game.getStandardizedCamera();
 
-        // instantiate textures
-        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_nomoss.jpeg"));
-        bgTextureRegion = new TextureRegion(bgImageTexture);
         startImageTexture = new Texture(Gdx.files.internal("ui/start.png"));
 
         myShapeRenderer = new MyShapeRenderer();
@@ -412,7 +407,7 @@ public class CreateSessionScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(bgTextureRegion, 0, 0);
+        batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
         batch.end();
 
         drawShapes();
@@ -513,7 +508,6 @@ public class CreateSessionScreen implements Screen {
 
     @Override
     public void dispose() {
-        bgImageTexture.dispose();
         myFontTexture.dispose();
         stage.dispose();
         skin.dispose();

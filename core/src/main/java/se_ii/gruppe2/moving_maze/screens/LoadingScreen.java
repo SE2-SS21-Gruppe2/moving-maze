@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 
 public class LoadingScreen implements Screen {
 

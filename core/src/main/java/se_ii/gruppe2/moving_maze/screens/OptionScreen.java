@@ -15,15 +15,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 
 public class OptionScreen implements Screen {
 
     private final MovingMazeGame game;
     private final SpriteBatch batch;
     private OrthographicCamera camera;
-
-    private Texture bgImageTexture;
-    private TextureRegion bgTextureRegion;
 
     private Label title;
 
@@ -111,9 +110,6 @@ public class OptionScreen implements Screen {
         stage.addActor(backButton);
         stage.getCamera().position.set(MovingMazeGame.WIDTH / 2.0f, MovingMazeGame.HEIGHT / 2.0f, 0);
 
-        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg")); // background image
-        bgTextureRegion = new TextureRegion(bgImageTexture);
-
 
     }
 
@@ -124,7 +120,7 @@ public class OptionScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(bgTextureRegion, 0, 0);
+        batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
         batch.end();
         stage.draw();
     }

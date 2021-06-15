@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.player.Player;
 
 public class JoinSessionScreen implements Screen {
@@ -38,10 +40,6 @@ public class JoinSessionScreen implements Screen {
     TextField playerName;
     TextButton backButton;
     float scalingFactor;
-
-    // textures and views
-    Texture bgImageTexture;
-    TextureRegion bgTextureRegion;
 
     // helper variables
     boolean gameCodeFocused;
@@ -108,10 +106,6 @@ public class JoinSessionScreen implements Screen {
         tableLayout.add(joinGame).pad(10f).size(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight()/7f);
 
         stage.addActor(tableLayout);
-
-        // instantiate textures
-        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
-        bgTextureRegion = new TextureRegion(bgImageTexture);
 
         backButton = new TextButton("Back", skin);
         backButton.getLabel().setFontScale(2.0f*scalingFactor);
@@ -216,7 +210,7 @@ public class JoinSessionScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        batch.draw(bgTextureRegion, 0, 0);
+        batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
         batch.draw(headerLogoScaled,
                 camera.viewportWidth/2 - headerLogoScaled.getWidth()/2.0f,
                 camera.viewportHeight-headerLogoScaled.getHeight()-30);
