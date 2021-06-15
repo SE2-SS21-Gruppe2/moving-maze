@@ -392,7 +392,9 @@ public class CreateSessionScreen implements Screen {
                     game.getClient().joinSession(new Player("testplayer 2"), game.getSessionKey());
                     game.getClient().joinSession(new Player("testplayer 3"), game.getSessionKey());
 
-                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
+                    int numberOfItems = (int) numberOfCardsSlider.getValue();
+
+                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName(), numberOfItems);
                 }}
         });
     }

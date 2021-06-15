@@ -79,17 +79,20 @@ public class Session {
      * TODO: check if spread evenly
      * @param items to distribute
      */
-    public void initializeItems(ArrayList<ItemLogical> items) {
-        Log.info("Assigning " + items.size() + " items to players");
+    public void initializeItems(ArrayList<ItemLogical> items, int numberOfItems) {
+        Log.info("Assigning " + numberOfItems + " items to players");
+
+        Collections.shuffle(items);
 
         // distribute items
-        int playerIdx = 0;
-        Player currentPlayer;
-        while(items.size() > 0) {
-            currentPlayer = getState().getPlayers().get(playerIdx);
-            currentPlayer.getCardsToFind().push(items.get(0));
-            items.remove(0);
-            playerIdx = ++playerIdx%getState().getPlayers().size();
+        int distributedItemCounter = 1; // indicates how many items have been distribute to each player
+
+        while(distributedItemCounter <= numberOfItems) {
+            for(Player p : getState().getPlayers()) {
+                p.getCardsToFind().push(items.get(0));
+                items.remove(0);
+            }
+            distributedItemCounter++;
         }
 
         // set the first item for each player to be the top of the stack
