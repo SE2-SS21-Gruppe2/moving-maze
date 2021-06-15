@@ -381,10 +381,6 @@ public class CreateSessionScreen implements Screen {
 
                     game.getLocalPlayer().setName(txfName.getText());
 
-                    game.getClient().joinSession(new Player("testplayer 1"), game.getSessionKey());
-                    game.getClient().joinSession(new Player("testplayer 2"), game.getSessionKey());
-                    game.getClient().joinSession(new Player("testplayer 3"), game.getSessionKey());
-
                     game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName());
                 }}
         });
