@@ -119,7 +119,7 @@ public class GameScreen implements Screen {
 
         camera = MovingMazeGame.getStandardizedCamera();
 
-        boardframe = getScaledImage("ui/boardframe.PNG",0.59f);
+        boardframe = getScaledImage("ui/boardframe.PNG",0.62f);
         tileframe = getScaledImage("ui/tileframe.png",0.1f);
         cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
 
