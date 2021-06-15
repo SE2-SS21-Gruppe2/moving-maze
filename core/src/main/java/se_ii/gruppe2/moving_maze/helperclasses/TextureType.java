@@ -5,5 +5,6 @@ public enum TextureType {
     ITEM,
     PLAYER,
     CARD,
-    BACKGROUND
+    BACKGROUND,
+    VICTORY
 }

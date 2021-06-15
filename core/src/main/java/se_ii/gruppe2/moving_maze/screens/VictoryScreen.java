@@ -5,14 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 
@@ -54,11 +53,18 @@ public class VictoryScreen implements Screen {
             }
         });
 
+        Label playerName = new Label(winingPlayer.getName(), MainMenuScreen.skin);
+        playerName.setFontScale(7f);
+        Label winnerQuote = new Label("has beaten the maze!", MainMenuScreen.skin);
+        winnerQuote.setFontScale(4f);
+
         tbl.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f);
-        // tbl.row();
-        // tbl.add(new Label(winingPlayer.getName() + " beat the maze!", MainMenuScreen.skin));
         tbl.row();
-        tbl.add(tbBack).size(tbBack.getWidth(), tbBack.getHeight());
+        tbl.add(playerName);
+        tbl.row();
+        tbl.add(winnerQuote);
+        tbl.row();
+        tbl.add(tbBack).size(tbBack.getWidth(), tbBack.getHeight()).padTop(30);
 
         Gdx.input.setInputProcessor(stage);
         stage.addActor(tbl);
@@ -71,6 +77,7 @@ public class VictoryScreen implements Screen {
 
         batch.begin();
             batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
+            TextureLoader.getSpriteByTexturePath("ui/golden_trophy.png", TextureType.VICTORY).draw(batch);
         batch.end();
 
         stage.draw();
