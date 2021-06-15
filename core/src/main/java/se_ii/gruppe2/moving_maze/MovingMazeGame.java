@@ -7,8 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.gamestate.GameStateHandler;
+import se_ii.gruppe2.moving_maze.helperclasses.Styles;
 import se_ii.gruppe2.moving_maze.network.NetworkClient;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.screens.*;
@@ -30,6 +32,7 @@ public class MovingMazeGame extends Game {
 
 	private SpriteBatch batch;
 	private BitmapFont font;
+	private Styles style;
 
 	// Pre-instantiate screens to re-use
 	private JoinSessionScreen joinSessionScreen;
@@ -85,6 +88,7 @@ public class MovingMazeGame extends Game {
 		font.getData().setScale(3);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
+		style = new Styles(sessionKey);
 
 		// Instantiate all screens
 		joinSessionScreen = new JoinSessionScreen(this);
@@ -114,8 +118,6 @@ public class MovingMazeGame extends Game {
 		splashScreen.dispose();
 		mainMenuScreen.dispose();
 		waitingScreen.dispose();
-
-
 	}
 
 	/**
@@ -251,5 +253,13 @@ public class MovingMazeGame extends Game {
 
 	public AudioManager getAudioManager() {
 		return audioManager;
+	}
+
+	public Styles getStyle() {
+		return style;
+	}
+
+	public void setStyle(Styles style) {
+		this.style = style;
 	}
 }

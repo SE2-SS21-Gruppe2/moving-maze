@@ -56,7 +56,7 @@ public class RuleScreen implements Screen {
         textureRegionDrawable = new TextureRegionDrawable(textureRegion);
         backButton = new ImageButton(textureRegionDrawable);
         backButton.setPosition(20f, camera.viewportHeight - 100f, Align.left);
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        skin = game.getStyle().getSkin();
 
         stage = new Stage(new ScreenViewport());
         setUpTable();
