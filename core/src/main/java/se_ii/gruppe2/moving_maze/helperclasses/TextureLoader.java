@@ -48,12 +48,61 @@ public class TextureLoader {
                 sprite = new Sprite(getCardTexture(path));
                 break;
 
+            case BACKGROUND:
+                sprite = new Sprite(getScaledBackgroundTexture(path));
+                break;
+
+            case VICTORY:
+                sprite = new Sprite(getVictoryGraphics(path));
+                sprite.setCenterX(Gdx.graphics.getWidth()/2f);
+                sprite.setCenterY(Gdx.graphics.getHeight() - sprite.getWidth());
+                break;
+
             default:
                 sprite = null;
         }
 
         textures.put(path, sprite);
         return sprite;
+    }
+
+    private static Texture getVictoryGraphics(String texturePath) {
+        var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+        Pixmap scaledPicture;
+
+        int height = Gdx.graphics.getHeight()/4;
+        float factor = (float) originalPicture.getHeight()/height;
+        int width = (int) (originalPicture.getWidth() / factor);
+
+        scaledPicture = new Pixmap(width, height, originalPicture.getFormat());
+
+        scaledPicture.drawPixmap(originalPicture,
+                0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
+                0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
+
+        var scaledTileTexture = new Texture(scaledPicture);
+
+        originalPicture.dispose();
+        scaledPicture.dispose();
+
+        return scaledTileTexture;
+    }
+
+    private static Texture getScaledBackgroundTexture(String texturePath) {
+        var originalPicture = new Pixmap(Gdx.files.internal(texturePath));
+
+        var scaledPicture = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), originalPicture.getFormat());
+
+        scaledPicture.drawPixmap(originalPicture,
+                0, 0, originalPicture.getWidth(), originalPicture.getHeight(),
+                0, 0, scaledPicture.getWidth(), scaledPicture.getHeight());
+
+        var scaledBackground = new Texture(scaledPicture);
+
+        originalPicture.dispose();
+        scaledPicture.dispose();
+
+        return scaledBackground;
     }
 
     /**

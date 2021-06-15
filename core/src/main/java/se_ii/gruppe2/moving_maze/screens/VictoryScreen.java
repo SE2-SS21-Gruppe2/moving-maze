@@ -1,14 +1,23 @@
 package se_ii.gruppe2.moving_maze.screens;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.player.Player;
 
 public class VictoryScreen implements Screen {
@@ -17,21 +26,48 @@ public class VictoryScreen implements Screen {
     private final SpriteBatch batch;
     private OrthographicCamera camera;
 
+    private Table tbl;
+    private Stage stage;
+
     private static Player winingPlayer;
-
-    //Textures
-    private Texture bgImageTexture;
-
 
     public VictoryScreen(MovingMazeGame game) {
         this.game = game;
         this.batch = game.getBatch();
+        stage = new Stage();
     }
 
     @Override
     public void show() {
         camera = MovingMazeGame.getStandardizedCamera();
 
+        tbl = new Table();
+
+        TextButton tbBack = new TextButton("Back to menu", MainMenuScreen.skin);
+        tbBack.setSize(Gdx.graphics.getWidth()/5f, Gdx.graphics.getHeight()/10f);
+        tbBack.getLabel().setFontScale(Gdx.graphics.getHeight()/tbBack.getHeight() / 3f);
+        tbBack.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(game.getMainMenuScreen());
+            }
+        });
+
+        Label playerName = new Label(winingPlayer.getName(), MainMenuScreen.skin);
+        playerName.setFontScale(7f);
+        Label winnerQuote = new Label("has beaten the maze!", MainMenuScreen.skin);
+        winnerQuote.setFontScale(4f);
+
+        tbl.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f);
+        tbl.row();
+        tbl.add(playerName);
+        tbl.row();
+        tbl.add(winnerQuote);
+        tbl.row();
+        tbl.add(tbBack).size(tbBack.getWidth(), tbBack.getHeight()).padTop(30);
+
+        Gdx.input.setInputProcessor(stage);
+        stage.addActor(tbl);
 
     }
 
@@ -40,10 +76,11 @@ public class VictoryScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
 
         batch.begin();
-        game.getFont().draw(batch, winingPlayer.getName(), 300f, 300f);
-
-
+            batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
+            TextureLoader.getSpriteByTexturePath("ui/golden_trophy.png", TextureType.VICTORY).draw(batch);
         batch.end();
+
+        stage.draw();
     }
 
     @Override
