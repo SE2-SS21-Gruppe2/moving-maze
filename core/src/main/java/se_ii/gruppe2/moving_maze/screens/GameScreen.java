@@ -106,6 +106,16 @@ public class GameScreen implements Screen {
             game.getGameState().getPlayerByName(game.getLocalPlayer().getName()).nextCard();
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.VOLUME_DOWN)) {
+            Player player = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
+            if (!player.getCheatFunction().getCheated()) {
+                game.getGameState().getPlayerByName(game.getLocalPlayer().getName()).getCheatFunction().setCheatCurrentMove(true);
+            } else {
+                Gdx.app.log("cheat", "not possible to activate cheat! You have already activated it once");
+            }
+            Gdx.app.log("cheat", "cheat activated for " + game.getLocalPlayer().getName());
+        }
+
         batch.begin();
         batch.draw(bgTextureRegion, 0, 0);
 

@@ -20,8 +20,9 @@ public class CheatFunction {
 
     /**
      * Player can mark a cheater once
+     *
      * @param playerReported who probably cheated
-     * @param playerCaller who called a cheater
+     * @param playerCaller   who called a cheater
      * @return true if handled
      */
     public boolean markCheater(Player playerReported, Player playerCaller) {
@@ -41,11 +42,13 @@ public class CheatFunction {
 
     /**
      * Player can cheat once and say he is on the tile of his card
+     *
      * @return true if handled
      */
     public boolean activateCheat() {
         if (!getCheated()) {
             //next card and send to server
+            setCheated(true);
             MovingMazeGame game = MovingMazeGame.getGameInstance();
             Player local = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
             local.nextCard();
@@ -54,11 +57,9 @@ public class CheatFunction {
             //notification, that no cheat available
         }
 
-        setCheated(true);
         //TODO cheat activated, send to server
         return true;
     }
-
 
 
     //Getter

@@ -32,11 +32,13 @@ public class TreasurePickupAction implements TurnAction {
                 local.nextCard();
             } else {
                 //If not the right card, check if cheat function is activated
-                Player currentPlayer = game.getGameState().getCurrentPlayerOnTurn();
-                if (currentPlayer == game.getLocalPlayer()) {
+                Player currentPlayer = game.getGameState().getPlayerByName(game.getGameState().getCurrentPlayerOnTurn().getName());
+                if (currentPlayer.equals(game.getLocalPlayer())) {
+                    Gdx.app.log("DEBUG", "Already cheated: " + currentPlayer.getCheatFunction().getCheated());
                     if (currentPlayer.getCheatFunction().isCheatCurrentMove()) {
-                        Gdx.app.log("tresure/cheat", "Cheat activated");
+                        Gdx.app.log("treasure/cheat", "Cheat activated");
                         currentPlayer.getCheatFunction().activateCheat();
+
                     }
                 }
             }
