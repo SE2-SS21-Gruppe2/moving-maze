@@ -27,8 +27,9 @@ public class CheatFunction {
      */
     public boolean markCheater(Player playerReported, Player playerCaller) {
         MovingMazeGame game = MovingMazeGame.getGameInstance();
+        //check if already reported a cheater
         if (!game.getGameState().getCurrentPlayerOnTurn().getCheatFunction().getCheatDetected()) {
-            game.getGameState().getCurrentPlayerOnTurn().getCheatFunction().setCheated(true);
+            game.getGameState().getCurrentPlayerOnTurn().getCheatFunction().setCheatDetected(true);
             if (playerReported.getCheatFunction().cheatCurrentMove) {
                 //cheat detected and current player is punished
             } else {
@@ -43,7 +44,7 @@ public class CheatFunction {
     /**
      * Player can cheat once and say he is on the tile of his card
      *
-     * @return true if handled
+     * @return true if cheated
      */
     public boolean activateCheat() {
         if (!getCheated()) {
@@ -52,13 +53,14 @@ public class CheatFunction {
             MovingMazeGame game = MovingMazeGame.getGameInstance();
             Player local = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
             local.nextCard();
-            Gdx.app.log("turnAction/treasure", "Cheat activated and successful! Updating card ...");
+            Gdx.app.log("cheat/debug", "Cheat activated and successful! Updating card ...");
+
+            return true;
         } else {
             //notification, that no cheat available
+            Gdx.app.log("cheat/debug", "Cheat NOT activated. Already cheated ...");
+            return false;
         }
-
-        //TODO cheat activated, send to server
-        return true;
     }
 
 
