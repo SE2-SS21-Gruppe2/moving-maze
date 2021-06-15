@@ -92,13 +92,17 @@ public class PlayerColorMapper {
     public static Color getColorValue(PlayerColor color) {
         switch (color){
             case RED:
-                return new Color(Color.RED);
+                //return new Color(0.8f, 0.15f, 0.08f, 1);
+                return new Color(0.89f, 0.15f, 0.0f, 1);
             case YELLOW:
-                return new Color(Color.YELLOW);
+                //return new Color(1.0f, 0.9f, 0.0f, 1);
+                return new Color(1.0f, 0.81f, 0.18f, 1);
             case GREEN:
-                return new Color(Color.GREEN);
+                return new Color(0.37f, 0.66f, 0.0f, 1);
+                //return new Color(0.0f, 0.45f, 0.0f, 1);
             case BLUE:
-                return new Color(Color.BLUE);
+                //return new Color(0.24f, 0.47f, 1.0f, 1);
+                return new Color(0.0f, 0.48f, 0.83f, 1);
             default:
                 return null;
         }

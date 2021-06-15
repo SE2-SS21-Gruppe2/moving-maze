@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
         // global ui-stuff
         headerLogoScaled = getScaledImage("ui/logo.png", 0.5f);
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        skin = game.getStyle().getSkin();
         Gdx.input.setInputProcessor(stage);
 
         // generate and add buttons

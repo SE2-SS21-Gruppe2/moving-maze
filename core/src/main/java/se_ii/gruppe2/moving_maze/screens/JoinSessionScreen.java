@@ -58,14 +58,11 @@ public class JoinSessionScreen implements Screen {
         // global ui-stuff
         headerLogoScaled = getScaledImage("ui/logo.png", 0.5f);
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        skin = game.getStyle().getSkin();
         Gdx.input.setInputProcessor(stage);
 
         scalingFactor = Gdx.graphics.getWidth()/1280.0f;
-        var myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
-        myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        var myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
-        var myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
+        var myLblStyle = game.getStyle().getLabelStyle();
 
         playerNameFocused = false;
         gameCodeFocused = false;

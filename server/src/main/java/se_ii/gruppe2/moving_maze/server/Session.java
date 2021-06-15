@@ -142,11 +142,12 @@ public class Session {
      * Initialize the available colors
      */
     private void initColors() {
+        List<PlayerColor> colorArray = Arrays.asList(PlayerColor.values().clone());
+        Collections.shuffle(colorArray);
         availableColors = new Stack<>();
-        availableColors.add(PlayerColor.GREEN);
-        availableColors.add(PlayerColor.RED);
-        availableColors.add(PlayerColor.BLUE);
-        availableColors.add(PlayerColor.YELLOW);
+        for (PlayerColor p : colorArray){
+            availableColors.add(p);
+        }
     }
 
     /**

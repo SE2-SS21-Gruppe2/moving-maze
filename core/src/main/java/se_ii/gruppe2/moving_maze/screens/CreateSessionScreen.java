@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
+import se_ii.gruppe2.moving_maze.helperclasses.Styles;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.player.Player;
@@ -99,19 +100,10 @@ public class CreateSessionScreen implements Screen {
         scalingFactor = myScreenWidth/1280f;
         clock = 0;
 
-        // game state variables
-        cheatingAllowed = true;
-        difficulty = 2;
-        numOfCards = 3;
-        theme = "Original";
-
-        myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
-        myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        BitmapFont myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
-        myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
+        myLblStyle = game.getStyle().getLabelStyle();
+        skin = game.getStyle().getSkin();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
         setUpTables();
@@ -152,6 +144,7 @@ public class CreateSessionScreen implements Screen {
         var textFieldStyle = skin.get(TextField.TextFieldStyle.class);
         textFieldStyle.font.getData().scale(1.5f*scalingFactor);
         txfName.setStyle(textFieldStyle);
+        txfName.setAlignment(Align.center);
         leftTable.add(txfName).width(225f*scalingFactor).height(70f*scalingFactor).expandX().fillX();
 
 
@@ -488,17 +481,17 @@ public class CreateSessionScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // lifecycle method
     }
 
     @Override
     public void pause() {
-
+        // lifecycle method
     }
 
     @Override
     public void resume() {
-
+        // lifecycle method
     }
 
     @Override
@@ -508,7 +501,6 @@ public class CreateSessionScreen implements Screen {
 
     @Override
     public void dispose() {
-        myFontTexture.dispose();
         stage.dispose();
         skin.dispose();
         startImageTexture.dispose();

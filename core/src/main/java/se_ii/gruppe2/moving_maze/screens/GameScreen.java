@@ -99,7 +99,6 @@ public class GameScreen implements Screen {
     private Player player3;
 
     private Skin skin;
-    private Label.LabelStyle myLblStyle;
     private float scalingFactor;
     private boolean firstCall;
 
@@ -120,13 +119,11 @@ public class GameScreen implements Screen {
 
         camera = MovingMazeGame.getStandardizedCamera();
 
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-
-        boardframe = getScaledImage("ui/boardframe.PNG",0.7f);
+        boardframe = getScaledImage("ui/boardframe.PNG",0.59f);
         tileframe = getScaledImage("ui/tileframe.png",0.1f);
         cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
 
-
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
     }
 
@@ -147,10 +144,6 @@ public class GameScreen implements Screen {
         stageMenuButton.clear();
         stagePlayerMovement.clear();
 
-        var myFontTexture = new Texture(Gdx.files.internal("ui/nunito.png"));
-        myFontTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        BitmapFont myFont = new BitmapFont(Gdx.files.internal("ui/nunito.fnt"), new TextureRegion(myFontTexture), false);
-        myLblStyle = new Label.LabelStyle(myFont, Color.WHITE);
         scalingFactor = Gdx.graphics.getWidth()/1280f;
 
         setUpMenuButton();
@@ -182,9 +175,7 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
-
         batch.draw(tileframe, getTileFrameX - tileframe.getWidth()/5 ,getTileFrameY - tileframe.getHeight()/5);
-
         batch.draw(boardframe, (int)getBoardFrameX,(int)getBoardFrameY);
         drawCardToScreen(batch);
         drawGameBoard(batch);
@@ -196,10 +187,6 @@ public class GameScreen implements Screen {
         stagePlayerList.draw();
         stageExtraTile.draw();
         stageMenuButton.draw();
-        //game.getFont().draw(batch, "PLAYER: " + player.getName() + " | " + player.getColor().toString(), 70f, Gdx.graphics.getHeight()-100f);
-        //game.getFont().draw(batch, "COLOR: " +  player.getColor().toString(), 70f, Gdx.graphics.getHeight()-160f);
-        //game.getFont().draw(batch, "GAME PHASE: " + game.getGameState().getGamePhase().toString() + " | " + game.getGameState().getCurrentPlayerOnTurn().getName(), 70f, Gdx.graphics.getHeight()-220f);
-        //game.getFont().draw(batch, "CARDS FOUND: " + player.getCardsFound().size(), 70f, Gdx.graphics.getHeight()-280f);
         batch.end();
     }
 
@@ -264,7 +251,7 @@ public class GameScreen implements Screen {
             localPlayerCardsLabel = new Label(String.valueOf(localPlayer.getCardsToFind().size()+1), skin);
             localPlayerCardsLabel.setFontScale(2.0f*scalingFactor);
             localPlayerCardsLabel.setAlignment(Align.left);
-            playerTable.add(localPlayerCardsLabel).align(Align.left);
+            playerTable.add(localPlayerCardsLabel).align(Align.left).padLeft(10f);
 
             playerTable.row().maxHeight(50f*scalingFactor);
         }
@@ -281,7 +268,7 @@ public class GameScreen implements Screen {
             player1CardsLabel = new Label(String.valueOf(player1.getCardsToFind().size()+1), skin);
             player1CardsLabel.setFontScale(2.0f*scalingFactor);
             player1CardsLabel.setAlignment(Align.left);
-            playerTable.add(player1CardsLabel).align(Align.left);
+            playerTable.add(player1CardsLabel).align(Align.left).padLeft(10f);
 
             playerTable.row().maxHeight(50f*scalingFactor);
         }
@@ -298,7 +285,7 @@ public class GameScreen implements Screen {
             player2CardsLabel = new Label(String.valueOf(player2.getCardsToFind().size()+1), skin);
             player2CardsLabel.setFontScale(2.0f*scalingFactor);
             player2CardsLabel.setAlignment(Align.left);
-            playerTable.add(player2CardsLabel).align(Align.left);
+            playerTable.add(player2CardsLabel).align(Align.left).padLeft(10f);
 
             playerTable.row().maxHeight(50f*scalingFactor);
         }
@@ -315,7 +302,7 @@ public class GameScreen implements Screen {
             player3CardsLabel = new Label(String.valueOf(player3.getCardsToFind().size()+1), skin);
             player3CardsLabel.setFontScale(2.0f*scalingFactor);
             player3CardsLabel.setAlignment(Align.left);
-            playerTable.add(player3CardsLabel).align(Align.left);
+            playerTable.add(player3CardsLabel).align(Align.left).padLeft(10f);
 
         }
 
@@ -325,7 +312,7 @@ public class GameScreen implements Screen {
         firstCall = false;
 
         phaseLabel = new Label(game.getGameState().getGamePhaseText(),skin);
-        phaseLabel.setFontScale(1.8f*scalingFactor);
+        phaseLabel.setFontScale(1.5f*scalingFactor);
         phaseLabel.setAlignment(Align.center);
         phaseLabel.setSize(Gdx.graphics.getWidth()/4, phaseLabel.getHeight());
         phaseLabel.setPosition(Gdx.graphics.getWidth()/3+50f*scalingFactor-phaseLabel.getWidth(), Gdx.graphics.getHeight()-50f*scalingFactor-phaseLabel.getHeight());
@@ -373,7 +360,7 @@ public class GameScreen implements Screen {
 
         if(phaseLabel != null){
             myShapeRenderer.setColor(0.5f, 0.5f, 0.5f, 0.85f);
-            myShapeRenderer.roundedRect(phaseLabel.getX()-0.5f*offsetX, phaseLabel.getY()-2.0f*offsetX,phaseLabel.getWidth()+2.0f*offsetX, phaseLabel.getHeight()+4.0f*offsetX, 10);
+            myShapeRenderer.roundedRect(phaseLabel.getX()-0.5f*offsetX, phaseLabel.getY()-2.0f*offsetX,phaseLabel.getWidth()+1.0f*offsetX, phaseLabel.getHeight()+4.0f*offsetX, 10);
         }
 
         myShapeRenderer.end();
@@ -389,7 +376,7 @@ public class GameScreen implements Screen {
         menuButton.getLabel().setFontScale(1.75f*scalingFactor);
         Container<TextButton> backButtonContainer = new Container<>(menuButton);
         backButtonContainer.setTransform(true);
-        backButtonContainer.size(80*scalingFactor, 40f*scalingFactor);
+        backButtonContainer.size(100*scalingFactor, 50f*scalingFactor);
         backButtonContainer.setPosition(80f*scalingFactor,Gdx.graphics.getHeight() - 57f*scalingFactor - backButtonContainer.getHeight());
         stageMenuButton.addActor(backButtonContainer);
 
@@ -430,8 +417,8 @@ public class GameScreen implements Screen {
         float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
 
         if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
-            getBoardFrameX = Gdx.graphics.getWidth()/100 * 40 - 40 ;
-            getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight())/1.75f;
+            getBoardFrameX = Gdx.graphics.getWidth()/100 * 45 - 45 ;
+            getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight())/1.75f - 5f;
             return new Position(Gdx.graphics.getWidth()/100 * 49, Gdx.graphics.getHeight()/100 * 5);
         }
         else if(aspectRatio==4f/3f){
