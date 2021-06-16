@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.esotericsoftware.kryo.Kryo;
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.cheatfunction.CheatFunction;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhase;
 import se_ii.gruppe2.moving_maze.network.listeners.WinGameListener;
 import se_ii.gruppe2.moving_maze.network.messages.in.CreateSessionRequestConfirmation;
@@ -78,8 +79,8 @@ public class Registry {
         kryo.register(InitGameStart.class);
         kryo.register(Vector2.class);
         kryo.register(GamePhase.class);
+        kryo.register(CheatFunction.class);
         kryo.register(NetworkClient.class);
-
         kryo.register(WinGameRequest.class);
         kryo.register(WinGameConformation.class);
         kryo.register(WinGameListener.class);

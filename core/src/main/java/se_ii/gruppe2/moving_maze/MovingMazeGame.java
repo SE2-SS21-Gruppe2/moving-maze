@@ -25,7 +25,6 @@ public class MovingMazeGame extends Game {
 
 	// Singleton of the game
 	private static MovingMazeGame gameInstance;
-
 	private GameStateHandler state;
 	private Preferences preferences;
 	private Player localPlayer;

@@ -4,6 +4,5 @@ public enum GamePhaseType {
     INSERT_TILE,
     MOVE_PLAYER,
     PICKUP_ITEM,
-    DRAW_CARD,
     END_TURN
 }

@@ -22,17 +22,30 @@ public class TreasurePickupAction implements TurnAction {
         Position p = local.getPos();
 
         Tile t = game.getGameState().getBoard().getBoard()[p.getY()][p.getX()];
-        Gdx.app.log("turnAction/treasure", "Checking tile on position [" + p.getY() + "] ["+p.getX() +"]");
+        Gdx.app.log("turnAction/treasure", "Checking tile on position [" + p.getY() + "] [" + p.getX() + "]");
 
-        if(t.hasItem()) {
+        if (t.hasItem()) {
             Gdx.app.log("turnAction/treasure", "Found item " + t.getItem().getName() + " on tile");
 
-            if(local.getCurrentCard().equals(t.getItem())) {
+            if (local.getCurrentCard().equals(t.getItem())) {
                 Gdx.app.log("turnAction/treasure", "Currently searched item found! Updating card ...");
                 local.nextCard();
+            } else {
+                //If not the right card, check if cheat function is activated
+                Player currentPlayer = game.getGameState().getPlayerByName(game.getGameState().getCurrentPlayerOnTurn().getName());
+                if (currentPlayer.equals(game.getLocalPlayer())) {
+                    Gdx.app.log("cheat/debug", "Already cheated: " + currentPlayer.getCheatFunction().getCheated());
+                    if (currentPlayer.getCheatFunction().isCheatCurrentMove()) {
+                        Gdx.app.log("cheat/debug", "Cheat activated");
+                        boolean success = currentPlayer.getCheatFunction().activateCheat();
+                        Gdx.app.log("cheat/debug", "Cheat success: " + success);
+                    }
+                }
             }
+
         }
 
+        game.getGameState().getCurrentPlayerOnTurn().getCheatFunction().setCheatCurrentMove(false);
         game.getGameState().completePhase();
         game.getClient().sendGameStateUpdate(game.getGameState());
 
