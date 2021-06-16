@@ -42,44 +42,31 @@ public class CheatFunction {
             Tile t = game.getGameState().getBoard().getBoard()[p.getY()][p.getX()];
             Gdx.app.log("DEBUG", "cheater has cards in found " + cheater.getCardsFound().size());
 
-            if (cheater.getCardsFound().size() > 0) {
-                ItemLogical cardCheck = cheater.getCardsFound().firstElement();
-                if (cardCheck != null && !cardCheck.equals(t.getItem())) {
-                    Gdx.app.log("cheat/report", "cardCheck: " + cardCheck.getName() + ", " + t.getItem().getName());
-                    Gdx.app.log("cheat/report", "Cheat detected! Cheater will be punished ...");
-                    //cheat detected and cheater is punished
-                    cheater.getCardsToFind().push(cheater.getCurrentCard());
-                    cheater.setCurrentCard(cardCheck);
-                    cheater.getCardsToFind().push(caller.getCurrentCard());
-                    caller.nextCard();
 
-                    cheater.setPos(PlayerColorMapper.getInitialPositionByColor(cheater.getColor()));
+            ItemLogical cardCheck = cheater.getCardsFound().firstElement();
+            if (cardCheck != null && !cardCheck.equals(t.getItem())) {
+                Gdx.app.log("cheat/report", "cardCheck: " + cardCheck.getName() + ", " + t.getItem().getName());
+                Gdx.app.log("cheat/report", "Cheat detected! Cheater will be punished ...");
+                //cheat detected and cheater is punished
+                cheater.getCardsToFind().push(cheater.getCurrentCard());
+                cheater.setCurrentCard(cardCheck);
+                cheater.getCardsToFind().push(caller.getCurrentCard());
+                caller.nextCard();
 
-                    //update GameState over server
-                    game.getClient().sendGameStateUpdate(game.getGameState());
+                cheater.setPos(PlayerColorMapper.getInitialPositionByColor(cheater.getColor()));
 
-                    return true;
-                } else {
-                    Gdx.app.log("DEBUG", "cheater has NO cards in found " + cheater.getCardsFound().size());
-                    Gdx.app.log("cheat/report", "Cheat not detected! Caller will be punished ...");
-                    //wrong cheat detected and caller is punished
+                //update GameState over server
+                game.getClient().sendGameStateUpdate(game.getGameState());
 
-                    caller.getCardsToFind().push(caller.getCurrentCard());
-                    caller.setCurrentCard(cheater.getCardsFound().pop());
-                    cheater.getCardsFound().push(caller.getCurrentCard());
-
-                    caller.setPos(PlayerColorMapper.getInitialPositionByColor(caller.getColor()));
-
-                    //update GameState over server
-                    game.getClient().sendGameStateUpdate(game.getGameState());
-
-                }
-
+                return true;
             } else {
                 Gdx.app.log("DEBUG", "cheater has NO cards in found " + cheater.getCardsFound().size());
                 Gdx.app.log("cheat/report", "Cheat not detected! Caller will be punished ...");
                 //wrong cheat detected and caller is punished
-                caller.getCheatFunction().cheatDetected = false;
+
+                caller.getCardsToFind().push(caller.getCurrentCard());
+                caller.setCurrentCard(cheater.getCardsFound().pop());
+                cheater.getCardsFound().push(caller.getCurrentCard());
 
                 caller.setPos(PlayerColorMapper.getInitialPositionByColor(caller.getColor()));
 
@@ -88,8 +75,8 @@ public class CheatFunction {
 
             }
 
-
         }
+
         return false;
     }
 
@@ -105,6 +92,7 @@ public class CheatFunction {
             MovingMazeGame game = MovingMazeGame.getGameInstance();
             Player cheater = game.getGameState().getPlayerByName(game.getGameState().getCurrentPlayerOnTurn().getName());
             cheater.nextCard();
+            cheater.getCheatFunction().setLaidCardDownPreviousMove(true);
             Gdx.app.log("cheat/debug", "Cheat activated and successful! Updating card ...");
 
             return true;
@@ -129,7 +117,7 @@ public class CheatFunction {
         return cheatCurrentMove;
     }
 
-    public boolean getLaidCardDownPreviousMove() {
+    public boolean isLaidCardDownPreviousMove() {
         return laidCardDownPreviousMove;
     }
 

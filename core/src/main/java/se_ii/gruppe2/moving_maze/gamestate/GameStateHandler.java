@@ -59,7 +59,7 @@ public class GameStateHandler {
             previousPlayer = currentPlayerOnTurn;
             currentPlayerOnTurn = players.get(++playerOnTurnIndex % (players.size()));
         }
-
+        currentPlayerOnTurn.getCheatFunction().setLaidCardDownPreviousMove(false);
         return currentPlayerOnTurn;
     }
 

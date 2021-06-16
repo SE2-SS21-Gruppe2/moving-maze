@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,7 +30,6 @@ import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.player.PlayerColorMapper;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
-import javax.swing.text.GlyphView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +66,8 @@ public class GameScreen implements Screen {
 
     Image extraTileImage;
 
-    private Texture boardframe ;
-    private Texture tileframe ;
+    private Texture boardframe;
+    private Texture tileframe;
     private Texture cardStack;
     private Image cardStackImage;
     private float getBoardFrameX;
@@ -116,8 +114,8 @@ public class GameScreen implements Screen {
 
         camera = MovingMazeGame.getStandardizedCamera();
 
-        boardframe = getScaledImage("ui/boardframe.PNG",0.62f);
-        tileframe = getScaledImage("ui/tileframe.png",0.1f);
+        boardframe = getScaledImage("ui/boardframe.PNG", 0.62f);
+        tileframe = getScaledImage("ui/tileframe.png", 0.1f);
         cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -140,7 +138,7 @@ public class GameScreen implements Screen {
         stageMenuButton.clear();
         stagePlayerMovement.clear();
 
-        scalingFactor = Gdx.graphics.getWidth()/1280f;
+        scalingFactor = Gdx.graphics.getWidth() / 1280f;
 
         setUpMenuButton();
     }
@@ -164,8 +162,8 @@ public class GameScreen implements Screen {
             game.getGameState().getPlayerByName(game.getLocalPlayer().getName()).nextCard();
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            game.getClient().gameWin(game.getSessionKey(),game.getLocalPlayer());
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            game.getClient().gameWin(game.getSessionKey(), game.getLocalPlayer());
         }
 
         //handle cheat
@@ -184,15 +182,15 @@ public class GameScreen implements Screen {
             if (game.getGameState().getPreviousPlayer() != null) {
                 Player caller = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
                 Player cheater = game.getGameState().getPlayerByName(game.getGameState().getPreviousPlayer().getName());
-                if (cheater != null) {
+
+                if (cheater != null && cheater.getCheatFunction().isLaidCardDownPreviousMove()) {
                     boolean cheatDetected = caller.getCheatFunction().markCheater(caller, cheater);
                     Gdx.app.log("cheat/report", "cheat report activated for " + cheater.getName() + " from caller " +
                             caller.getName() + " Status cheat detected: " + cheatDetected);
 
                 } else {
-                    Gdx.app.log("cheat/report", "cheat report not available. No previous Player.");
+                    Gdx.app.log("cheat/report", "Player " + cheater.getName() + " didn't lay down any card!");
                 }
-
             } else {
                 Gdx.app.log("cheat/bug", "no previous Player found!");
             }
@@ -200,11 +198,11 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
-        batch.draw(tileframe, getTileFrameX - tileframe.getWidth()/5f ,getTileFrameY - tileframe.getHeight()/5f);
-        batch.draw(boardframe, (int)getBoardFrameX,(int)getBoardFrameY);
+        batch.draw(tileframe, getTileFrameX - tileframe.getWidth() / 5f, getTileFrameY - tileframe.getHeight() / 5f);
+        batch.draw(boardframe, (int) getBoardFrameX, (int) getBoardFrameY);
         drawCardToScreen(batch);
         drawGameBoard(batch);
-        if (!firstCall){
+        if (!firstCall) {
             drawPlayerColorShapes();
         }
         updatePlayerTable();
@@ -243,100 +241,101 @@ public class GameScreen implements Screen {
     /**
      * updates the player table with the names and the players' remaining cards
      */
-    private void updatePlayerTable(){
+    private void updatePlayerTable() {
 
         List<Player> players = game.getGameState().getPlayers();
         playerTable = new Table();
-        playerTable.setSize(Gdx.graphics.getWidth()/3f, Gdx.graphics.getHeight()/3f);
-        playerTable.defaults().padTop(30f).maxHeight(50f*scalingFactor);;
+        playerTable.setSize(Gdx.graphics.getWidth() / 3f, Gdx.graphics.getHeight() / 3f);
+        playerTable.defaults().padTop(30f).maxHeight(50f * scalingFactor);
+        ;
 
         var indexOfLocalPlayer = 0;
         var i = 0;
 
-        for (Player player : players){
-            if (game.getLocalPlayer().getName().equals(player.getName())){
+        for (Player player : players) {
+            if (game.getLocalPlayer().getName().equals(player.getName())) {
                 indexOfLocalPlayer = players.indexOf(player);
             }
         }
 
-        if (players.size()!=0){
-            localPlayer = players.get((indexOfLocalPlayer+i)%players.size());
+        if (players.size() != 0) {
+            localPlayer = players.get((indexOfLocalPlayer + i) % players.size());
             localPlayerLabel = new Label(localPlayer.getName(), skin);
-            localPlayerLabel.setFontScale(2.0f*scalingFactor);
+            localPlayerLabel.setFontScale(2.0f * scalingFactor);
             localPlayerLabel.setAlignment(Align.left);
             playerTable.add(localPlayerLabel).align(Align.left).expandX().fillX();
 
             var cardstackimage = new Image(cardStack);
-            playerTable.add(cardstackimage).right().maxWidth(50f*scalingFactor);
+            playerTable.add(cardstackimage).right().maxWidth(50f * scalingFactor);
 
-            localPlayerCardsLabel = new Label(String.valueOf(localPlayer.getCardsToFind().size()+1), skin);
-            localPlayerCardsLabel.setFontScale(2.0f*scalingFactor);
+            localPlayerCardsLabel = new Label(String.valueOf(localPlayer.getCardsToFind().size() + 1), skin);
+            localPlayerCardsLabel.setFontScale(2.0f * scalingFactor);
             localPlayerCardsLabel.setAlignment(Align.left);
             playerTable.add(localPlayerCardsLabel).align(Align.left).padLeft(10f);
 
-            playerTable.row().maxHeight(50f*scalingFactor);
+            playerTable.row().maxHeight(50f * scalingFactor);
         }
-        if (players.size()>1){
-            player1 = players.get((indexOfLocalPlayer+(++i))%players.size());
+        if (players.size() > 1) {
+            player1 = players.get((indexOfLocalPlayer + (++i)) % players.size());
             player1Label = new Label(player1.getName(), skin);
-            player1Label.setFontScale(2.0f*scalingFactor);
+            player1Label.setFontScale(2.0f * scalingFactor);
             player1Label.setAlignment(Align.left);
             playerTable.add(player1Label).align(Align.left).expandX().fillX();
 
             var cardstackimage = new Image(cardStack);
-            playerTable.add(cardstackimage).right().maxWidth(50f*scalingFactor);
+            playerTable.add(cardstackimage).right().maxWidth(50f * scalingFactor);
 
-            player1CardsLabel = new Label(String.valueOf(player1.getCardsToFind().size()+1), skin);
-            player1CardsLabel.setFontScale(2.0f*scalingFactor);
+            player1CardsLabel = new Label(String.valueOf(player1.getCardsToFind().size() + 1), skin);
+            player1CardsLabel.setFontScale(2.0f * scalingFactor);
             player1CardsLabel.setAlignment(Align.left);
             playerTable.add(player1CardsLabel).align(Align.left).padLeft(10f);
 
-            playerTable.row().maxHeight(50f*scalingFactor);
+            playerTable.row().maxHeight(50f * scalingFactor);
         }
-        if (players.size()>2){
-            player2 = players.get((indexOfLocalPlayer+(++i))%players.size());
+        if (players.size() > 2) {
+            player2 = players.get((indexOfLocalPlayer + (++i)) % players.size());
             player2Label = new Label(player2.getName(), skin);
-            player2Label.setFontScale(2.0f*scalingFactor);
+            player2Label.setFontScale(2.0f * scalingFactor);
             player2Label.setAlignment(Align.left);
             playerTable.add(player2Label).align(Align.left).expandX().fillX();
 
             var cardstackimage = new Image(cardStack);
-            playerTable.add(cardstackimage).right().maxWidth(50f*scalingFactor);
+            playerTable.add(cardstackimage).right().maxWidth(50f * scalingFactor);
 
-            player2CardsLabel = new Label(String.valueOf(player2.getCardsToFind().size()+1), skin);
-            player2CardsLabel.setFontScale(2.0f*scalingFactor);
+            player2CardsLabel = new Label(String.valueOf(player2.getCardsToFind().size() + 1), skin);
+            player2CardsLabel.setFontScale(2.0f * scalingFactor);
             player2CardsLabel.setAlignment(Align.left);
             playerTable.add(player2CardsLabel).align(Align.left).padLeft(10f);
 
-            playerTable.row().maxHeight(50f*scalingFactor);
+            playerTable.row().maxHeight(50f * scalingFactor);
         }
-        if (players.size()>3){
-            player3 = players.get((indexOfLocalPlayer+(++i))%players.size());
+        if (players.size() > 3) {
+            player3 = players.get((indexOfLocalPlayer + (++i)) % players.size());
             player3Label = new Label(player3.getName(), skin);
-            player3Label.setFontScale(2.0f*scalingFactor);
+            player3Label.setFontScale(2.0f * scalingFactor);
             player3Label.setAlignment(Align.left);
             playerTable.add(player3Label).align(Align.left).expandX().fillX();
 
             var cardstackimage = new Image(cardStack);
-            playerTable.add(cardstackimage).right().maxWidth(50f*scalingFactor);
+            playerTable.add(cardstackimage).right().maxWidth(50f * scalingFactor);
 
-            player3CardsLabel = new Label(String.valueOf(player3.getCardsToFind().size()+1), skin);
-            player3CardsLabel.setFontScale(2.0f*scalingFactor);
+            player3CardsLabel = new Label(String.valueOf(player3.getCardsToFind().size() + 1), skin);
+            player3CardsLabel.setFontScale(2.0f * scalingFactor);
             player3CardsLabel.setAlignment(Align.left);
             playerTable.add(player3CardsLabel).align(Align.left).padLeft(10f);
 
         }
 
-        playerTable.setPosition(50f*scalingFactor,Gdx.graphics.getHeight()-playerTable.getHeight()-120f*scalingFactor);
+        playerTable.setPosition(50f * scalingFactor, Gdx.graphics.getHeight() - playerTable.getHeight() - 120f * scalingFactor);
         stagePlayerList.clear();
         stagePlayerList.addActor(playerTable);
         firstCall = false;
 
-        phaseLabel = new Label(game.getGameState().getGamePhaseText(),skin);
-        phaseLabel.setFontScale(1.5f*scalingFactor);
+        phaseLabel = new Label(game.getGameState().getGamePhaseText(), skin);
+        phaseLabel.setFontScale(1.5f * scalingFactor);
         phaseLabel.setAlignment(Align.center);
-        phaseLabel.setSize(Gdx.graphics.getWidth()/4, phaseLabel.getHeight());
-        phaseLabel.setPosition(Gdx.graphics.getWidth()/3+50f*scalingFactor-phaseLabel.getWidth(), Gdx.graphics.getHeight()-50f*scalingFactor-phaseLabel.getHeight());
+        phaseLabel.setSize(Gdx.graphics.getWidth() / 4, phaseLabel.getHeight());
+        phaseLabel.setPosition(Gdx.graphics.getWidth() / 3 + 50f * scalingFactor - phaseLabel.getWidth(), Gdx.graphics.getHeight() - 50f * scalingFactor - phaseLabel.getHeight());
         stagePlayerList.addActor(phaseLabel);
 
     }
@@ -346,42 +345,42 @@ public class GameScreen implements Screen {
      */
     private void drawPlayerColorShapes() {
 
-        float offsetX = 10f*scalingFactor;
-        float offsetY = 4f*scalingFactor;
+        float offsetX = 10f * scalingFactor;
+        float offsetY = 4f * scalingFactor;
         myShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        if(localPlayer != null){
+        if (localPlayer != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(localPlayer.getColor()));
-            if (game.getGameState().isMyTurn(localPlayer)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + localPlayerLabel.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, localPlayerLabel.getHeight()+ 4.0f*offsetY, 10);
+            if (game.getGameState().isMyTurn(localPlayer)) {
+                myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + localPlayerLabel.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, localPlayerLabel.getHeight() + 4.0f * offsetY, 10);
             }
-            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + localPlayerLabel.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, localPlayerLabel.getHeight()+ 2.0f*offsetY, 10);
+            myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + localPlayerLabel.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, localPlayerLabel.getHeight() + 2.0f * offsetY, 10);
         }
-        if(player1 != null){
+        if (player1 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player1.getColor()));
-            if (game.getGameState().isMyTurn(player1)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player1Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player1Label.getHeight()+ 4.0f*offsetY, 10);
+            if (game.getGameState().isMyTurn(player1)) {
+                myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player1Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player1Label.getHeight() + 4.0f * offsetY, 10);
             }
-            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player1Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player1Label.getHeight()+ 2.0f*offsetY, 10);
+            myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player1Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player1Label.getHeight() + 2.0f * offsetY, 10);
         }
-        if(player2 != null){
+        if (player2 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player2.getColor()));
-            if (game.getGameState().isMyTurn(player2)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player2Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player2Label.getHeight()+ 4.0f*offsetY, 10);
+            if (game.getGameState().isMyTurn(player2)) {
+                myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player2Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player2Label.getHeight() + 4.0f * offsetY, 10);
             }
-            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player2Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player2Label.getHeight()+ 2.0f*offsetY, 10);
+            myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player2Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player2Label.getHeight() + 2.0f * offsetY, 10);
         }
-        if(player3 != null){
+        if (player3 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player3.getColor()));
-            if (game.getGameState().isMyTurn(player3)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player3Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player3Label.getHeight()+ 4.0f*offsetY, 10);
+            if (game.getGameState().isMyTurn(player3)) {
+                myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player3Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player3Label.getHeight() + 4.0f * offsetY, 10);
             }
-            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player3Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player3Label.getHeight()+ 2.0f*offsetY, 10);
+            myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player3Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player3Label.getHeight() + 2.0f * offsetY, 10);
         }
 
-        if(phaseLabel != null){
+        if (phaseLabel != null) {
             myShapeRenderer.setColor(0.5f, 0.5f, 0.5f, 0.85f);
-            myShapeRenderer.roundedRect(phaseLabel.getX()-0.5f*offsetX, phaseLabel.getY()-2.0f*offsetX,phaseLabel.getWidth()+1.0f*offsetX, phaseLabel.getHeight()+4.0f*offsetX, 10);
+            myShapeRenderer.roundedRect(phaseLabel.getX() - 0.5f * offsetX, phaseLabel.getY() - 2.0f * offsetX, phaseLabel.getWidth() + 1.0f * offsetX, phaseLabel.getHeight() + 4.0f * offsetX, 10);
         }
 
         myShapeRenderer.end();
@@ -394,16 +393,16 @@ public class GameScreen implements Screen {
      */
     private void setUpMenuButton() {
         menuButton = new TextButton("Menu", skin);
-        menuButton.getLabel().setFontScale(1.75f*scalingFactor);
+        menuButton.getLabel().setFontScale(1.75f * scalingFactor);
         Container<TextButton> backButtonContainer = new Container<>(menuButton);
         backButtonContainer.setTransform(true);
-        backButtonContainer.size(100*scalingFactor, 50f*scalingFactor);
-        backButtonContainer.setPosition(80f*scalingFactor,Gdx.graphics.getHeight() - 57f*scalingFactor - backButtonContainer.getHeight());
+        backButtonContainer.size(100 * scalingFactor, 50f * scalingFactor);
+        backButtonContainer.setPosition(80f * scalingFactor, Gdx.graphics.getHeight() - 57f * scalingFactor - backButtonContainer.getHeight());
         stageMenuButton.addActor(backButtonContainer);
 
         dialogMenu = new Dialog("Quit Game", skin, "dialog") {
             public void result(Object obj) {
-                if (obj.equals(true)){
+                if (obj.equals(true)) {
                     game.setScreen(game.getMainMenuScreen());
                     game.getClient().leaveSession(game.getLocalPlayer(), game.getSessionKey());
                     game.setSessionKey("------");
@@ -417,11 +416,11 @@ public class GameScreen implements Screen {
         dialogMenu.button("Yes", true); //sends "true" as the result
         dialogMenu.button("No", false); //sends "false" as the result
         dialogMenu.scaleBy(2.0f);
-        dialogMenu.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
-        dialogMenu.setPosition(Gdx.graphics.getWidth()/3.0f, Gdx.graphics.getHeight()/3.0f);
+        dialogMenu.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 3);
+        dialogMenu.setPosition(Gdx.graphics.getWidth() / 3.0f, Gdx.graphics.getHeight() / 3.0f);
         dialogMenu.pack();
 
-        menuButton.addListener(new ClickListener(){
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 stageMenuButton.addActor(dialogMenu);
@@ -433,24 +432,22 @@ public class GameScreen implements Screen {
     /**
      * Calculates the start-coordinates for a gameboard with respect to the aspect-ratio.
      */
-    private Position getStartCoordinates(){
+    private Position getStartCoordinates() {
 
-        float aspectRatio=(float) Gdx.graphics.getWidth()/(float) Gdx.graphics.getHeight();
+        float aspectRatio = (float) Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
 
-        if(aspectRatio<= 19f/9f && aspectRatio>= 16f/9f){
-            getBoardFrameX = Gdx.graphics.getWidth()/100 * 45 - 45 ;
-            getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight())/1.75f - 5f;
-            return new Position(Gdx.graphics.getWidth()/100 * 49, Gdx.graphics.getHeight()/100 * 5);
-        }
-        else if(aspectRatio==4f/3f){
-            getBoardFrameX = Gdx.graphics.getWidth()/100 * 30 - 30;
-            getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight())/1.75f;
-            return new Position(Gdx.graphics.getWidth()/100 * 35 , Gdx.graphics.getHeight()/90*10);
-        }
-        else if(aspectRatio==1f){
-            getBoardFrameX = Gdx.graphics.getWidth()/100 ;
-            getBoardFrameY = Gdx.graphics.getHeight()/100 ;
-            return new Position(Gdx.graphics.getWidth()/100, Gdx.graphics.getHeight()/100);
+        if (aspectRatio <= 19f / 9f && aspectRatio >= 16f / 9f) {
+            getBoardFrameX = Gdx.graphics.getWidth() / 100 * 45 - 45;
+            getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight()) / 1.75f - 5f;
+            return new Position(Gdx.graphics.getWidth() / 100 * 49, Gdx.graphics.getHeight() / 100 * 5);
+        } else if (aspectRatio == 4f / 3f) {
+            getBoardFrameX = Gdx.graphics.getWidth() / 100 * 30 - 30;
+            getBoardFrameY = (Gdx.graphics.getHeight() - boardframe.getHeight()) / 1.75f;
+            return new Position(Gdx.graphics.getWidth() / 100 * 35, Gdx.graphics.getHeight() / 90 * 10);
+        } else if (aspectRatio == 1f) {
+            getBoardFrameX = Gdx.graphics.getWidth() / 100;
+            getBoardFrameY = Gdx.graphics.getHeight() / 100;
+            return new Position(Gdx.graphics.getWidth() / 100, Gdx.graphics.getHeight() / 100);
 
         } else {
             return new Position(0, 0);
@@ -511,7 +508,7 @@ public class GameScreen implements Screen {
         }
 
         // check for rotation of accelerometer
-        if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && game.getPreferences().getBoolean("rotateWithSensorOn", true)) {
+        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) && game.getPreferences().getBoolean("rotateWithSensorOn", true)) {
             if (Gdx.input.getAccelerometerY() > 4.0 && !tileJustRotated) {
                 game.getGameState().getExtraTile().rotateCounterClockwise();
                 newExtraTile = true;
@@ -530,22 +527,21 @@ public class GameScreen implements Screen {
         if (isNewExtraTile()) {
             updateExtraTile();
         }
-        if(game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer()) && canMove){
-            updatePlayerMovement(initPos.getX(),initPos.getY());
+        if (game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer()) && canMove) {
+            updatePlayerMovement(initPos.getX(), initPos.getY());
         }
     }
 
 
-
-    public void updatePlayerMovement(float colStart, float rowStart){
+    public void updatePlayerMovement(float colStart, float rowStart) {
         stagePlayerMovement.clear();
-        MovePlayer movePlayer= new MovePlayer();
-        if (movePlayer.validate() && movePlayer.getPositionsToGO().size()>1){
-            localPlayerMoves=movePlayer.getPositionsToGO();
-            Texture texture=TextureLoader.getTileTextureOverlay();
-            for(Position pos: localPlayerMoves){
-                float xT= colStart + (TextureLoader.TILE_EDGE_SIZE*(pos.getX()));
-                float yT= rowStart+ (TextureLoader.TILE_EDGE_SIZE*(pos.getY()));
+        MovePlayer movePlayer = new MovePlayer();
+        if (movePlayer.validate() && movePlayer.getPositionsToGO().size() > 1) {
+            localPlayerMoves = movePlayer.getPositionsToGO();
+            Texture texture = TextureLoader.getTileTextureOverlay();
+            for (Position pos : localPlayerMoves) {
+                float xT = colStart + (TextureLoader.TILE_EDGE_SIZE * (pos.getX()));
+                float yT = rowStart + (TextureLoader.TILE_EDGE_SIZE * (pos.getY()));
                 Image image = new Image(texture);
                 image.setPosition(xT, yT);
                 image.setOrigin(xT, yT);
@@ -565,12 +561,12 @@ public class GameScreen implements Screen {
                 stagePlayerMovement.addActor(image);
             }
         }
-        canMove=false;
+        canMove = false;
     }
 
     private void drawCardToScreen(SpriteBatch batch) {
         cardSprite = TextureLoader.getSpriteByTexturePath("gameboard/card.png", TextureType.CARD);
-        cardSprite.setPosition(50f*scalingFactor, 10f*scalingFactor);
+        cardSprite.setPosition(50f * scalingFactor, 10f * scalingFactor);
         cardSprite.setScale(0.7f);
         cardSprite.draw(batch);
 
@@ -587,7 +583,7 @@ public class GameScreen implements Screen {
     /**
      * updates the current extra tile and handles the inserting into the gameboard
      */
-    public void updateExtraTile(){
+    public void updateExtraTile() {
         stageExtraTile.clear();
         currentExtraTile = game.getGameState().getExtraTile();
         Texture layeredTexture;
@@ -606,8 +602,8 @@ public class GameScreen implements Screen {
             extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight() / 2 - extraTileImage.getHeight());
             extraTileImage.setRotation(currentExtraTile.getRotationDegrees());
 
-            getTileFrameX = cardSprite.getX() + cardSprite.getWidth() + 80f ;
-            getTileFrameY = cardSprite.getY() + cardSprite.getHeight()/2 - extraTileImage.getHeight();
+            getTileFrameX = cardSprite.getX() + cardSprite.getWidth() + 80f;
+            getTileFrameY = cardSprite.getY() + cardSprite.getHeight() / 2 - extraTileImage.getHeight();
 
             if (isMyTurn() && gamePhase() == GamePhaseType.INSERT_TILE) {
 
