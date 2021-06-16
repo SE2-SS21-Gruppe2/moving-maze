@@ -12,12 +12,14 @@ public class CheatFunction {
     private boolean cheated;
     private boolean cheatCurrentMove;
     private boolean cheatDetected;
+    private boolean laidCardDownPreviousMove;
 
     //Constructor
     public CheatFunction() {
         cheated = false;
         cheatDetected = false;
         cheatCurrentMove = false;
+        laidCardDownPreviousMove = false;
     }
 
 
@@ -127,6 +129,9 @@ public class CheatFunction {
         return cheatCurrentMove;
     }
 
+    public boolean getLaidCardDownPreviousMove() {
+        return laidCardDownPreviousMove;
+    }
 
     //Setter
     public void setCheated(boolean cheated) {
@@ -141,4 +146,7 @@ public class CheatFunction {
         this.cheatCurrentMove = cheatCurrentMove;
     }
 
+    public void setLaidCardDownPreviousMove(boolean laidCardDownPreviousMove) {
+        this.laidCardDownPreviousMove = laidCardDownPreviousMove;
+    }
 }
