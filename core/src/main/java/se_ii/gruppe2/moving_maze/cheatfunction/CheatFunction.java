@@ -79,7 +79,6 @@ public class CheatFunction {
                 //wrong cheat detected and caller is punished
 
                 caller.getCardsToFind().push(caller.getCurrentCard());
-                caller.setCurrentCard(cheater.getCardsFound().pop());
                 cheater.getCardsFound().push(caller.getCurrentCard());
 
                 caller.setPos(PlayerColorMapper.getInitialPositionByColor(caller.getColor()));
