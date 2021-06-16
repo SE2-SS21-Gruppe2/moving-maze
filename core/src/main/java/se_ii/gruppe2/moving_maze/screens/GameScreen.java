@@ -24,7 +24,10 @@ import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.MovePlayer;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.TreasurePickupAction;
-import se_ii.gruppe2.moving_maze.helperclasses.*;
+import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
+import se_ii.gruppe2.moving_maze.helperclasses.RotationResetter;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.item.ItemLogical;
 import se_ii.gruppe2.moving_maze.item.Position;
 import se_ii.gruppe2.moving_maze.player.Player;
@@ -458,7 +461,7 @@ public class GameScreen implements Screen {
     }
 
     public void recreateGameBoard() {
-        game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard());
+        game.getGameState().setBoard(GameBoardFactory.getStandardGameBoard("Original"));
         game.getClient().sendGameStateUpdate(game.getGameState());
     }
 

@@ -2,26 +2,28 @@ package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
-import se_ii.gruppe2.moving_maze.helperclasses.*;
-import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
+import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
+import se_ii.gruppe2.moving_maze.item.ItemTheme;
+import se_ii.gruppe2.moving_maze.player.Player;
 
 public class CreateSessionScreen implements Screen {
 
@@ -222,9 +224,9 @@ public class CreateSessionScreen implements Screen {
         theme = game.getPreferences().getString(LOBBYTHEME, "Original");
         themeButton = new TextButton(theme, skin);
         themeButton.getLabel().setFontScale(1.8f*scalingFactor);
-        themeButton.setDisabled(true);
-        themeButton.setTouchable(Touchable.disabled);
-        themeButton.setColor(0.5f, 0.5f,0.5f,1f);
+        //themeButton.setDisabled(false);
+        //themeButton.setTouchable(Touchable.disabled);
+        //themeButton.setColor(0.5f, 0.5f,0.5f,1f);
         Container<TextButton> themeButtonContainer = new Container<>(themeButton);
         themeButtonContainer.setTransform(true);
         themeButtonContainer.size(225f*scalingFactor, themeButton.getHeight()*0.8f);
@@ -342,7 +344,9 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // code for multiple themes
+                var availableThemes = ItemTheme.getAvailableThemes();
+                theme = availableThemes.get((availableThemes.indexOf(theme)+1) % availableThemes.size());
+                themeButton.setText(theme);
             }
         });
 
@@ -382,7 +386,7 @@ public class CreateSessionScreen implements Screen {
 
                     int numberOfItems = (int) numberOfCardsSlider.getValue();
 
-                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), oldHostName, txfName.getText(), numberOfItems);
+                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(theme), oldHostName, txfName.getText(), numberOfItems);
                 }}
         });
     }
