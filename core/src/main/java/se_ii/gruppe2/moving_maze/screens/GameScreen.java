@@ -356,31 +356,34 @@ public class GameScreen implements Screen {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(localPlayer.getColor()));
             if (game.getGameState().isMyTurn(localPlayer)){
                 myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + localPlayerLabel.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, localPlayerLabel.getHeight()+ 4.0f*offsetY, 10);
+            }else {
+                myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + localPlayerLabel.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, localPlayerLabel.getHeight()+ 2.0f*offsetY, 10);
             }
-            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + localPlayerLabel.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, localPlayerLabel.getHeight()+ 2.0f*offsetY, 10);
         }
-        if(player1 != null){
+        if(player1 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player1.getColor()));
-            if (game.getGameState().isMyTurn(player1)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player1Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player1Label.getHeight()+ 4.0f*offsetY, 10);
+            if (game.getGameState().isMyTurn(player1)) {
+                myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player1Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player1Label.getHeight() + 4.0f * offsetY, 10);
+            } else {
+                myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player1Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player1Label.getHeight() + 2.0f * offsetY, 10);
             }
-            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player1Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player1Label.getHeight()+ 2.0f*offsetY, 10);
         }
-        if(player2 != null){
+        if(player2 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player2.getColor()));
-            if (game.getGameState().isMyTurn(player2)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player2Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player2Label.getHeight()+ 4.0f*offsetY, 10);
+            if (game.getGameState().isMyTurn(player2)) {
+                myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player2Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player2Label.getHeight() + 4.0f * offsetY, 10);
+            } else {
+                myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player2Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player2Label.getHeight() + 2.0f * offsetY, 10);
             }
-            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player2Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player2Label.getHeight()+ 2.0f*offsetY, 10);
         }
-        if(player3 != null){
+        if(player3 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player3.getColor()));
-            if (game.getGameState().isMyTurn(player3)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + player3Label.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, player3Label.getHeight()+ 4.0f*offsetY, 10);
+            if (game.getGameState().isMyTurn(player3)) {
+                myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player3Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player3Label.getHeight() + 4.0f * offsetY, 10);
+            } else {
+                myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player3Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player3Label.getHeight() + 2.0f * offsetY, 10);
             }
-            myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + player3Label.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, player3Label.getHeight()+ 2.0f*offsetY, 10);
         }
-
         if(phaseLabel != null){
             myShapeRenderer.setColor(0.5f, 0.5f, 0.5f, 0.85f);
             myShapeRenderer.roundedRect(phaseLabel.getX()-0.5f*offsetX, phaseLabel.getY()-2.0f*offsetX,phaseLabel.getWidth()+1.0f*offsetX, phaseLabel.getHeight()+4.0f*offsetX, 10);
