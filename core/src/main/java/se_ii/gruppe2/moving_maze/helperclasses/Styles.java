@@ -16,7 +16,7 @@ public class Styles {
     private Skin skin;
     private Label.LabelStyle labelStyle;
 
-    public Styles(String s){
+    public Styles(){
 
         skin = new Skin(Gdx.files.internal(SKINPATH));
 

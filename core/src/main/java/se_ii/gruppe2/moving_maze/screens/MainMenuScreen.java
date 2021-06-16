@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
-import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 
@@ -46,7 +44,8 @@ public class MainMenuScreen implements Screen {
         // global ui-stuff
         headerLogoScaled = getScaledImage("ui/logo.png", 0.5f);
         stage = new Stage();
-        skin = game.getStyle().getSkin();
+        // skin = game.getStyle().getSkin();
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
         // generate and add buttons

@@ -19,10 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
-import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
-import se_ii.gruppe2.moving_maze.helperclasses.Styles;
-import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
-import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
+import se_ii.gruppe2.moving_maze.helperclasses.*;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 
@@ -101,7 +98,7 @@ public class CreateSessionScreen implements Screen {
         clock = 0;
 
         myLblStyle = game.getStyle().getLabelStyle();
-        skin = game.getStyle().getSkin();
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -500,7 +497,7 @@ public class CreateSessionScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
+        // skin.dispose();
         startImageTexture.dispose();
     }
 }

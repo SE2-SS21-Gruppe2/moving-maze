@@ -45,7 +45,7 @@ public class WaitingScreen implements Screen {
         bgTextureRegion = new TextureRegion(bgImageTexture);
 
         stage = new Stage(new ScreenViewport());
-        var skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         var scalingFactor = Gdx.graphics.getWidth() / 1280f;
 
 

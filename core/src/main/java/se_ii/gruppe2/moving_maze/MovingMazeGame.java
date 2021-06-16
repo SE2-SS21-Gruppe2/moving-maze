@@ -87,7 +87,7 @@ public class MovingMazeGame extends Game {
 		font.getData().setScale(3);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
-		style = new Styles(sessionKey);
+		style = new Styles();
 
 		// Instantiate all screens
 		joinSessionScreen = new JoinSessionScreen(this);

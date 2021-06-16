@@ -4,14 +4,11 @@ package se_ii.gruppe2.moving_maze.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 
@@ -28,6 +25,7 @@ public class VictoryScreen implements Screen {
 
     private Table tbl;
     private Stage stage;
+    private Skin skin;
 
     private static Player winingPlayer;
 
@@ -35,6 +33,8 @@ public class VictoryScreen implements Screen {
         this.game = game;
         this.batch = game.getBatch();
         stage = new Stage();
+
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
 
     @Override
@@ -43,19 +43,21 @@ public class VictoryScreen implements Screen {
 
         tbl = new Table();
 
-        TextButton tbBack = new TextButton("Back to menu", MainMenuScreen.skin);
+        TextButton tbBack = new TextButton("Back to menu", skin);
         tbBack.setSize(Gdx.graphics.getWidth()/5f, Gdx.graphics.getHeight()/10f);
         tbBack.getLabel().setFontScale(Gdx.graphics.getHeight()/tbBack.getHeight() / 3f);
         tbBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.setSessionKey("------");
+                game.setInGame(false);
                 game.setScreen(game.getMainMenuScreen());
             }
         });
 
-        Label playerName = new Label(winingPlayer.getName(), MainMenuScreen.skin);
+        Label playerName = new Label(winingPlayer.getName(), skin);
         playerName.setFontScale(7f);
-        Label winnerQuote = new Label("has beaten the maze!", MainMenuScreen.skin);
+        Label winnerQuote = new Label("has beaten the maze!", skin);
         winnerQuote.setFontScale(4f);
 
         tbl.setPosition(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f);
