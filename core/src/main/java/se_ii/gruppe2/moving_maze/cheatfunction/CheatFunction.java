@@ -12,7 +12,6 @@ public class CheatFunction {
     private boolean cheated;
     private boolean cheatCurrentMove;
     private boolean cheatDetected;
-    private ItemLogical cheatedCard;
 
     //Constructor
     public CheatFunction() {
@@ -38,7 +37,7 @@ public class CheatFunction {
 
             Position p = cheater.getPos();
             Tile t = game.getGameState().getBoard().getBoard()[p.getY()][p.getX()];
-            ItemLogical cardCheck = cheater.getCheatFunction().cheatedCard;
+            ItemLogical cardCheck = cheater.getCardsFound().firstElement();
             if (cardCheck != null && !cardCheck.equals(t.getItem())) {
                 Gdx.app.log("cheat/report", "Cheat detected! Cheater will be punished ...");
                 //cheat detected and cheater is punished
@@ -67,7 +66,6 @@ public class CheatFunction {
                 game.getClient().sendGameStateUpdate(game.getGameState());
 
             }
-            cheatedCard = null;
         }
         return false;
     }
@@ -83,7 +81,6 @@ public class CheatFunction {
             setCheated(true);
             MovingMazeGame game = MovingMazeGame.getGameInstance();
             Player local = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
-            cheatedCard = local.getCurrentCard();
             local.nextCard();
             Gdx.app.log("cheat/debug", "Cheat activated and successful! Updating card ...");
 
