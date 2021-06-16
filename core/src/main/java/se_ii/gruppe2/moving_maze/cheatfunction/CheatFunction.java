@@ -42,6 +42,7 @@ public class CheatFunction {
             ItemLogical cardCheck = cheater.getCardsFound().firstElement();
 
             if (cardCheck != null && !cardCheck.equals(t.getItem())) {
+                Gdx.app.log("cheat/report", "cardCheck: " + cardCheck.getName() + ", " + t.getItem().getName());
                 Gdx.app.log("cheat/report", "Cheat detected! Cheater will be punished ...");
                 //cheat detected and cheater is punished
                 cheater.getCardsToFind().push(cheater.getCurrentCard());
