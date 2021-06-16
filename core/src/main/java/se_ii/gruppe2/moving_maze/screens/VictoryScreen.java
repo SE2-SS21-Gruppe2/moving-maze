@@ -39,6 +39,7 @@ public class VictoryScreen implements Screen {
 
     @Override
     public void show() {
+        stage.clear();
         camera = MovingMazeGame.getStandardizedCamera();
 
         tbl = new Table();

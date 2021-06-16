@@ -110,6 +110,7 @@ public class GameScreen implements Screen {
         stageMenuButton = new Stage();
         stageExtraTile = new Stage();
         stagePlayerList = new Stage();
+
         myShapeRenderer = new MyShapeRenderer();
         firstCall = true;
 
@@ -236,10 +237,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        stagePlayerMovement.dispose();
-        stagePlayerList.dispose();
-        stageMenuButton.dispose();
-        stageExtraTile.dispose();
     }
 
 
