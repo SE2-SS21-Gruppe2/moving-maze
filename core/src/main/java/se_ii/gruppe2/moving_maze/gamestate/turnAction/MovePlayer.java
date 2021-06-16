@@ -46,6 +46,7 @@ public class MovePlayer implements TurnAction {
             return true;
         } else {
             game.getGameState().completePhase();
+            game.getGameState().completePhase();
             game.getClient().sendGameStateUpdate(game.getGameState());
             return false;
         }
