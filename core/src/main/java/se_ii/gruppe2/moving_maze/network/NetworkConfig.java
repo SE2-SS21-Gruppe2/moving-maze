@@ -6,6 +6,6 @@ public class NetworkConfig {
     private NetworkConfig() {}
 
     public static final int PORT = 55444;
-    public static final String HOST = "127.0.0.1";
+    public static final String HOST = "7.0.0.2";
     public static final int TIMEOUT = 5000;
 }
