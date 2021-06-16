@@ -369,6 +369,8 @@ public class CreateSessionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (!gameCode.getText().toString().equals(NOGAMECODE)){
 
+                    String oldHostName = game.getPreferences().getString(LOCALPLAYERNAME);
+
                     game.getPreferences().putString(LOCALPLAYERNAME, txfName.getText());
                     game.getPreferences().putInteger(LOBBYDIFFICULTY, (int) difficultySlider.getValue());
                     game.getPreferences().putInteger(LOBBYNUMOFCARDS, (int) numberOfCardsSlider.getValue());
@@ -380,7 +382,7 @@ public class CreateSessionScreen implements Screen {
 
                     int numberOfItems = (int) numberOfCardsSlider.getValue();
 
-                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), game.getLocalPlayer().getName(), numberOfItems);
+                    game.getClient().initGame(game.getSessionKey(), GameBoardFactory.getStandardGameBoard(), oldHostName, txfName.getText(), numberOfItems);
                 }}
         });
     }
