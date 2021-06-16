@@ -373,7 +373,7 @@ public class CreateSessionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (!gameCode.getText().toString().equals(NOGAMECODE)){
 
-                    String oldHostName = game.getPreferences().getString(LOCALPLAYERNAME);
+                    String oldHostName = game.getPreferences().getString(LOCALPLAYERNAME, "temp_SessionCreator");
 
                     game.getPreferences().putString(LOCALPLAYERNAME, txfName.getText());
                     game.getPreferences().putInteger(LOBBYDIFFICULTY, (int) difficultySlider.getValue());
