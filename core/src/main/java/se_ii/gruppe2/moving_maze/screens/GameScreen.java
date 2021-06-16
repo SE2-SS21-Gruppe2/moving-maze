@@ -106,6 +106,7 @@ public class GameScreen implements Screen {
             game.getGameState().getPlayerByName(game.getLocalPlayer().getName()).nextCard();
         }
 
+        //handle cheat
         if (Gdx.input.isKeyJustPressed(Input.Keys.VOLUME_DOWN)) {
             Player player = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
             if (!player.getCheatFunction().getCheated()) {
@@ -114,6 +115,20 @@ public class GameScreen implements Screen {
                 Gdx.app.log("cheat", "not possible to activate cheat! You have already activated it once");
             }
             Gdx.app.log("cheat", "cheat activated for " + game.getLocalPlayer().getName());
+        }
+
+        //handle cheat report
+        if (Gdx.input.isKeyJustPressed(Input.Keys.VOLUME_UP)) {
+            Player caller = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
+            Player cheater = game.getGameState().getPreviousPlayer();
+            if (cheater != null) {
+                boolean cheatDetected = caller.getCheatFunction().markCheater(caller, cheater);
+                Gdx.app.log("cheat/report", "cheat report activated for " + cheater.getName() + " from caller " +
+                        caller.getName() + "Status cheat detected: " + cheatDetected);
+
+            } else {
+                Gdx.app.log("cheat/report", "cheat report not available. No previous Player.");
+            }
         }
 
         batch.begin();

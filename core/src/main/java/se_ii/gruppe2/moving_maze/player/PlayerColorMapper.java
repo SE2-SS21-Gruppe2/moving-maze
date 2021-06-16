@@ -69,6 +69,11 @@ public class PlayerColorMapper {
         return pos;
     }
 
+    /**
+     * get the offset by a color, so that 2 pawns are not drawn on top of each other
+     * @param color of the player
+     * @return the Position of the pawn by the color
+     */
     public static Position getOffsetByColor(PlayerColor color) {
         int offsetFactor = 8;
         switch (color) {

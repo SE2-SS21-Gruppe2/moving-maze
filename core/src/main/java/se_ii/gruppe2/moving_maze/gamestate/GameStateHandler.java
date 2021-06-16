@@ -1,7 +1,6 @@
 package se_ii.gruppe2.moving_maze.gamestate;
 
 import com.badlogic.gdx.math.Vector2;
-import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
@@ -12,6 +11,7 @@ public class GameStateHandler {
     private String sessionCode;
     private ArrayList<Player> players;
     private Player currentPlayerOnTurn;
+    private Player previousPlayer;
     private int playerOnTurnIndex;
     private GameBoard board;
     private GamePhase gamePhase;
@@ -56,6 +56,7 @@ public class GameStateHandler {
             playerOnTurnIndex = 0;
             currentPlayerOnTurn = players.get(playerOnTurnIndex);
         } else {
+            previousPlayer = currentPlayerOnTurn;
             currentPlayerOnTurn = players.get(++playerOnTurnIndex % (players.size()));
         }
 
@@ -79,6 +80,12 @@ public class GameStateHandler {
         }
     }
 
+    /**
+     * get the Player by his name
+     *
+     * @param name of the player
+     * @return Player if name exists. Otherwise return null
+     */
     public Player getPlayerByName(String name) {
 
         for (Player p : players) {
@@ -135,15 +142,15 @@ public class GameStateHandler {
         return this.currentPlayerOnTurn;
     }
 
+    public Player getPreviousPlayer() {
+        return this.previousPlayer;
+    }
+
     public GamePhaseType getGamePhase() {
         return gamePhase.getPhaseType();
     }
 
     public boolean isMyTurn(Player player) {
-        if (players.get(playerOnTurnIndex % players.size()).getId() == player.getId()) {
-            return true;
-        } else {
-            return false;
-        }
+        return players.get(playerOnTurnIndex % players.size()).getId() == player.getId();
     }
 }
