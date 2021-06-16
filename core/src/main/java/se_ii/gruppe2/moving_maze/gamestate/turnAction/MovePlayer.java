@@ -41,7 +41,6 @@ public class MovePlayer implements TurnAction {
         positionsToGO=new ArrayList<>();
         Tile[][] gb= game.getGameState().getBoard().getBoard();
         player=game.getGameState().getPlayerByName((game.getLocalPlayer().getName()));
-        System.out.println("Y:"+ player.getPos().getY()+" X:"+player.getPos().getX());
         if(canMoveTop(gb,player.getPos().getY(), player.getPos().getX())|| canMoveRight(gb,player.getPos().getY(),player.getPos().getX())||canMoveBottom(gb,player.getPos().getY(),player.getPos().getX()) || canMoveLeft(gb,player.getPos().getY(),player.getPos().getX()) ){
             positionsToGO=possibleMoves(player.getPos(), gb,positionsToGO);
             return true;

@@ -537,7 +537,7 @@ public class GameScreen implements Screen {
         if (isNewExtraTile()) {
             updateExtraTile();
         }
-        if(game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer())){
+        if(game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer()) && canMove){
             updatePlayerMovement(initPos.getX(),initPos.getY());
         }
     }
@@ -546,8 +546,6 @@ public class GameScreen implements Screen {
 
     public void updatePlayerMovement(float colStart, float rowStart){
         stagePlayerMovement.clear();
-        //System.out.println("Top:"+ game.getGameState().getBoard().getBoard()[5][0].isOpenTop()+" Right:"+game.getGameState().getBoard().getBoard()[5][0].isOpenRight()+" Bottom:"+game.getGameState().getBoard().getBoard()[5][0].isOpenBottom()+" Left:"+game.getGameState().getBoard().getBoard()[5][0].isOpenLeft());
-        //System.out.println(game.getGameState().getBoard().getBoard()[5][0].getRotationDegrees());
         MovePlayer movePlayer= new MovePlayer();
         if (movePlayer.validate() && movePlayer.getPositionsToGO().size()>1){
             localPlayerMoves=movePlayer.getPositionsToGO();
