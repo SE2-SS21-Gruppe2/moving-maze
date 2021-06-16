@@ -184,21 +184,26 @@ public class GameScreen implements Screen {
 
         //handle cheat report
         if (Gdx.input.isKeyJustPressed(Input.Keys.VOLUME_UP)) {
-            Player caller = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
-            Player cheater = game.getGameState().getPlayerByName(game.getGameState().getPreviousPlayer().getName());
-            if (cheater != null) {
-                boolean cheatDetected = caller.getCheatFunction().markCheater(caller, cheater);
-                Gdx.app.log("cheat/report", "cheat report activated for " + cheater.getName() + " from caller " +
-                        caller.getName() + " Status cheat detected: " + cheatDetected);
+            if (game.getGameState().getPreviousPlayer() != null) {
+                Player caller = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
+                Player cheater = game.getGameState().getPlayerByName(game.getGameState().getPreviousPlayer().getName());
+                if (cheater != null) {
+                    boolean cheatDetected = caller.getCheatFunction().markCheater(caller, cheater);
+                    Gdx.app.log("cheat/report", "cheat report activated for " + cheater.getName() + " from caller " +
+                            caller.getName() + " Status cheat detected: " + cheatDetected);
+
+                } else {
+                    Gdx.app.log("cheat/report", "cheat report not available. No previous Player.");
+                }
 
             } else {
-                Gdx.app.log("cheat/report", "cheat report not available. No previous Player.");
+                Gdx.app.log("cheat/bug", "no previous Player found!");
             }
         }
 
         batch.begin();
         batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
-        batch.draw(tileframe, getTileFrameX - tileframe.getWidth()/5 ,getTileFrameY - tileframe.getHeight()/5);
+        batch.draw(tileframe, getTileFrameX - tileframe.getWidth()/5f ,getTileFrameY - tileframe.getHeight()/5f);
         batch.draw(boardframe, (int)getBoardFrameX,(int)getBoardFrameY);
         drawCardToScreen(batch);
         drawGameBoard(batch);
@@ -541,8 +546,8 @@ public class GameScreen implements Screen {
 
     public void updatePlayerMovement(float colStart, float rowStart){
         stagePlayerMovement.clear();
-        System.out.println("Top:"+ game.getGameState().getBoard().getBoard()[5][0].isOpenTop()+" Right:"+game.getGameState().getBoard().getBoard()[5][0].isOpenRight()+" Bottom:"+game.getGameState().getBoard().getBoard()[5][0].isOpenBottom()+" Left:"+game.getGameState().getBoard().getBoard()[5][0].isOpenLeft());
-        System.out.println(game.getGameState().getBoard().getBoard()[5][0].getRotationDegrees());
+        //System.out.println("Top:"+ game.getGameState().getBoard().getBoard()[5][0].isOpenTop()+" Right:"+game.getGameState().getBoard().getBoard()[5][0].isOpenRight()+" Bottom:"+game.getGameState().getBoard().getBoard()[5][0].isOpenBottom()+" Left:"+game.getGameState().getBoard().getBoard()[5][0].isOpenLeft());
+        //System.out.println(game.getGameState().getBoard().getBoard()[5][0].getRotationDegrees());
         MovePlayer movePlayer= new MovePlayer();
         if (movePlayer.validate() && movePlayer.getPositionsToGO().size()>1){
             localPlayerMoves=movePlayer.getPositionsToGO();

@@ -162,7 +162,7 @@ public class GameStateHandler {
         switch(this.gamePhase.getPhaseType()){
             case INSERT_TILE: return "Extra-Teil einsetzen";
             case MOVE_PLAYER: return "Spielfigur bewegen";
-            case DRAW_CARD: return "Karte ziehen";
+            //case DRAW_CARD: return "Karte ziehen";
             case PICKUP_ITEM: return "Symbol aufnehmen";
             default: return "";
         }
