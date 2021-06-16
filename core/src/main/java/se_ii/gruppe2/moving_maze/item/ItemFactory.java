@@ -8,11 +8,18 @@ import java.util.Random;
 
 public class ItemFactory {
 
-    private static final String[] itemPaths = getFileList();
-    private static final ItemLogical[] items=new ItemLogical[itemPaths.length];
+    private static String[] itemPaths;
+    private static ItemLogical[] items;
+    private static String itemPath;
 
 
     private ItemFactory(){}
+
+    public ItemFactory(String theme){
+        itemPath = ItemTheme.getItemThemePath(theme);
+        itemPaths = getFileList();
+        items=new ItemLogical[itemPaths.length];
+    }
 
 
     /**
@@ -43,7 +50,7 @@ public class ItemFactory {
     private static String[] getFileList(){
         FileHandle handle;
         if(Gdx.app.getType() == Application.ApplicationType.Android){
-            handle= Gdx.files.internal("items");
+            handle= Gdx.files.internal(itemPath);
         }
         else{
             handle= Gdx.files.internal("android/assets/items");

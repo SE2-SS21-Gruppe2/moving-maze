@@ -16,7 +16,7 @@ public class GameBoardFactory {
      * itemPathCounter: counter to iterate
      */
     private static final float[] possibleRotationAngles = {0, 90, 270, 180};
-    private static final ItemLogical[] items = ItemFactory.itemArray();
+    private static ItemLogical[] items;
     private static int itemPathCounter= 0;
     private static final SecureRandom  random= new SecureRandom();
     private static int amountOfLTiles;
@@ -24,7 +24,8 @@ public class GameBoardFactory {
     private static int amountOfITiles;
 
     // static utility class - prevent instantiation
-    private GameBoardFactory() {}
+    private GameBoardFactory() {
+    }
 
     /**
      * Int L,T,I are responsible for how many Tile of a
@@ -35,7 +36,9 @@ public class GameBoardFactory {
      *
      * shuffleArray shuffles the itemPath, so every game items are newly organized.
      */
-    public static GameBoard getStandardGameBoard(){
+    public static GameBoard getStandardGameBoard(String theme){
+        var itemFactory = new ItemFactory(theme);
+        items = itemFactory.itemArray();
         var gb = new GameBoard();
         Tile[][] board = gb.getBoard();
         amountOfLTiles =16;
@@ -46,7 +49,9 @@ public class GameBoardFactory {
         return gb;
     }
 
-    public static GameBoard getEasyGameBoard(){
+    public static GameBoard getEasyGameBoard(String theme){
+        var itemFactory = new ItemFactory(theme);
+        items = itemFactory.itemArray();
         var gb = new GameBoard();
         Tile[][] board = gb.getBoard();
         amountOfLTiles =10;
