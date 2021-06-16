@@ -77,9 +77,7 @@ public class CheatFunction {
                 Gdx.app.log("DEBUG", "cheater has NO cards in found " + cheater.getCardsFound().size());
                 Gdx.app.log("cheat/report", "Cheat not detected! Caller will be punished ...");
                 //wrong cheat detected and caller is punished
-
-                caller.getCardsToFind().push(caller.getCurrentCard());
-                cheater.getCardsFound().push(caller.getCurrentCard());
+                caller.getCheatFunction().cheatDetected = false;
 
                 caller.setPos(PlayerColorMapper.getInitialPositionByColor(caller.getColor()));
 
