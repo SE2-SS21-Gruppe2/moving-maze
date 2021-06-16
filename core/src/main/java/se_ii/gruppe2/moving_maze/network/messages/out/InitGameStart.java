@@ -14,15 +14,17 @@ public class InitGameStart {
     private String key;
     private int itemsPerPlayer;
     private GameBoard board;
+    private String oldHostName;
     private String finalHostName;
     private ArrayList<ItemLogical> itemsToDistribute;
 
     public InitGameStart() {
     }
 
-    public InitGameStart(String key, GameBoard board, String finalHostName, int itemsPerPlayer, ItemLogical[] availableItems) {
+    public InitGameStart(String key, GameBoard board, String oldHostName, String finalHostName, int itemsPerPlayer, ItemLogical[] availableItems) {
         this.key = key;
         this.board = board;
+        this.oldHostName = oldHostName;
         this.finalHostName = finalHostName;
         this.itemsPerPlayer = itemsPerPlayer;
         this.itemsToDistribute = new ArrayList<>(Arrays.asList(availableItems));
@@ -43,6 +45,14 @@ public class InitGameStart {
 
     public void setBoard(GameBoard board) {
         this.board = board;
+    }
+
+    public String getOldHostName() {
+        return oldHostName;
+    }
+
+    public void setOldHostName(String oldHostName) {
+        this.oldHostName = oldHostName;
     }
 
     public String getFinalHostName() {

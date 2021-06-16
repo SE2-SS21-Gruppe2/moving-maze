@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -34,7 +34,6 @@ import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.player.PlayerColorMapper;
 import se_ii.gruppe2.moving_maze.tile.Tile;
 
-import javax.swing.text.GlyphView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,6 +112,7 @@ public class GameScreen implements Screen {
         stageMenuButton = new Stage();
         stageExtraTile = new Stage();
         stagePlayerList = new Stage();
+
         myShapeRenderer = new MyShapeRenderer();
         firstCall = true;
 
@@ -123,7 +123,6 @@ public class GameScreen implements Screen {
         cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-
     }
 
     @Override
@@ -240,10 +239,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        stagePlayerMovement.dispose();
-        stagePlayerList.dispose();
-        stageMenuButton.dispose();
-        stageExtraTile.dispose();
     }
 
 
@@ -537,7 +532,7 @@ public class GameScreen implements Screen {
         if (isNewExtraTile()) {
             updateExtraTile();
         }
-        if(game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer())){
+        if(game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer()) && canMove){
             updatePlayerMovement(initPos.getX(),initPos.getY());
         }
     }
@@ -546,8 +541,6 @@ public class GameScreen implements Screen {
 
     public void updatePlayerMovement(float colStart, float rowStart){
         stagePlayerMovement.clear();
-        //System.out.println("Top:"+ game.getGameState().getBoard().getBoard()[5][0].isOpenTop()+" Right:"+game.getGameState().getBoard().getBoard()[5][0].isOpenRight()+" Bottom:"+game.getGameState().getBoard().getBoard()[5][0].isOpenBottom()+" Left:"+game.getGameState().getBoard().getBoard()[5][0].isOpenLeft());
-        //System.out.println(game.getGameState().getBoard().getBoard()[5][0].getRotationDegrees());
         MovePlayer movePlayer= new MovePlayer();
         if (movePlayer.validate() && movePlayer.getPositionsToGO().size()>1){
             localPlayerMoves=movePlayer.getPositionsToGO();

@@ -2,13 +2,10 @@ package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -58,7 +55,7 @@ public class JoinSessionScreen implements Screen {
         // global ui-stuff
         headerLogoScaled = getScaledImage("ui/logo.png", 0.5f);
         stage = new Stage();
-        skin = game.getStyle().getSkin();
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
         scalingFactor = Gdx.graphics.getWidth()/1280.0f;
@@ -240,7 +237,7 @@ public class JoinSessionScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
+        // skin.dispose();
     }
 
     private Texture getScaledImage(String path, float percentOfScreen) {

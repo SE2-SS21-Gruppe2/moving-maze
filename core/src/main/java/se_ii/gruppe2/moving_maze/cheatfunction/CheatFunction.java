@@ -39,31 +39,45 @@ public class CheatFunction {
             Position p = cheater.getPos();
             Tile t = game.getGameState().getBoard().getBoard()[p.getY()][p.getX()];
             Gdx.app.log("DEBUG", "cheater has cards in found " + cheater.getCardsFound().size());
-            ItemLogical cardCheck = cheater.getCardsFound().firstElement();
 
-            if (cardCheck != null && !cardCheck.equals(t.getItem())) {
-                Gdx.app.log("cheat/report", "cardCheck: " + cardCheck.getName() + ", " + t.getItem().getName());
-                Gdx.app.log("cheat/report", "Cheat detected! Cheater will be punished ...");
-                //cheat detected and cheater is punished
-                cheater.getCardsToFind().push(cheater.getCurrentCard());
-                cheater.setCurrentCard(cardCheck);
-                cheater.getCardsToFind().push(caller.getCurrentCard());
-                caller.nextCard();
+            if (cheater.getCardsFound().size() > 0) {
+                ItemLogical cardCheck = cheater.getCardsFound().firstElement();
+                if (cardCheck != null && !cardCheck.equals(t.getItem())) {
+                    Gdx.app.log("cheat/report", "cardCheck: " + cardCheck.getName() + ", " + t.getItem().getName());
+                    Gdx.app.log("cheat/report", "Cheat detected! Cheater will be punished ...");
+                    //cheat detected and cheater is punished
+                    cheater.getCardsToFind().push(cheater.getCurrentCard());
+                    cheater.setCurrentCard(cardCheck);
+                    cheater.getCardsToFind().push(caller.getCurrentCard());
+                    caller.nextCard();
 
-                cheater.setPos(PlayerColorMapper.getInitialPositionByColor(cheater.getColor()));
+                    cheater.setPos(PlayerColorMapper.getInitialPositionByColor(cheater.getColor()));
 
-                //update GameState over server
-                game.getClient().sendGameStateUpdate(game.getGameState());
+                    //update GameState over server
+                    game.getClient().sendGameStateUpdate(game.getGameState());
 
-                return true;
+                    return true;
+                } else {
+                    Gdx.app.log("DEBUG", "cheater has NO cards in found " + cheater.getCardsFound().size());
+                    Gdx.app.log("cheat/report", "Cheat not detected! Caller will be punished ...");
+                    //wrong cheat detected and caller is punished
+
+                    caller.getCardsToFind().push(caller.getCurrentCard());
+                    caller.setCurrentCard(cheater.getCardsFound().pop());
+                    cheater.getCardsFound().push(caller.getCurrentCard());
+
+                    caller.setPos(PlayerColorMapper.getInitialPositionByColor(caller.getColor()));
+
+                    //update GameState over server
+                    game.getClient().sendGameStateUpdate(game.getGameState());
+
+                }
+
             } else {
                 Gdx.app.log("DEBUG", "cheater has NO cards in found " + cheater.getCardsFound().size());
                 Gdx.app.log("cheat/report", "Cheat not detected! Caller will be punished ...");
                 //wrong cheat detected and caller is punished
-
-                caller.getCardsToFind().push(caller.getCurrentCard());
-                caller.setCurrentCard(cheater.getCardsFound().pop());
-                cheater.getCardsFound().push(caller.getCurrentCard());
+                caller.getCheatFunction().cheatDetected = false;
 
                 caller.setPos(PlayerColorMapper.getInitialPositionByColor(caller.getColor()));
 
@@ -71,6 +85,8 @@ public class CheatFunction {
                 game.getClient().sendGameStateUpdate(game.getGameState());
 
             }
+
+
         }
         return false;
     }

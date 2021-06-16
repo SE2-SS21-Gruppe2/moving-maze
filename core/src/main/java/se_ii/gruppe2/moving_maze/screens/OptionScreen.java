@@ -66,7 +66,7 @@ public class OptionScreen implements Screen {
         camera = MovingMazeGame.getStandardizedCamera();
 
         this.stage = new Stage();
-        skin = game.getStyle().getSkin();
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
         title = new Label("OPTIONS", skin);
