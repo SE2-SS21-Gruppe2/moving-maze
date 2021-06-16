@@ -52,6 +52,7 @@ public class Player {
      * @return the new currentCard; null if no cards are left
      */
     public ItemLogical nextCard() {
+        Gdx.app.log("HELP", currentCard.getName());
         cardsFound.push(currentCard);
 
         if(!cardsToFind.empty()) {

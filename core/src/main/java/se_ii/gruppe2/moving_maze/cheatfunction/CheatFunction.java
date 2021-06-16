@@ -29,6 +29,7 @@ public class CheatFunction {
      * @return true if handled
      */
     public boolean markCheater(Player caller, Player cheater) {
+        Gdx.app.log("name/cheater", "Cheater: " + cheater.getName() + " Caller: " + caller.getName());
         MovingMazeGame game = MovingMazeGame.getGameInstance();
         //check if already reported a cheater
         if (!caller.getCheatFunction().getCheatDetected()) {
@@ -37,7 +38,9 @@ public class CheatFunction {
 
             Position p = cheater.getPos();
             Tile t = game.getGameState().getBoard().getBoard()[p.getY()][p.getX()];
+            Gdx.app.log("DEBUG", "cheater has cards in found " + cheater.getCardsFound().size());
             ItemLogical cardCheck = cheater.getCardsFound().firstElement();
+
             if (cardCheck != null && !cardCheck.equals(t.getItem())) {
                 Gdx.app.log("cheat/report", "Cheat detected! Cheater will be punished ...");
                 //cheat detected and cheater is punished
@@ -53,6 +56,7 @@ public class CheatFunction {
 
                 return true;
             } else {
+                Gdx.app.log("DEBUG", "cheater has NO cards in found " + cheater.getCardsFound().size());
                 Gdx.app.log("cheat/report", "Cheat not detected! Caller will be punished ...");
                 //wrong cheat detected and caller is punished
 
@@ -80,8 +84,8 @@ public class CheatFunction {
             //next card and send to server
             setCheated(true);
             MovingMazeGame game = MovingMazeGame.getGameInstance();
-            Player local = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
-            local.nextCard();
+            Player cheater = game.getGameState().getPlayerByName(game.getGameState().getCurrentPlayerOnTurn().getName());
+            cheater.nextCard();
             Gdx.app.log("cheat/debug", "Cheat activated and successful! Updating card ...");
 
             return true;
