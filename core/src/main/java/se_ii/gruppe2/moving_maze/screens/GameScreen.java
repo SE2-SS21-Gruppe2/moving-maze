@@ -120,7 +120,7 @@ public class GameScreen implements Screen {
         //handle cheat report
         if (Gdx.input.isKeyJustPressed(Input.Keys.VOLUME_UP)) {
             Player caller = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
-            Player cheater = game.getGameState().getPreviousPlayer();
+            Player cheater = game.getGameState().getPlayerByName(game.getGameState().getPreviousPlayer().getName());
             if (cheater != null) {
                 boolean cheatDetected = caller.getCheatFunction().markCheater(caller, cheater);
                 Gdx.app.log("cheat/report", "cheat report activated for " + cheater.getName() + " from caller " +
