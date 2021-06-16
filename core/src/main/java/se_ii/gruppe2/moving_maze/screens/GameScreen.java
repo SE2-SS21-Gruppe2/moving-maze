@@ -124,7 +124,7 @@ public class GameScreen implements Screen {
             if (cheater != null) {
                 boolean cheatDetected = caller.getCheatFunction().markCheater(caller, cheater);
                 Gdx.app.log("cheat/report", "cheat report activated for " + cheater.getName() + " from caller " +
-                        caller.getName() + "Status cheat detected: " + cheatDetected);
+                        caller.getName() + " Status cheat detected: " + cheatDetected);
 
             } else {
                 Gdx.app.log("cheat/report", "cheat report not available. No previous Player.");

@@ -26,19 +26,21 @@ public class CheatFunction {
      * Player can mark a cheater once
      *
      * @param cheater who probably cheated
-     * @param caller   who called a cheater
+     * @param caller  who called a cheater
      * @return true if handled
      */
     public boolean markCheater(Player caller, Player cheater) {
         MovingMazeGame game = MovingMazeGame.getGameInstance();
         //check if already reported a cheater
         if (!caller.getCheatFunction().getCheatDetected()) {
+            Gdx.app.log("cheat/report", "Caller has not reported anyone yet. Checking if cheater cheated.");
             caller.getCheatFunction().setCheatDetected(true);
 
             Position p = cheater.getPos();
             Tile t = game.getGameState().getBoard().getBoard()[p.getY()][p.getX()];
             ItemLogical cardCheck = cheater.getCheatFunction().cheatedCard;
             if (cardCheck != null && !cardCheck.equals(t.getItem())) {
+                Gdx.app.log("cheat/report", "Cheat detected! Cheater will be punished ...");
                 //cheat detected and cheater is punished
                 cheater.getCardsToFind().push(cheater.getCurrentCard());
                 cheater.setCurrentCard(cardCheck);
@@ -49,21 +51,20 @@ public class CheatFunction {
 
                 //update GameState over server
                 game.getClient().sendGameStateUpdate(game.getGameState());
-                Gdx.app.log("cheat/report", "Cheat is detected and Cheater gets a card of the reporter!");
 
                 return true;
             } else {
+                Gdx.app.log("cheat/report", "Cheat not detected! Caller will be punished ...");
                 //wrong cheat detected and caller is punished
-                if (cardCheck != null) {
-                    caller.getCardsToFind().push(caller.getCurrentCard());
-                    caller.setCurrentCard(cardCheck);
 
-                }
+                caller.getCardsToFind().push(caller.getCurrentCard());
+                caller.setCurrentCard(cheater.getCardsFound().pop());
+                cheater.getCardsFound().push(caller.getCurrentCard());
+
                 caller.setPos(PlayerColorMapper.getInitialPositionByColor(caller.getColor()));
 
                 //update GameState over server
                 game.getClient().sendGameStateUpdate(game.getGameState());
-                Gdx.app.log("cheat/report", "Cheat report was wrong and Caller gets the card of the reporter!");
 
             }
             cheatedCard = null;
