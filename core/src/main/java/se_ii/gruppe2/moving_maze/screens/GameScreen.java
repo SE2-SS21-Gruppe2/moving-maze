@@ -48,6 +48,7 @@ public class GameScreen implements Screen {
     private Stage stageMenuButton;
     private Stage stageExtraTile;
     private Stage stagePlayerList;
+    private Stage stageYourTurn;
     private ArrayList<Position> localPlayerMoves;
     private boolean canMove = false;
     public static boolean tileJustRotated = false;
@@ -102,6 +103,7 @@ public class GameScreen implements Screen {
 
     private TextButton menuButton;
     private Dialog dialogMenu;
+    private boolean yourTurnShown;
 
 
     public GameScreen(final MovingMazeGame game) {
@@ -112,9 +114,11 @@ public class GameScreen implements Screen {
         stageMenuButton = new Stage();
         stageExtraTile = new Stage();
         stagePlayerList = new Stage();
+        stageYourTurn = new Stage();
 
         myShapeRenderer = new MyShapeRenderer();
         firstCall = true;
+        yourTurnShown = false;
 
         camera = MovingMazeGame.getStandardizedCamera();
 
@@ -134,6 +138,7 @@ public class GameScreen implements Screen {
         inputMultiplexer.addProcessor(stageMenuButton);
         inputMultiplexer.addProcessor(stageExtraTile);
         inputMultiplexer.addProcessor(stagePlayerList);
+        inputMultiplexer.addProcessor(stageYourTurn);
 
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -141,10 +146,12 @@ public class GameScreen implements Screen {
         stageExtraTile.clear();
         stageMenuButton.clear();
         stagePlayerMovement.clear();
+        stageYourTurn.clear();
 
         scalingFactor = Gdx.graphics.getWidth()/1280f;
 
         setUpMenuButton();
+        setUpYourTurnStage();
     }
 
     @Override
@@ -214,6 +221,11 @@ public class GameScreen implements Screen {
         stagePlayerList.draw();
         stageExtraTile.draw();
         stageMenuButton.draw();
+
+        if (game.getGameState().isMyTurn(game.getLocalPlayer()) && game.getGameState().getGamePhase() == GamePhaseType.INSERT_TILE && yourTurnShown == false){
+            stageYourTurn.draw();
+        }
+
         batch.end();
     }
 
@@ -433,6 +445,36 @@ public class GameScreen implements Screen {
                 stageMenuButton.addActor(dialogMenu);
             }
         });
+    }
+
+    private void setUpYourTurnStage(){
+        var unfocusButton = new Button(skin);
+        unfocusButton.setColor(0,0,0,0.75f);
+        unfocusButton.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        unfocusButton.setPosition(0,0);
+        stageYourTurn.addActor(unfocusButton);
+
+        var label = new Label("Your Turn", skin);
+        label.setFontScale(3.0f*scalingFactor);
+        System.out.println("Label Height: " + label.getHeight() + ", Width: " + label.getWidth());
+        label.setOrigin(label.getWidth()/2.0f, label.getHeight()/2.0f);
+        label.setPosition(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f);
+        stageYourTurn.addActor(label);
+
+        unfocusButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                yourTurnShown = true;
+            }
+        });
+
+        label.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                yourTurnShown = true;
+            }
+        });
+
     }
 
 
@@ -676,6 +718,7 @@ public class GameScreen implements Screen {
             }
             stageExtraTile.addActor(extraTileImage);
             setNewExtraTile(false);
+            yourTurnShown = false;
         }
 
     }
