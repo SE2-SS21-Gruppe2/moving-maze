@@ -6,22 +6,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
-import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
-import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 
 public class LoadingScreen implements Screen {
 
     private final MovingMazeGame game;
     private ShapeRenderer shapeRenderer;
+    private SpriteBatch batch;
     private float progress;
     private Stage stage;
     OrthographicCamera camera;
@@ -32,6 +31,7 @@ public class LoadingScreen implements Screen {
         this.game = game;
         this.stage = new Stage(new FitViewport(MovingMazeGame.WIDTH, MovingMazeGame.HEIGHT, game.getCamera()));
 
+        this.batch = game.getBatch();
     }
 
     private void queueAssets() {
@@ -45,7 +45,7 @@ public class LoadingScreen implements Screen {
     @Override
     public void show() {
 
-        camera = new OrthographicCamera();
+        camera = MovingMazeGame.getStandardizedCamera();
 
 
         Gdx.input.setInputProcessor(stage);
@@ -63,19 +63,13 @@ public class LoadingScreen implements Screen {
 
         loadingImg = new Image(load);
 
-        loadingImg.setAlign(Align.center);
-        loadingImg.setVisible(true);
-        loadingImg.setSize(70f,16f);
+        loadingImg.scaleBy(1f);
+        loadingImg.setPosition(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/2- loadingImg.getHeight()/2);
 
-        table = new Table();
-        table.setWidth(stage.getWidth());
-        table.align(Align.center|Align.top);
-        table.setPosition(0, Gdx.graphics.getHeight()/2f + 70f);
-        table.padBottom(500);
-        table.add(loadingImg).size(Gdx.graphics.getWidth()/2f,100).center();
+        stage.addActor(loadingImg);
+        stage.getCamera().position.set(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f, 0);
 
 
-        stage.addActor(table);
 
     }
 
@@ -90,16 +84,17 @@ public class LoadingScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(camera.combined);
 
         update(delta);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.rect(game.getCamera().viewportWidth/4 + 15, game.getCamera().viewportHeight / 2 , game.getCamera().viewportWidth/2f -33 , 16);
+        shapeRenderer.rect(Gdx.graphics.getWidth()/3 + 15, Gdx.graphics.getHeight()/2 , loadingImg.getWidth()*2 -30 , 30);
 
 
         shapeRenderer.setColor(Color.TEAL);
-        shapeRenderer.rect(game.getCamera().viewportWidth/4 + 15, game.getCamera().viewportHeight / 2 , progress * (game.getCamera().viewportWidth/2f -33), 16);
+        shapeRenderer.rect(Gdx.graphics.getWidth()/3 + 15 , Gdx.graphics.getHeight()/2  , progress * (loadingImg.getWidth()*2 - 30), 30);
         shapeRenderer.end();
 
         stage.draw();
