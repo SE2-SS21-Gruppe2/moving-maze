@@ -148,6 +148,11 @@ public class GameScreen implements Screen {
         stagePlayerMovement.clear();
         stageYourTurn.clear();
 
+        player1 = null;
+        player2 = null;
+        player3 = null;
+        localPlayer = null;
+
         scalingFactor = Gdx.graphics.getWidth()/1280f;
 
         setUpMenuButton();
@@ -456,9 +461,7 @@ public class GameScreen implements Screen {
 
         var label = new Label("Your Turn", skin);
         label.setFontScale(3.0f*scalingFactor);
-        System.out.println("Label Height: " + label.getHeight() + ", Width: " + label.getWidth());
-        label.setOrigin(label.getWidth()/2.0f, label.getHeight()/2.0f);
-        label.setPosition(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f);
+        label.setPosition(Gdx.graphics.getWidth()/2.0f - 250f, Gdx.graphics.getHeight()/2.0f - 50f);
         stageYourTurn.addActor(label);
 
         unfocusButton.addListener(new ClickListener(){
