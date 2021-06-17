@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 
@@ -194,10 +195,10 @@ public class OptionScreen implements Screen {
                 playMusic = !playMusic;
 
                 if (playMusic) {
-                    game.getAudioManager().playBackgroundMusic();
+                    AudioManager.playBackgroundMusic();
 
                 } else {
-                    game.getAudioManager().stopBackgroundMusic();
+                    AudioManager.stopBackgroundMusic();
                 }
             }
         });

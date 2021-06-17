@@ -55,9 +55,6 @@ public class MovingMazeGame extends Game {
 	// Network
 	private NetworkClient client;
 
-	// Audio
-	private AudioManager audioManager;
-
     /**
 	 * Private constructor to avoid accidental instantiation
 	 */
@@ -75,7 +72,6 @@ public class MovingMazeGame extends Game {
 		MovingMazeGame.HEIGHT = Gdx.graphics.getHeight();
 
 		client = NetworkClient.getInstance();
-		audioManager = AudioManager.getAudioManagerInstance();
 		state = new GameStateHandler();
 		preferences = Gdx.app.getPreferences("localPreferences");
 
@@ -248,10 +244,6 @@ public class MovingMazeGame extends Game {
 
 	public Preferences getPreferences() {
 		return preferences;
-	}
-
-	public AudioManager getAudioManager() {
-		return audioManager;
 	}
 
 	public Styles getStyle() {

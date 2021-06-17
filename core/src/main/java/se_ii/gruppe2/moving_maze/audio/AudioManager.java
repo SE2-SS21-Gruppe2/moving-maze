@@ -1,56 +1,43 @@
+
+
 package se_ii.gruppe2.moving_maze.audio;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
+        import com.badlogic.gdx.Gdx;
+        import com.badlogic.gdx.audio.Music;
+        import com.badlogic.gdx.audio.Sound;
 
 public class AudioManager {
 
-    private static AudioManager audioManagerInstance;
-    private static Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/ambient.mp3"));
-    private static Music backgroundMusic2 = Gdx.audio.newMusic(Gdx.files.internal("audio/silent-tears_bg_music.mp3"));
-
-    private static Sound movingMaze = Gdx.audio.newSound(Gdx.files.internal("audio/"));
-    private static Sound victory = Gdx.audio.newSound(Gdx.files.internal("audio/"));
-    private static Sound movePlayer = Gdx.audio.newSound(Gdx.files.internal("audio/"));
-    private static Sound joinGame = Gdx.audio.newSound(Gdx.files.internal("audio/"));
-    private static Sound leaveGame = Gdx.audio.newSound(Gdx.files.internal("audio/"));
-    private static Sound layCardDown = Gdx.audio.newSound(Gdx.files.internal("audio/"));
-    private static Sound isYourTurn = Gdx.audio.newSound(Gdx.files.internal("audio/"));
-
+    final private static Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/silent-tears_bg_music.mp3"));
     private static boolean isPlayingBackgroundMusic;
 
-    private AudioManager() {
-    }
+    final private static Sound movingMaze = Gdx.audio.newSound(Gdx.files.internal("audio/moving_maze.mp3"));
+    final private static Sound victory = Gdx.audio.newSound(Gdx.files.internal("audio/victory.mp3"));
+    final private static Sound movePlayer = Gdx.audio.newSound(Gdx.files.internal("audio/move_player.mp3"));
+    final private static Sound joinGame = Gdx.audio.newSound(Gdx.files.internal("audio/silent-tears_bg_music.mp3"));
+    final private static Sound leaveGame = Gdx.audio.newSound(Gdx.files.internal("audio/silent-tears_bg_music.mp3"));
+    final private static Sound layCardDown = Gdx.audio.newSound(Gdx.files.internal("audio/lay_card_down.mp3"));
+    final private static Sound rotateTile = Gdx.audio.newSound(Gdx.files.internal("audio/rotate_tile.mp3"));
+    final private static Sound cheatDetected = Gdx.audio.newSound(Gdx.files.internal("audio/silent-tears_bg_music.mp3"));
+    final private static Sound noCheatDetected = Gdx.audio.newSound(Gdx.files.internal("audio/silent-tears_bg_music.mp3"));
 
-    public static AudioManager getAudioManagerInstance() {
-        if (audioManagerInstance == null) {
-            audioManagerInstance = new AudioManager();
-        }
-        return audioManagerInstance;
-    }
+    private AudioManager(){ }
 
-    private static Sound getBackgroundMusic() {
+    private static Music getBackgroundMusic() {
         return backgroundMusic;
     }
 
-    public static void playBackgroundMusic() {
-/*        if (!isPlayingBackgroundMusic){
-            getBackgroundMusic().play(0.4f);
-            getBackgroundMusic().loop();
-            isPlayingBackgroundMusic = true;
-        }*/
-        if (!isPlayingBackgroundMusic) {
-            backgroundMusic2.play();
-            backgroundMusic2.setVolume(0.4f);
-            backgroundMusic2.setLooping(true);
+    public static void playBackgroundMusic(){
+        if (!isPlayingBackgroundMusic){
+            getBackgroundMusic().play();
+            getBackgroundMusic().setVolume(0.4f);
+            getBackgroundMusic().setLooping(true);
             isPlayingBackgroundMusic = true;
         }
     }
 
-    public static void stopBackgroundMusic() {
-//        getBackgroundMusic().stop();
-        backgroundMusic2.stop();
+    public static void stopBackgroundMusic(){
+        getBackgroundMusic().stop();
         isPlayingBackgroundMusic = false;
     }
 
@@ -78,11 +65,15 @@ public class AudioManager {
         layCardDown.play(0.4f);
     }
 
-    public static void playIsYourTurn() {
-        isYourTurn.play(0.4f);
+    public static void playRotateTile() {
+        rotateTile.play(0.4f);
     }
 
+    public static void playCheatDetected() {
+        cheatDetected.play(0.4f);
+    }
+
+    public static void playNoCheatDetected() {
+        noCheatDetected.play(0.4f);
+    }
 }
-
-
-
