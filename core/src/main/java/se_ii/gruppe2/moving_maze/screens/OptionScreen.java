@@ -2,6 +2,7 @@ package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -48,6 +49,8 @@ public class OptionScreen implements Screen {
     private boolean rotateTileByGyro;
     private boolean vibratePhone;
 
+    private float scalingFactor;
+
 
     private final Drawable soundOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_on.png"))));
     private final Drawable soundOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/sound_off.png"))));
@@ -55,6 +58,8 @@ public class OptionScreen implements Screen {
     private final Drawable vibrateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_off.png"))));
     private final Drawable rotateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
     private final Drawable rotateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
+
+
 
     public OptionScreen(final MovingMazeGame game) {
         this.game = game;
@@ -70,35 +75,60 @@ public class OptionScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         title = new Label("OPTIONS", skin);
+        title.setColor(Color.GOLD);
         setTitleCoordinates();
 
         table1 = new Table();
+        scalingFactor = Gdx.graphics.getWidth()/1280f;
 
         soundLabel = new Label("Sound", skin);
         soundLabel.setFontScale(3f);
+        soundLabel.setColor(Color.GOLD);
         vibrationLabel = new Label("Vibration", skin);
         vibrationLabel.setFontScale(3f);
+        vibrationLabel.setColor(Color.GOLD);
         rotateScreenLabel = new Label("Tile control", skin);
         rotateScreenLabel.setFontScale(3f);
+        rotateScreenLabel.setColor(Color.GOLD);
 
         //Button
         backTexture = new Texture(Gdx.files.internal("ui/buttons/backButton.png"));
         textureRegion = new TextureRegion(backTexture);
         textureRegionDrawable = new TextureRegionDrawable(textureRegion);
+        textureRegionDrawable.setMinHeight(150f);
+        textureRegionDrawable.setMinWidth(300f);
         backButton = new ImageButton(textureRegionDrawable);
-        backButton.setPosition(20f, camera.viewportHeight - 100f, Align.left);
+        backButton.setPosition(80f * scalingFactor, Gdx.graphics.getHeight() - 57f * scalingFactor - backButton.getHeight());
+
 
         playMusic = game.getPreferences().getBoolean("soundOn", true);
         vibratePhone = game.getPreferences().getBoolean("vibrationOn", true);
         rotateTileByGyro = game.getPreferences().getBoolean("rotateWithSensorOn", true);
 
+        soundOnDrawable.setMinWidth(150f);
+        soundOnDrawable.setMinHeight(150f);
+
+        soundOffDrawable.setMinHeight(150f);
+        soundOffDrawable.setMinWidth(150f);
+
+        vibrateOffDrawable.setMinWidth(150f);
+        vibrateOffDrawable.setMinHeight(150f);
+
+        rotateOnDrawable.setMinWidth(150f);
+        rotateOnDrawable.setMinHeight(150f);
+
+        rotateOffDrawable.setMinWidth(150f);
+        rotateOffDrawable.setMinHeight(150f);
+
+
         soundButton = new ImageButton(soundOffDrawable, soundOnDrawable, soundOnDrawable);
         vibrationButton = new ImageButton(vibrateOffDrawable, vibrateOnDrawable, vibrateOnDrawable);
         rotateScreenButton = new ImageButton(rotateOffDrawable, rotateOnDrawable, rotateOnDrawable);
 
-        soundButton.setChecked(playMusic);
-        vibrationButton.setChecked(vibratePhone);
-        rotateScreenButton.setChecked(rotateTileByGyro);
+
+        //soundButton.setChecked(playMusic);
+        //vibrationButton.setChecked(vibratePhone);
+        //rotateScreenButton.setChecked(rotateTileByGyro);
 
         initTable1();
         setTable1();
@@ -170,16 +200,19 @@ public class OptionScreen implements Screen {
 
         table1.align(Align.center);
 
-        table1.add(soundLabel).size(300, 100).center();
-        table1.add(soundButton).size(100, 100).center();
+
+        table1.add(soundLabel).size(400, 200).center();
+        table1.add(soundButton).size(400, 200).center();
         table1.row();
 
-        table1.add(vibrationLabel).size(300, 100).center();
-        table1.add(vibrationButton).size(100, 100).center();
+
+        table1.add(vibrationLabel).size(400, 200).center();
+        table1.add(vibrationButton).size(400, 200).center();
         table1.row();
 
-        table1.add(rotateScreenLabel).size(300, 100).center();
-        table1.add(rotateScreenButton).size(100, 100).center();
+
+        table1.add(rotateScreenLabel).size(400, 200).center();
+        table1.add(rotateScreenButton).size(400, 200).center();
 
         table1.pad(150);
         //table1.padLeft(130);
@@ -222,5 +255,7 @@ public class OptionScreen implements Screen {
             }
         });
     }
+
+
 }
 
