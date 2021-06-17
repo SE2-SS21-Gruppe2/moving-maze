@@ -105,6 +105,8 @@ public class GameScreen implements Screen {
     private Dialog dialogMenu;
     private boolean yourTurnShown;
 
+    private Texture yourTurnTexture;
+
 
     public GameScreen(final MovingMazeGame game) {
         this.game = game;
@@ -125,6 +127,7 @@ public class GameScreen implements Screen {
         boardframe = getScaledImage("ui/boardframe.PNG",0.62f);
         tileframe = getScaledImage("ui/tileframe.png",0.1f);
         cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
+        yourTurnTexture = getScaledImage("ui/yourturn.png", 0.4f);
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
@@ -459,9 +462,8 @@ public class GameScreen implements Screen {
         unfocusButton.setPosition(0,0);
         stageYourTurn.addActor(unfocusButton);
 
-
-        Texture t = new Texture(Gdx.files.internal("ui/yourturn.png"));
-        var yourTurnImage = new Image(t);
+        var yourTurnImage = new Image(yourTurnTexture);
+        yourTurnImage.setPosition(Gdx.graphics.getWidth()/2.0f - yourTurnImage.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f - yourTurnImage.getHeight()/2.0f);
         stageYourTurn.addActor(yourTurnImage);
 
         unfocusButton.addListener(new ClickListener(){
