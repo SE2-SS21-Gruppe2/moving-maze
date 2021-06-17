@@ -56,8 +56,8 @@ public class VictoryScreen implements Screen {
             }
         });
 
-        Label playerName = new Label(winingPlayer.getName(), skin);
-        playerName.setFontScale(7f);
+        Label playerName = new Label(winingPlayer.getName(), game.getStyle().getLabelStyle());
+        playerName.setFontScale(5f);
         Label winnerQuote = new Label("has beaten the maze!", skin);
         winnerQuote.setFontScale(4f);
 
