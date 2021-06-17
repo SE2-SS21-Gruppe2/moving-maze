@@ -2,6 +2,7 @@ package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -74,6 +75,7 @@ public class OptionScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         title = new Label("OPTIONS", skin);
+        title.setColor(Color.GOLD);
         setTitleCoordinates();
 
         table1 = new Table();
@@ -81,10 +83,13 @@ public class OptionScreen implements Screen {
 
         soundLabel = new Label("Sound", skin);
         soundLabel.setFontScale(3f);
+        soundLabel.setColor(Color.GOLD);
         vibrationLabel = new Label("Vibration", skin);
         vibrationLabel.setFontScale(3f);
+        vibrationLabel.setColor(Color.GOLD);
         rotateScreenLabel = new Label("Tile control", skin);
         rotateScreenLabel.setFontScale(3f);
+        rotateScreenLabel.setColor(Color.GOLD);
 
         //Button
         backTexture = new Texture(Gdx.files.internal("ui/buttons/backButton.png"));
