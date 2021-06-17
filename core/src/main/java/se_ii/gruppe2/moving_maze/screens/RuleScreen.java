@@ -2,6 +2,7 @@ package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,13 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
+import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
+
+import java.util.ArrayList;
 
 public class RuleScreen implements Screen {
 
     final MovingMazeGame game;
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
 
     //ui stuff
     private Stage stage;
@@ -29,6 +33,7 @@ public class RuleScreen implements Screen {
     private ImageButton backButton;
     private ScrollPane scrollPane;
     private Table table;
+    private Table outertable;
     private Skin skin;
     private SpriteBatch batch;
 
@@ -36,38 +41,86 @@ public class RuleScreen implements Screen {
     private Texture bgImageTexture;
     private TextureRegion bgTextureRegion;
     private Texture background;
+    private Label premadeLabel;
+    private ArrayList<Label> labels;
+    private Table scrollTable ;
+
+    private float scalingFactor;
 
     public RuleScreen(final MovingMazeGame game) {
         this.game = game;
         batch = game.getBatch();
-        camera = MovingMazeGame.getStandardizedCamera();
+
     }
 
     @Override
     public void show() {
-        //instantiate background textures
-        bgImageTexture = new Texture(Gdx.files.internal("ui/bg_moss.jpeg"));
-        bgTextureRegion = new TextureRegion(bgImageTexture);
+
+        camera = MovingMazeGame.getStandardizedCamera();
+
+        scalingFactor = Gdx.graphics.getWidth()/1280f;
+
+
         background = new Texture(Gdx.files.internal("rules/background.png"));
+
 
         //Button
         backTexture = new Texture(Gdx.files.internal("ui/buttons/backButton.png"));
         textureRegion = new TextureRegion(backTexture);
         textureRegionDrawable = new TextureRegionDrawable(textureRegion);
+        textureRegionDrawable.setMinHeight(150f);
+        textureRegionDrawable.setMinWidth(300f);
         backButton = new ImageButton(textureRegionDrawable);
-        backButton.setPosition(20f, camera.viewportHeight - 100f, Align.left);
+        backButton.setPosition(80f * scalingFactor, Gdx.graphics.getHeight() - 57f * scalingFactor - backButton.getHeight());
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
-        stage = new Stage(new ScreenViewport());
+
+        stage = new Stage();
+
+        Gdx.input.setInputProcessor(stage);
+
+        labels = new ArrayList<>();
         setUpTable();
-        scrollPane = new ScrollPane(table, skin);
-        scrollPane.setWidth(Gdx.graphics.getWidth());
-        scrollPane.setHeight(Gdx.graphics.getHeight());
-        scrollPane.setScrollingDisabled(true, false);
-        stage.addActor(scrollPane);
+
+
+
+        Table container = new Table();
+        stage.addActor(container);
+        container.setFillParent(false);
+        container.setWidth(Gdx.graphics.getWidth()/1.7f);
+        container.setHeight(Gdx.graphics.getHeight()/1.2f);
+        container.setPosition(Gdx.graphics.getWidth()/2f - container.getWidth()/2f,Gdx.graphics.getHeight()/2f - container.getHeight()/2f);
+
+
+        Table table = new Table();
+
+        final ScrollPane scroll = new ScrollPane(table, skin);
+        scroll.setColor(Color.NAVY);
+        scroll.setScrollingDisabled(true,false);
+        table.row();table.row();table.row();
+        table.pad(10).defaults().expandX().space(4);
+        for (int i = 0; i < labels.size(); i++) {
+            table.row();
+            table.row();
+
+
+
+            Label label = labels.get(i);
+            label.setWrap(true);
+            table.add(label).width(Gdx.graphics.getWidth()/1.8f);
+            table.row();
+            table.row();
+        }
+        table.row();
+        table.row();
+        table.row();
+        table.row();
+
+        container.add(scroll).expand().fill();
+
 
         stage.addActor(backButton);
-        Gdx.input.setInputProcessor(stage);
+
 
         backButton.addListener(new ChangeListener() {
             @Override
@@ -76,83 +129,88 @@ public class RuleScreen implements Screen {
 
             }
         });
-
+        stage.getCamera().position.set(MovingMazeGame.WIDTH / 2.0f, MovingMazeGame.HEIGHT / 2.0f, 0);
 
     }
 
     public void setUpTable() {
-        table = new Table();
-        table.setWidth(Gdx.graphics.getWidth());
-        table.setBackground(new TextureRegionDrawable(new TextureRegion(background)));
-        table.defaults().width(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6f);
-        //table.debug();
+
+
+        labels = new ArrayList<>();
+
 
         var lblZiel = new Label("Ziel:", skin);
-        lblZiel.setAlignment(Align.left);
+        lblZiel.setAlignment(Align.center);
         lblZiel.setFontScale(3f);
-        table.add(lblZiel).padTop(300f).row();
+        lblZiel.setColor(Color.GOLD);
+        labels.add(lblZiel);
 
         String txtZiel = Gdx.files.internal("rules/ziel.txt").readString();
         var ziel = new Label(txtZiel, skin);
         ziel.setAlignment(Align.left);
         ziel.setFontScale(2f);
-        table.add(ziel).align(Align.left).padBottom(100f).row();
+        labels.add(ziel);
 
         var lblAblauf = new Label("Ablauf:", skin);
-        lblAblauf.setAlignment(Align.left);
+        lblAblauf.setAlignment(Align.center);
         lblAblauf.setFontScale(3f);
-        table.add(lblAblauf).row();
+        lblAblauf.setColor(Color.GOLD);
+        labels.add(lblAblauf);
 
         //Texts
         String txtAblauf = Gdx.files.internal("rules/ablauf.txt").readString();
         var ablauf = new Label(txtAblauf, skin);
         ablauf.setAlignment(Align.left);
         ablauf.setFontScale(2f);
-        table.add(ablauf).padBottom(100f).row();
+        labels.add(ablauf);
 
 
         var lblVerschieben = new Label("1. Gaenge verschieben:", skin);
-        lblVerschieben.setAlignment(Align.left);
+        lblVerschieben.setAlignment(Align.center);
         lblVerschieben.setFontScale(3f);
-        table.add(lblVerschieben).row();
+        lblVerschieben.setColor(Color.GOLD);
+        labels.add(lblVerschieben);
 
         String txtVerschieben = Gdx.files.internal("rules/verschieben.txt").readString();
         var verschieben = new Label(txtVerschieben, skin);
         verschieben.setAlignment(Align.left);
         verschieben.setFontScale(2f);
-        table.add(verschieben).padBottom(100f).row();
+        labels.add(verschieben);
 
         var lblSpielfigurZiehen = new Label("2. Spielfigur ziehen:", skin);
-        lblSpielfigurZiehen.setAlignment(Align.left);
+        lblSpielfigurZiehen.setAlignment(Align.center);
         lblSpielfigurZiehen.setFontScale(3f);
-        table.add(lblSpielfigurZiehen).row();
+        lblSpielfigurZiehen.setColor(Color.GOLD);
+        labels.add(lblSpielfigurZiehen);
 
         String txtSpielfigurZiehen = Gdx.files.internal("rules/spielfigur_ziehen.txt").readString();
         var spielfigurZiehen = new Label(txtSpielfigurZiehen, skin);
         spielfigurZiehen.setAlignment(Align.left);
         spielfigurZiehen.setFontScale(2f);
-        table.add(spielfigurZiehen).padBottom(100f).row();
+        labels.add(spielfigurZiehen);
 
         var lblSpielende = new Label("Spielende:", skin);
-        lblSpielende.setAlignment(Align.left);
+        lblSpielende.setAlignment(Align.center);
         lblSpielende.setFontScale(3f);
-        table.add(lblSpielende).row();
+        lblSpielende.setColor(Color.GOLD);
+        labels.add(lblSpielende);
 
         String txtSpielende = Gdx.files.internal("rules/spielende.txt").readString();
         var spielende = new Label(txtSpielende, skin);
         spielende.setAlignment(Align.left);
         spielende.setFontScale(2f);
-        table.add(spielende).padBottom(300f).row();
+        labels.add(spielende);
 
     }
 
+
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 2);
+        ScreenUtils.clear(0, 0, 0, 1);
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        batch.draw(bgTextureRegion, 0, 0);
+        batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
         batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
