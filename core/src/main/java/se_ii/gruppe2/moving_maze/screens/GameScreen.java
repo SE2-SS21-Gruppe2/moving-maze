@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
@@ -49,8 +50,10 @@ public class GameScreen implements Screen {
     private Stage stageExtraTile;
     private Stage stagePlayerList;
     private Stage stageYourTurn;
+    private Stage stageInsertPosition;
     private ArrayList<Position> localPlayerMoves;
     private boolean canMove = false;
+    private boolean canInsert = false;
     public static boolean tileJustRotated = false;
 
     private MyShapeRenderer myShapeRenderer;
@@ -117,6 +120,7 @@ public class GameScreen implements Screen {
         stageExtraTile = new Stage();
         stagePlayerList = new Stage();
         stageYourTurn = new Stage();
+        stageInsertPosition = new Stage();
 
         myShapeRenderer = new MyShapeRenderer();
         firstCall = true;
@@ -142,6 +146,7 @@ public class GameScreen implements Screen {
         inputMultiplexer.addProcessor(stageExtraTile);
         inputMultiplexer.addProcessor(stagePlayerList);
         inputMultiplexer.addProcessor(stageYourTurn);
+        inputMultiplexer.addProcessor(stageInsertPosition);
 
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -150,6 +155,7 @@ public class GameScreen implements Screen {
         stageMenuButton.clear();
         stagePlayerMovement.clear();
         stageYourTurn.clear();
+        stageInsertPosition.clear();
 
         player1 = null;
         player2 = null;
@@ -227,6 +233,7 @@ public class GameScreen implements Screen {
         updatePlayerTable();
         stagePlayerMovement.draw();
         stagePlayerList.draw();
+        stageInsertPosition.draw();
         stageExtraTile.draw();
         stageMenuButton.draw();
 
@@ -470,6 +477,7 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 yourTurnShown = true;
+                canInsert = true;
             }
         });
 
@@ -477,6 +485,7 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 yourTurnShown = true;
+                canInsert = true;
             }
         });
 
@@ -581,9 +590,31 @@ public class GameScreen implements Screen {
         if (isNewExtraTile()) {
             updateExtraTile();
         }
+
+        if (game.getGameState().getGamePhase() == GamePhaseType.INSERT_TILE && game.getGameState().isMyTurn(game.getLocalPlayer()) && canInsert){
+            updateInsertPosition();
+        }
+
         if (game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer()) && canMove) {
             updatePlayerMovement(initPos.getX(), initPos.getY());
         }
+    }
+
+    private void updateInsertPosition() {
+        stageInsertPosition.clear();
+        Texture texture = TextureLoader.getTileTextureOverlay();
+        for (int i = 0; i < game.getGameState().getBoard().getBoard().length; i++){
+            for (int j = 0; j < game.getGameState().getBoard().getBoard().length; j++){
+                var pos = new InsertTile(new Vector2(i,j));
+                if (pos.validate()){
+                    Image image = new Image(texture);
+                    image.setPosition(getStartCoordinates().getX() + i * TextureLoader.TILE_EDGE_SIZE, getStartCoordinates().getY() + j * TextureLoader.TILE_EDGE_SIZE);
+                    //image.setOrigin(i * TextureLoader.TILE_EDGE_SIZE, j * TextureLoader.TILE_EDGE_SIZE);
+                    stageInsertPosition.addActor(image);
+                }
+            }
+        }
+        canInsert = false;
     }
 
 
@@ -706,6 +737,7 @@ public class GameScreen implements Screen {
                         if (insertSuccess) {
                             insert.execute();
                             canMove = true;
+                            stageInsertPosition.clear();
                         } else {
                             extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight() / 2 - extraTileImage.getHeight());
                         }
