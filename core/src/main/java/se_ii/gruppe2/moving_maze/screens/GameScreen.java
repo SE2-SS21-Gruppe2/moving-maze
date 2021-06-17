@@ -459,10 +459,10 @@ public class GameScreen implements Screen {
         unfocusButton.setPosition(0,0);
         stageYourTurn.addActor(unfocusButton);
 
-        var label = new Label("Your Turn", skin);
-        label.setFontScale(3.0f*scalingFactor);
-        label.setPosition(Gdx.graphics.getWidth()/2.0f - 250f, Gdx.graphics.getHeight()/2.0f - 50f);
-        stageYourTurn.addActor(label);
+
+        Texture t = new Texture(Gdx.files.internal("ui/yourturn.png"));
+        var yourTurnImage = new Image(t);
+        stageYourTurn.addActor(yourTurnImage);
 
         unfocusButton.addListener(new ClickListener(){
             @Override
@@ -471,7 +471,7 @@ public class GameScreen implements Screen {
             }
         });
 
-        label.addListener(new ClickListener(){
+        yourTurnImage.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 yourTurnShown = true;
