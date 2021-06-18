@@ -2,9 +2,9 @@
 
 package se_ii.gruppe2.moving_maze.audio;
 
-        import com.badlogic.gdx.Gdx;
-        import com.badlogic.gdx.audio.Music;
-        import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 public class AudioManager {
 
@@ -20,15 +20,17 @@ public class AudioManager {
     final private static Sound rotateTile = Gdx.audio.newSound(Gdx.files.internal("audio/rotate_tile.mp3"));
     final private static Sound cheatDetected = Gdx.audio.newSound(Gdx.files.internal("audio/silent-tears_bg_music.mp3"));
     final private static Sound noCheatDetected = Gdx.audio.newSound(Gdx.files.internal("audio/silent-tears_bg_music.mp3"));
+    final private static Sound buttonClick = Gdx.audio.newSound(Gdx.files.internal("audio/button_click.mp3"));
 
-    private AudioManager(){ }
+    private AudioManager() {
+    }
 
     private static Music getBackgroundMusic() {
         return backgroundMusic;
     }
 
-    public static void playBackgroundMusic(){
-        if (!isPlayingBackgroundMusic){
+    public static void playBackgroundMusic() {
+        if (!isPlayingBackgroundMusic) {
             getBackgroundMusic().play();
             getBackgroundMusic().setVolume(0.4f);
             getBackgroundMusic().setLooping(true);
@@ -36,7 +38,7 @@ public class AudioManager {
         }
     }
 
-    public static void stopBackgroundMusic(){
+    public static void stopBackgroundMusic() {
         getBackgroundMusic().stop();
         isPlayingBackgroundMusic = false;
     }
@@ -46,7 +48,8 @@ public class AudioManager {
     }
 
     public static void playVictory() {
-        victory.play(0.4f);
+        long id = victory.play(0.4f);
+        Gdx.app.log("music", "ID: " + id);
     }
 
     public static void playMovePlayer() {
@@ -75,5 +78,9 @@ public class AudioManager {
 
     public static void playNoCheatDetected() {
         noCheatDetected.play(0.4f);
+    }
+
+    public static void playButtonClick() {
+        buttonClick.play(0.4f);
     }
 }
