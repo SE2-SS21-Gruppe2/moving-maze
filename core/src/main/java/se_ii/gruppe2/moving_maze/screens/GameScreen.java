@@ -225,8 +225,12 @@ public class GameScreen implements Screen {
         batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
         batch.draw(tileframe, getTileFrameX - tileframe.getWidth() / 5f, getTileFrameY - tileframe.getHeight() / 5f);
         batch.draw(boardframe, (int) getBoardFrameX, (int) getBoardFrameY);
+
+
         drawCardToScreen(batch);
         drawGameBoard(batch);
+        batch.end();
+        
         if (!firstCall) {
             drawPlayerColorShapes();
         }
@@ -241,7 +245,7 @@ public class GameScreen implements Screen {
             stageYourTurn.draw();
         }
 
-        batch.end();
+
     }
 
     @Override
