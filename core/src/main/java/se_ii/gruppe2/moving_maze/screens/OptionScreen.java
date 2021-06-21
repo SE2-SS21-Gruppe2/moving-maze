@@ -100,11 +100,6 @@ public class OptionScreen implements Screen {
         backButton = new ImageButton(textureRegionDrawable);
         backButton.setPosition(80f * scalingFactor, Gdx.graphics.getHeight() - 57f * scalingFactor - backButton.getHeight());
 
-
-        playMusic = game.getPreferences().getBoolean("soundOn", true);
-        vibratePhone = game.getPreferences().getBoolean("vibrationOn", true);
-        rotateTileByGyro = game.getPreferences().getBoolean("rotateWithSensorOn", true);
-
         soundOnDrawable.setMinWidth(150f);
         soundOnDrawable.setMinHeight(150f);
 
@@ -120,10 +115,13 @@ public class OptionScreen implements Screen {
         rotateOffDrawable.setMinWidth(150f);
         rotateOffDrawable.setMinHeight(150f);
 
-
         soundButton = new ImageButton(soundOffDrawable, soundOnDrawable, soundOnDrawable);
         vibrationButton = new ImageButton(vibrateOffDrawable, vibrateOnDrawable, vibrateOnDrawable);
         tileRotationButton = new ImageButton(rotateOffDrawable, rotateOnDrawable, rotateOnDrawable);
+
+        playMusic = game.getPreferences().getBoolean("soundOn", true);
+        vibratePhone = game.getPreferences().getBoolean("vibrationOn", true);
+        rotateTileByGyro = game.getPreferences().getBoolean("rotateWithSensorOn", true);
 
         soundButton.setChecked(playMusic);
         vibrationButton.setChecked(vibratePhone);
