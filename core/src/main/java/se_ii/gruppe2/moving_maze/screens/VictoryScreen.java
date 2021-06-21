@@ -51,6 +51,7 @@ public class VictoryScreen implements Screen {
         tbBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 game.setSessionKey("------");
                 game.setInGame(false);
                 game.setScreen(game.getMainMenuScreen());

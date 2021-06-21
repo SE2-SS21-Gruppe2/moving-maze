@@ -1,6 +1,8 @@
 package se_ii.gruppe2.moving_maze.audio;
 
 
+import se_ii.gruppe2.moving_maze.player.Player;
+
 public class AudioNetworkManager {
     private static AudioNetworkManager audioNetwork;
 

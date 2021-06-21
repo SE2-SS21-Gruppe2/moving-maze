@@ -56,15 +56,15 @@ public class AudioManager {
     }
 
     public static void playJoinGame() {
-        joinGame.play(0.4f);
+        joinGame.play(1f);
     }
 
     public static void playLeaveGame() {
-        leaveGame.play(0.4f);
+        leaveGame.play(1f);
     }
 
     public static void playLayCardDown() {
-        layCardDown.play(0.4f);
+        layCardDown.play(1f);
     }
 
     public static void playRotateTile() {
@@ -72,11 +72,11 @@ public class AudioManager {
     }
 
     public static void playCheatDetected() {
-        cheatDetected.play(0.4f);
+        cheatDetected.play(1f);
     }
 
     public static void playNoCheatDetected() {
-        noCheatDetected.play(0.4f);
+        noCheatDetected.play(1f);
     }
 
     public static void playButtonClick() {

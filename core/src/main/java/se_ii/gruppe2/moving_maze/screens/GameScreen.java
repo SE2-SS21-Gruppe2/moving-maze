@@ -72,8 +72,8 @@ public class GameScreen implements Screen {
 
     Image extraTileImage;
 
-    private Texture boardframe ;
-    private Texture tileframe ;
+    private Texture boardframe;
+    private Texture tileframe;
     private Texture cardStack;
     private Image cardStackImage;
     private float getBoardFrameX;
@@ -120,8 +120,8 @@ public class GameScreen implements Screen {
 
         camera = MovingMazeGame.getStandardizedCamera();
 
-        boardframe = getScaledImage("ui/boardframe.PNG",0.62f);
-        tileframe = getScaledImage("ui/tileframe.png",0.1f);
+        boardframe = getScaledImage("ui/boardframe.PNG", 0.62f);
+        tileframe = getScaledImage("ui/tileframe.png", 0.1f);
         cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -144,7 +144,7 @@ public class GameScreen implements Screen {
         stageMenuButton.clear();
         stagePlayerMovement.clear();
 
-        scalingFactor = Gdx.graphics.getWidth()/1280f;
+        scalingFactor = Gdx.graphics.getWidth() / 1280f;
 
         setUpMenuButton();
     }
@@ -168,8 +168,8 @@ public class GameScreen implements Screen {
             game.getGameState().getPlayerByName(game.getLocalPlayer().getName()).nextCard();
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            game.getClient().gameWin(game.getSessionKey(),game.getLocalPlayer());
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            game.getClient().gameWin(game.getSessionKey(), game.getLocalPlayer());
         }
 
         //play network sounds
@@ -359,13 +359,13 @@ public class GameScreen implements Screen {
 
         if (localPlayer != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(localPlayer.getColor()));
-            if (game.getGameState().isMyTurn(localPlayer)){
-                myShapeRenderer.roundedRect(playerTable.getX()-2.5f*offsetX, playerTable.getY() + localPlayerLabel.getY() - 2.0f*offsetY, playerTable.getWidth() + 5.0f*offsetX, localPlayerLabel.getHeight()+ 4.0f*offsetY, 10);
-            }else {
-                myShapeRenderer.roundedRect(playerTable.getX()-offsetX, playerTable.getY() + localPlayerLabel.getY() - offsetY, playerTable.getWidth() + 2.0f*offsetX, localPlayerLabel.getHeight()+ 2.0f*offsetY, 10);
+            if (game.getGameState().isMyTurn(localPlayer)) {
+                myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + localPlayerLabel.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, localPlayerLabel.getHeight() + 4.0f * offsetY, 10);
+            } else {
+                myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + localPlayerLabel.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, localPlayerLabel.getHeight() + 2.0f * offsetY, 10);
             }
         }
-        if(player1 != null) {
+        if (player1 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player1.getColor()));
             if (game.getGameState().isMyTurn(player1)) {
                 myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player1Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player1Label.getHeight() + 4.0f * offsetY, 10);
@@ -373,7 +373,7 @@ public class GameScreen implements Screen {
                 myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player1Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player1Label.getHeight() + 2.0f * offsetY, 10);
             }
         }
-        if(player2 != null) {
+        if (player2 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player2.getColor()));
             if (game.getGameState().isMyTurn(player2)) {
                 myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player2Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player2Label.getHeight() + 4.0f * offsetY, 10);
@@ -381,7 +381,7 @@ public class GameScreen implements Screen {
                 myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player2Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player2Label.getHeight() + 2.0f * offsetY, 10);
             }
         }
-        if(player3 != null) {
+        if (player3 != null) {
             myShapeRenderer.setColor(PlayerColorMapper.getColorValue(player3.getColor()));
             if (game.getGameState().isMyTurn(player3)) {
                 myShapeRenderer.roundedRect(playerTable.getX() - 2.5f * offsetX, playerTable.getY() + player3Label.getY() - 2.0f * offsetY, playerTable.getWidth() + 5.0f * offsetX, player3Label.getHeight() + 4.0f * offsetY, 10);
@@ -389,7 +389,7 @@ public class GameScreen implements Screen {
                 myShapeRenderer.roundedRect(playerTable.getX() - offsetX, playerTable.getY() + player3Label.getY() - offsetY, playerTable.getWidth() + 2.0f * offsetX, player3Label.getHeight() + 2.0f * offsetY, 10);
             }
         }
-        if(phaseLabel != null){
+        if (phaseLabel != null) {
             myShapeRenderer.setColor(0.5f, 0.5f, 0.5f, 0.85f);
             myShapeRenderer.roundedRect(phaseLabel.getX() - 0.5f * offsetX, phaseLabel.getY() - 2.0f * offsetX, phaseLabel.getWidth() + 1.0f * offsetX, phaseLabel.getHeight() + 4.0f * offsetX, 10);
         }
@@ -624,7 +624,6 @@ public class GameScreen implements Screen {
 
                     @Override
                     public void drag(InputEvent event, float x, float y, int pointer) {
-                        game.getGameState().getAudioNetwork().setPlayLabyrinthMovement(true);
                         var dir = new Vector2();
                         var offset = new Vector2();
                         if (extraTileImage.getRotation() == 0) {
@@ -664,6 +663,7 @@ public class GameScreen implements Screen {
                         insertSuccess = insert.validate();
 
                         if (insertSuccess) {
+                            game.getGameState().getAudioNetwork().setPlayLabyrinthMovement(true);
                             insert.execute();
                             canMove = true;
                         } else {
@@ -677,7 +677,7 @@ public class GameScreen implements Screen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         AudioManager.playRotateTile();
-                        extraTileImage.rotateBy(90);
+                        extraTileImage.rotateBy(-90);
                         game.getGameState().getExtraTile().rotateCounterClockwise();
                     }
                 });
