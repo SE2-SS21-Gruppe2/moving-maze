@@ -677,7 +677,7 @@ public class GameScreen implements Screen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         AudioManager.playRotateTile();
-                        extraTileImage.rotateBy(-90);
+                        extraTileImage.rotateBy(90);
                         game.getGameState().getExtraTile().rotateCounterClockwise();
                     }
                 });
