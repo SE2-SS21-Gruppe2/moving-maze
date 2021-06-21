@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.esotericsoftware.kryo.Kryo;
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioNetworkManager;
 import se_ii.gruppe2.moving_maze.cheatfunction.CheatFunction;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhase;
 import se_ii.gruppe2.moving_maze.network.listeners.WinGameListener;
@@ -84,10 +85,7 @@ public class Registry {
         kryo.register(WinGameRequest.class);
         kryo.register(WinGameConformation.class);
         kryo.register(WinGameListener.class);
-
-
-
-
+        kryo.register(AudioNetworkManager.class);
 
     }
 
