@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 
 public class RuleScreen implements Screen {
 
@@ -72,6 +73,7 @@ public class RuleScreen implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playButtonClick();
                 game.setScreen(game.getMainMenuScreen());
 
             }

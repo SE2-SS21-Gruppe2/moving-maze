@@ -44,16 +44,15 @@ public class AudioManager {
     }
 
     public static void playMovingMaze() {
-        movingMaze.play(0.4f);
-    }
-
-    public static void playVictory() {
-        long id = victory.play(0.4f);
-        Gdx.app.log("music", "ID: " + id);
+        movingMaze.play(1f);
     }
 
     public static void playMovePlayer() {
-        movePlayer.play(0.4f);
+        movePlayer.play(1f);
+    }
+
+    public static void playVictory() {
+        long id = victory.play(1f);
     }
 
     public static void playJoinGame() {
@@ -69,7 +68,7 @@ public class AudioManager {
     }
 
     public static void playRotateTile() {
-        rotateTile.play(0.4f);
+        rotateTile.play(1f);
     }
 
     public static void playCheatDetected() {
@@ -81,6 +80,6 @@ public class AudioManager {
     }
 
     public static void playButtonClick() {
-        buttonClick.play(0.4f);
+        buttonClick.play(1f);
     }
 }

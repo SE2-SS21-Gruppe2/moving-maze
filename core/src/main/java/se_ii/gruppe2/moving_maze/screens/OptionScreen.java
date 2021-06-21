@@ -32,7 +32,7 @@ public class OptionScreen implements Screen {
     private Label rotateScreenLabel;
     private Button soundButton;
     private Button vibrationButton;
-    private Button rotateScreenButton;
+    private Button tileRotationButton;
 
     private Texture backTexture;
     private TextureRegion textureRegion;
@@ -95,11 +95,15 @@ public class OptionScreen implements Screen {
 
         soundButton = new ImageButton(soundOffDrawable, soundOnDrawable, soundOnDrawable);
         vibrationButton = new ImageButton(vibrateOffDrawable, vibrateOnDrawable, vibrateOnDrawable);
-        rotateScreenButton = new ImageButton(rotateOffDrawable, rotateOnDrawable, rotateOnDrawable);
+        tileRotationButton = new ImageButton(rotateOffDrawable, rotateOnDrawable, rotateOnDrawable);
 
         soundButton.setChecked(playMusic);
         vibrationButton.setChecked(vibratePhone);
-        rotateScreenButton.setChecked(rotateTileByGyro);
+        tileRotationButton.setChecked(rotateTileByGyro);
+
+        if (playMusic) {
+            AudioManager.playBackgroundMusic();
+        }
 
         initTable1();
         setTable1();
@@ -180,7 +184,7 @@ public class OptionScreen implements Screen {
         table1.row();
 
         table1.add(rotateScreenLabel).size(300, 100).center();
-        table1.add(rotateScreenButton).size(100, 100).center();
+        table1.add(tileRotationButton).size(100, 100).center();
 
         table1.pad(150);
         //table1.padLeft(130);
@@ -192,7 +196,10 @@ public class OptionScreen implements Screen {
         soundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                playMusic = !playMusic;
+                AudioManager.playButtonClick();
+                playMusic = soundButton.isChecked();
+                game.getPreferences().putBoolean("soundOn", playMusic);
+                game.getPreferences().flush();
 
                 if (playMusic) {
                     AudioManager.playBackgroundMusic();
@@ -203,23 +210,31 @@ public class OptionScreen implements Screen {
             }
         });
 
-        backButton.addListener(new ClickListener() {
+        tileRotationButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                game.getPreferences().putBoolean("soundOn", soundButton.isChecked());
-                game.getPreferences().putBoolean("vibrationOn", vibrationButton.isChecked());
-                game.getPreferences().putBoolean("rotateWithSensorOn", rotateScreenButton.isChecked());
+                AudioManager.playButtonClick();
+                rotateTileByGyro = tileRotationButton.isChecked();
+                game.getPreferences().putBoolean("rotateWithSensorOn", rotateTileByGyro);
                 game.getPreferences().flush();
-
-                game.setScreen(game.getMainMenuScreen());
             }
         });
 
-        rotateScreenButton.addListener(new ClickListener() {
+        vibrationButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                rotateTileByGyro = !rotateTileByGyro;
+                AudioManager.playButtonClick();
+                vibratePhone = vibrationButton.isChecked();
+                game.getPreferences().putBoolean("vibrationOn", vibratePhone);
+                game.getPreferences().flush();
+            }
+        });
+
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
+                game.setScreen(game.getMainMenuScreen());
             }
         });
     }

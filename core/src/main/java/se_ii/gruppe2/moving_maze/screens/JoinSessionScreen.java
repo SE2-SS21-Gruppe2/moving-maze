@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.player.Player;
@@ -157,6 +158,7 @@ public class JoinSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 if (gameCode.getText().length() == 6 && gameCode.getText().matches("^[A-Z]{6}")){
                     game.setLocalPlayer(new Player(playerName.getText()));
                     game.getPreferences().putString("localPlayerName", playerName.getText());
@@ -172,6 +174,7 @@ public class JoinSessionScreen implements Screen {
         backButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 game.setScreen(game.getMainMenuScreen());
             }
         });

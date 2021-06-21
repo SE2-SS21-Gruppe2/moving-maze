@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
+import se_ii.gruppe2.moving_maze.audio.AudioNetworkManager;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
@@ -170,6 +172,9 @@ public class GameScreen implements Screen {
             game.getClient().gameWin(game.getSessionKey(),game.getLocalPlayer());
         }
 
+        //play network sounds
+        playNetworkSounds();
+
         //handle cheat
         if (Gdx.input.isKeyJustPressed(Input.Keys.VOLUME_DOWN)) {
             Player player = game.getGameState().getPlayerByName(game.getLocalPlayer().getName());
@@ -251,7 +256,6 @@ public class GameScreen implements Screen {
         playerTable = new Table();
         playerTable.setSize(Gdx.graphics.getWidth() / 3f, Gdx.graphics.getHeight() / 3f);
         playerTable.defaults().padTop(30f).maxHeight(50f * scalingFactor);
-        ;
 
         var indexOfLocalPlayer = 0;
         var i = 0;
@@ -430,6 +434,7 @@ public class GameScreen implements Screen {
         menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 stageMenuButton.addActor(dialogMenu);
             }
         });
@@ -555,6 +560,7 @@ public class GameScreen implements Screen {
                 image.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent inputEvent, float x, float y) {
+                        game.getGameState().getAudioNetwork().setPlayPlayerMovement(true);
                         localPlayerMoves.clear();
                         movePlayer.setBoardStart(getStartCoordinates());
                         movePlayer.setMovePosition(new Position((int) image.getOriginX(), (int) image.getOriginY()));
@@ -618,6 +624,7 @@ public class GameScreen implements Screen {
 
                     @Override
                     public void drag(InputEvent event, float x, float y, int pointer) {
+                        game.getGameState().getAudioNetwork().setPlayLabyrinthMovement(true);
                         var dir = new Vector2();
                         var offset = new Vector2();
                         if (extraTileImage.getRotation() == 0) {
@@ -669,6 +676,7 @@ public class GameScreen implements Screen {
 
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
+                        AudioManager.playRotateTile();
                         extraTileImage.rotateBy(90);
                         game.getGameState().getExtraTile().rotateCounterClockwise();
                     }
@@ -729,6 +737,26 @@ public class GameScreen implements Screen {
      */
     private GamePhaseType gamePhase() {
         return game.getGameState().getGamePhase();
+    }
+
+    /**
+     * Plays the sound which instruction is sent over the network
+     */
+    private void playNetworkSounds() {
+        AudioNetworkManager audio = game.getGameState().getAudioNetwork();
+        if (audio.isPlayPlayerMovement()) {
+            AudioManager.playMovePlayer();
+            audio.setPlayPlayerMovement(false);
+        }
+        if (audio.isPlayLabyrinthMovement()) {
+            AudioManager.playMovingMaze();
+            audio.setPlayLabyrinthMovement(false);
+        }
+        if (audio.isPlayLayCardDown()) {
+            AudioManager.playLayCardDown();
+            audio.setPlayLayCardDown(false);
+        }
+
     }
 
 }
