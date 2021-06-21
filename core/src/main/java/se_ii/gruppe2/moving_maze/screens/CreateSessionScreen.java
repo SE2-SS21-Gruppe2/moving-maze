@@ -2,6 +2,7 @@ package se_ii.gruppe2.moving_maze.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -298,6 +299,7 @@ public class CreateSessionScreen implements Screen {
         var lblCreateLobbyHeading = new Label("CREATE LOBBY", myLblStyle);
         lblCreateLobbyHeading.setFontScale(2.0f*scalingFactor);
         lblCreateLobbyHeading.setAlignment(Align.center);
+        lblCreateLobbyHeading.setColor(Color.GOLD);
         table.add(lblCreateLobbyHeading).colspan(2).height(100f*scalingFactor).fill().expandY();
 
         // --- Table - 2nd Row ---

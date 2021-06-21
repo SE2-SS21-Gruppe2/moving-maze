@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.audio.AudioNetworkManager;
+import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.gamestate.GamePhaseType;
 import se_ii.gruppe2.moving_maze.gamestate.turnAction.InsertTile;
@@ -50,8 +51,11 @@ public class GameScreen implements Screen {
     private Stage stageMenuButton;
     private Stage stageExtraTile;
     private Stage stagePlayerList;
+    private Stage stageYourTurn;
+    private Stage stageInsertPosition;
     private ArrayList<Position> localPlayerMoves;
     private boolean canMove = false;
+    private boolean canInsert = false;
     public static boolean tileJustRotated = false;
 
     private MyShapeRenderer myShapeRenderer;
@@ -104,6 +108,9 @@ public class GameScreen implements Screen {
 
     private TextButton menuButton;
     private Dialog dialogMenu;
+    private boolean yourTurnShown;
+
+    private Texture yourTurnTexture;
 
 
     public GameScreen(final MovingMazeGame game) {
@@ -114,15 +121,19 @@ public class GameScreen implements Screen {
         stageMenuButton = new Stage();
         stageExtraTile = new Stage();
         stagePlayerList = new Stage();
+        stageYourTurn = new Stage();
+        stageInsertPosition = new Stage();
 
         myShapeRenderer = new MyShapeRenderer();
         firstCall = true;
+        yourTurnShown = false;
 
         camera = MovingMazeGame.getStandardizedCamera();
 
         boardframe = getScaledImage("ui/boardframe.PNG", 0.62f);
         tileframe = getScaledImage("ui/tileframe.png", 0.1f);
         cardStack = new Texture(Gdx.files.internal("gameboard/cardstack.png"));
+        yourTurnTexture = getScaledImage("ui/yourturn.png", 0.4f);
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
@@ -136,6 +147,8 @@ public class GameScreen implements Screen {
         inputMultiplexer.addProcessor(stageMenuButton);
         inputMultiplexer.addProcessor(stageExtraTile);
         inputMultiplexer.addProcessor(stagePlayerList);
+        inputMultiplexer.addProcessor(stageYourTurn);
+        inputMultiplexer.addProcessor(stageInsertPosition);
 
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -143,10 +156,18 @@ public class GameScreen implements Screen {
         stageExtraTile.clear();
         stageMenuButton.clear();
         stagePlayerMovement.clear();
+        stageYourTurn.clear();
+        stageInsertPosition.clear();
+
+        player1 = null;
+        player2 = null;
+        player3 = null;
+        localPlayer = null;
 
         scalingFactor = Gdx.graphics.getWidth() / 1280f;
 
         setUpMenuButton();
+        setUpYourTurnStage();
     }
 
     @Override
@@ -209,17 +230,27 @@ public class GameScreen implements Screen {
         batch.draw(TextureLoader.getSpriteByTexturePath("ui/bg_moss.jpeg", TextureType.BACKGROUND).getTexture(), 0f, 0f);
         batch.draw(tileframe, getTileFrameX - tileframe.getWidth() / 5f, getTileFrameY - tileframe.getHeight() / 5f);
         batch.draw(boardframe, (int) getBoardFrameX, (int) getBoardFrameY);
+
+
         drawCardToScreen(batch);
         drawGameBoard(batch);
+        batch.end();
+        
         if (!firstCall) {
             drawPlayerColorShapes();
         }
         updatePlayerTable();
         stagePlayerMovement.draw();
         stagePlayerList.draw();
+        stageInsertPosition.draw();
         stageExtraTile.draw();
         stageMenuButton.draw();
-        batch.end();
+
+        if (game.getGameState().isMyTurn(game.getLocalPlayer()) && game.getGameState().getGamePhase() == GamePhaseType.INSERT_TILE && yourTurnShown == false){
+            stageYourTurn.draw();
+        }
+
+
     }
 
     @Override
@@ -440,6 +471,35 @@ public class GameScreen implements Screen {
         });
     }
 
+    private void setUpYourTurnStage(){
+        var unfocusButton = new Button(skin);
+        unfocusButton.setColor(0,0,0,0.75f);
+        unfocusButton.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        unfocusButton.setPosition(0,0);
+        stageYourTurn.addActor(unfocusButton);
+
+        var yourTurnImage = new Image(yourTurnTexture);
+        yourTurnImage.setPosition(Gdx.graphics.getWidth()/2.0f - yourTurnImage.getWidth()/2.0f, Gdx.graphics.getHeight()/2.0f - yourTurnImage.getHeight()/2.0f);
+        stageYourTurn.addActor(yourTurnImage);
+
+        unfocusButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                yourTurnShown = true;
+                canInsert = true;
+            }
+        });
+
+        yourTurnImage.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                yourTurnShown = true;
+                canInsert = true;
+            }
+        });
+
+    }
+
 
     /**
      * Calculates the start-coordinates for a gameboard with respect to the aspect-ratio.
@@ -539,9 +599,31 @@ public class GameScreen implements Screen {
         if (isNewExtraTile()) {
             updateExtraTile();
         }
+
+        if (game.getGameState().getGamePhase() == GamePhaseType.INSERT_TILE && game.getGameState().isMyTurn(game.getLocalPlayer()) && canInsert){
+            updateInsertPosition();
+        }
+
         if (game.getGameState().getGamePhase() == GamePhaseType.MOVE_PLAYER && game.getGameState().isMyTurn(game.getLocalPlayer()) && canMove) {
             updatePlayerMovement(initPos.getX(), initPos.getY());
         }
+    }
+
+    private void updateInsertPosition() {
+        stageInsertPosition.clear();
+        Texture texture = TextureLoader.getTileTextureOverlay();
+        for (int i = 0; i < game.getGameState().getBoard().getBoard().length; i++){
+            for (int j = 0; j < game.getGameState().getBoard().getBoard().length; j++){
+                var pos = new InsertTile(new Vector2(i,j));
+                if (pos.validate()){
+                    Image image = new Image(texture);
+                    image.setPosition(getStartCoordinates().getX() + i * TextureLoader.TILE_EDGE_SIZE, getStartCoordinates().getY() + j * TextureLoader.TILE_EDGE_SIZE);
+                    //image.setOrigin(i * TextureLoader.TILE_EDGE_SIZE, j * TextureLoader.TILE_EDGE_SIZE);
+                    stageInsertPosition.addActor(image);
+                }
+            }
+        }
+        canInsert = false;
     }
 
 
@@ -666,6 +748,7 @@ public class GameScreen implements Screen {
                             game.getGameState().getAudioNetwork().setPlayLabyrinthMovement(true);
                             insert.execute();
                             canMove = true;
+                            stageInsertPosition.clear();
                         } else {
                             extraTileImage.setPosition(cardSprite.getX() + cardSprite.getWidth() + 80f, cardSprite.getY() + cardSprite.getHeight() / 2 - extraTileImage.getHeight());
                         }
@@ -684,6 +767,7 @@ public class GameScreen implements Screen {
             }
             stageExtraTile.addActor(extraTileImage);
             setNewExtraTile(false);
+            yourTurnShown = false;
         }
 
     }
