@@ -17,8 +17,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
-
 import java.util.ArrayList;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 
 public class RuleScreen implements Screen {
 
@@ -125,6 +125,7 @@ public class RuleScreen implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playButtonClick();
                 game.setScreen(game.getMainMenuScreen());
 
             }
@@ -134,10 +135,7 @@ public class RuleScreen implements Screen {
     }
 
     public void setUpTable() {
-
-
         labels = new ArrayList<>();
-
 
         var lblZiel = new Label("Ziel:", skin);
         lblZiel.setAlignment(Align.center);

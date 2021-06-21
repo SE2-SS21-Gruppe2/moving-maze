@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoardFactory;
 import se_ii.gruppe2.moving_maze.helperclasses.MyShapeRenderer;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
@@ -333,6 +334,7 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 cheatingAllowed ^= true;
                 if (cheatingAllowed) {
                     cheatingAllowedButton.setText("Allowed");
@@ -346,6 +348,7 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 var availableThemes = ItemTheme.getAvailableThemes();
                 theme = availableThemes.get((availableThemes.indexOf(theme)+1) % availableThemes.size());
                 themeButton.setText(theme);
@@ -363,6 +366,7 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 game.setScreen(game.getMainMenuScreen());
                 game.getClient().closeSession(game.getSessionKey());
                 game.setSessionKey(NOGAMECODE);
@@ -373,6 +377,7 @@ public class CreateSessionScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 if (!gameCode.getText().toString().equals(NOGAMECODE)){
 
                     String oldHostName = game.getPreferences().getString(LOCALPLAYERNAME, "temp_SessionCreator");
@@ -392,11 +397,6 @@ public class CreateSessionScreen implements Screen {
                 }}
         });
     }
-
-    public void createAndStartGame(String[] players, float difficulty, float numOfCards, boolean cheatingAllowed, String theme){
-        // TODO: Connection to Server
-    }
-
 
     @Override
     public void render(float delta) {

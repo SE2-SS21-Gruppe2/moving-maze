@@ -28,6 +28,7 @@ public class TreasurePickupAction implements TurnAction {
             Gdx.app.log("turnAction/treasure", "Found item " + t.getItem().getName() + " on tile");
 
             if (local.getCurrentCard().equals(t.getItem())) {
+                game.getGameState().getAudioNetwork().setPlayLayCardDown(true);
                 game.getGameState().getPlayerByName(local.getName()).getCheatFunction().setLaidCardDownPreviousMove(true);
 
                 Gdx.app.log("turnAction/treasure", "Currently searched item found! Updating card ...");
@@ -40,6 +41,9 @@ public class TreasurePickupAction implements TurnAction {
                     if (currentPlayer.getCheatFunction().isCheatCurrentMove()) {
                         Gdx.app.log("cheat/debug", "Cheat activated");
                         boolean success = currentPlayer.getCheatFunction().activateCheat();
+                        if (success) {
+                            game.getGameState().getAudioNetwork().setPlayLayCardDown(true);
+                        }
                         Gdx.app.log("cheat/debug", "Cheat success: " + success);
                     }
                 }

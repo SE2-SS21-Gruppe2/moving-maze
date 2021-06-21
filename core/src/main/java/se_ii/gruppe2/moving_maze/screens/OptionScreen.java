@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 
@@ -32,7 +33,7 @@ public class OptionScreen implements Screen {
     private Label rotateScreenLabel;
     private Button soundButton;
     private Button vibrationButton;
-    private Button rotateScreenButton;
+    private Button tileRotationButton;
 
     private Texture backTexture;
     private TextureRegion textureRegion;
@@ -58,7 +59,6 @@ public class OptionScreen implements Screen {
     private final Drawable vibrateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/vibrate_off.png"))));
     private final Drawable rotateOnDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_on.png"))));
     private final Drawable rotateOffDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/buttons/rotate_off.png"))));
-
 
 
     public OptionScreen(final MovingMazeGame game) {
@@ -123,12 +123,15 @@ public class OptionScreen implements Screen {
 
         soundButton = new ImageButton(soundOffDrawable, soundOnDrawable, soundOnDrawable);
         vibrationButton = new ImageButton(vibrateOffDrawable, vibrateOnDrawable, vibrateOnDrawable);
-        rotateScreenButton = new ImageButton(rotateOffDrawable, rotateOnDrawable, rotateOnDrawable);
+        tileRotationButton = new ImageButton(rotateOffDrawable, rotateOnDrawable, rotateOnDrawable);
 
+        soundButton.setChecked(playMusic);
+        vibrationButton.setChecked(vibratePhone);
+        tileRotationButton.setChecked(rotateTileByGyro);
 
-        //soundButton.setChecked(playMusic);
-        //vibrationButton.setChecked(vibratePhone);
-        //rotateScreenButton.setChecked(rotateTileByGyro);
+        if (playMusic) {
+            AudioManager.playBackgroundMusic();
+        }
 
         initTable1();
         setTable1();
@@ -199,12 +202,9 @@ public class OptionScreen implements Screen {
     private void initTable1() {
 
         table1.align(Align.center);
-
-
         table1.add(soundLabel).size(400, 200).center();
         table1.add(soundButton).size(400, 200).center();
         table1.row();
-
 
         table1.add(vibrationLabel).size(400, 200).center();
         table1.add(vibrationButton).size(400, 200).center();
@@ -212,7 +212,7 @@ public class OptionScreen implements Screen {
 
 
         table1.add(rotateScreenLabel).size(400, 200).center();
-        table1.add(rotateScreenButton).size(400, 200).center();
+        table1.add(tileRotationButton).size(400, 200).center();
 
         table1.pad(150);
         //table1.padLeft(130);
@@ -224,38 +224,47 @@ public class OptionScreen implements Screen {
         soundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                playMusic = !playMusic;
+                AudioManager.playButtonClick();
+                playMusic = soundButton.isChecked();
+                game.getPreferences().putBoolean("soundOn", playMusic);
+                game.getPreferences().flush();
 
                 if (playMusic) {
-                    game.getAudioManager().playBackgroundMusic();
+                    AudioManager.playBackgroundMusic();
 
                 } else {
-                    game.getAudioManager().stopBackgroundMusic();
+                    AudioManager.stopBackgroundMusic();
                 }
+            }
+        });
+
+        tileRotationButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
+                rotateTileByGyro = tileRotationButton.isChecked();
+                game.getPreferences().putBoolean("rotateWithSensorOn", rotateTileByGyro);
+                game.getPreferences().flush();
+            }
+        });
+
+        vibrationButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
+                vibratePhone = vibrationButton.isChecked();
+                game.getPreferences().putBoolean("vibrationOn", vibratePhone);
+                game.getPreferences().flush();
             }
         });
 
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                game.getPreferences().putBoolean("soundOn", soundButton.isChecked());
-                game.getPreferences().putBoolean("vibrationOn", vibrationButton.isChecked());
-                game.getPreferences().putBoolean("rotateWithSensorOn", rotateScreenButton.isChecked());
-                game.getPreferences().flush();
-
+                AudioManager.playButtonClick();
                 game.setScreen(game.getMainMenuScreen());
             }
         });
-
-        rotateScreenButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                rotateTileByGyro = !rotateTileByGyro;
-            }
-        });
     }
-
-
 }
 

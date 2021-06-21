@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 
@@ -61,9 +62,9 @@ public class MainMenuScreen implements Screen {
 
         // handle music
         if (game.getPreferences().getBoolean("soundOn")) {
-            game.getAudioManager().playBackgroundMusic();
+            AudioManager.playBackgroundMusic();
         } else {
-            game.getAudioManager().stopBackgroundMusic();
+            AudioManager.stopBackgroundMusic();
         }
     }
 
@@ -158,6 +159,7 @@ public class MainMenuScreen implements Screen {
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    AudioManager.playButtonClick();
                     game.setScreen(target);
                 }
             });

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 
 import se_ii.gruppe2.moving_maze.MovingMazeGame;
+import se_ii.gruppe2.moving_maze.audio.AudioManager;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureLoader;
 import se_ii.gruppe2.moving_maze.helperclasses.TextureType;
 import se_ii.gruppe2.moving_maze.player.Player;
@@ -50,6 +51,7 @@ public class VictoryScreen implements Screen {
         tbBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                AudioManager.playButtonClick();
                 game.setSessionKey("------");
                 game.setInGame(false);
                 game.setScreen(game.getMainMenuScreen());
@@ -71,6 +73,8 @@ public class VictoryScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
         stage.addActor(tbl);
+
+        AudioManager.playVictory();
 
     }
 

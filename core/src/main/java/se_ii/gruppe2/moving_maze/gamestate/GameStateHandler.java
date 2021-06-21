@@ -1,6 +1,7 @@
 package se_ii.gruppe2.moving_maze.gamestate;
 
 import com.badlogic.gdx.math.Vector2;
+import se_ii.gruppe2.moving_maze.audio.AudioNetworkManager;
 import se_ii.gruppe2.moving_maze.gameboard.GameBoard;
 import se_ii.gruppe2.moving_maze.player.Player;
 import se_ii.gruppe2.moving_maze.tile.Tile;
@@ -17,9 +18,11 @@ public class GameStateHandler {
     private GamePhase gamePhase;
     private ChatMessage[] chat;
     private Vector2 lastInsertPosition;
+    private AudioNetworkManager audioNetwork;
 
     public GameStateHandler() {
         players = new ArrayList<>();
+        audioNetwork = AudioNetworkManager.getInstance();
 
     }
 
@@ -152,6 +155,14 @@ public class GameStateHandler {
 
     public boolean isMyTurn(Player player) {
         return players.get(playerOnTurnIndex % players.size()).getId() == player.getId();
+    }
+
+    public AudioNetworkManager getAudioNetwork() {
+        return audioNetwork;
+    }
+
+    public void setAudioNetwork(AudioNetworkManager audioNetwork) {
+        this.audioNetwork = audioNetwork;
     }
 
     /**
