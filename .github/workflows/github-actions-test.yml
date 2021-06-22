@@ -18,6 +18,9 @@ jobs:
                         - name: Build artifacts
                           id: buildAll
                           uses: eskatos/gradle-command-action@v1.3.3
+                          env:
+                                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
                           with:
                                   gradle-version: 6.1.1
                                   wrapper-cache-enabled: true
@@ -25,9 +28,3 @@ jobs:
                                   configuration-cache-enabled: true
                                   arguments: build jacocoTestReport lint
 
-                        ## reporting metrics to SonarCloud ##
-                        - name: SonarCloud report
-                          uses: sonarsource/sonarcloud-github-action@master
-                          env:
-                                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
