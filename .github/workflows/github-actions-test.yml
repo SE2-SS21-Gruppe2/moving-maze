@@ -26,5 +26,5 @@ jobs:
                                   wrapper-cache-enabled: true
                                   dependencies-cache-enabled: true
                                   configuration-cache-enabled: true
-                                  arguments: build jacocoTestReport lint
+                                  arguments: build jacocoTestReport lint sonarqube
 
