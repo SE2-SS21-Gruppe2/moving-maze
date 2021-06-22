@@ -24,3 +24,5 @@ jobs:
                                   dependencies-cache-enabled: true
                                   configuration-cache-enabled: true
                                   arguments: build jacocoTestReport lint sonarqube
+
+                        - run: echo "=== Finished build ==="
