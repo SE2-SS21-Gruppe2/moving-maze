@@ -18,6 +18,8 @@ jobs:
                         - name: Build artifacts
                           id: buildAll
                           uses: eskatos/gradle-command-action@v1.3.3
+                          env:
+                                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                           with:
                                   gradle-version: 6.1.1
                                   wrapper-cache-enabled: true
