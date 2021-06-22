@@ -1,0 +1,7 @@
+name: Actions CI Test
+on: [push]
+jobs:
+        Build-Project:
+        runs-on: ubuntu-latest
+        steps:
+                - run echo "Build of {{github-repository}} started ..."
