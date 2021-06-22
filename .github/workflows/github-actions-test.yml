@@ -5,3 +5,11 @@ jobs:
                 runs-on: ubuntu-latest
                 steps:
                         - run: echo "Build of ${{github.repository}} started ..."
+                          ## Prepare environment ##
+                        - name: Checkout
+                          uses: actions/checkout@v2.3.3
+
+                        - name: Setup JDK
+                          uses: actions/setup-java@v1.4.3
+                          with:
+                                  java-version: 11
