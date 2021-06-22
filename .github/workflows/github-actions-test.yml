@@ -4,4 +4,4 @@ jobs:
         Build-Project:
                 runs-on: ubuntu-latest
                 steps:
-                        - run echo "Build of {{github-repository}} started ..."
+                        - run: echo "Build of {{github-repository}} started ..."
